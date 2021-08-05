@@ -210,6 +210,9 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#avalanche.evaluation.metrics.accuracy.StreamAccuracy" title="avalanche.evaluation.metrics.accuracy.StreamAccuracy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StreamAccuracy</span></code></a></p></td>
 <td><p>At the end of the entire stream of experiences, this plugin metric</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.evaluation.metrics.accuracy.TrainedExperienceAccuracy" title="avalanche.evaluation.metrics.accuracy.TrainedExperienceAccuracy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TrainedExperienceAccuracy</span></code></a></p></td>
+<td><p>At the end of each experience, this plugin metric reports the average</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -221,7 +224,7 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.evaluation.metrics.accuracy.accuracy_metrics" title="avalanche.evaluation.metrics.accuracy.accuracy_metrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">accuracy_metrics</span></code></a>(*, minibatch=False, epoch=False, epoch_running=False, experience=False, stream=False) → List[PluginMetric]</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.evaluation.metrics.accuracy.accuracy_metrics" title="avalanche.evaluation.metrics.accuracy.accuracy_metrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">accuracy_metrics</span></code></a>(*, minibatch=False, epoch=False, epoch_running=False, experience=False, stream=False, trained_experience=False) → List[PluginMetric]</p></td>
 <td><p>Helper method that can be used to obtain the desired set of</p></td>
 </tr>
 </tbody>
@@ -389,9 +392,37 @@ This metric only works at eval time.</p>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="avalanche.evaluation.metrics.accuracy.TrainedExperienceAccuracy">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.evaluation.metrics.accuracy.</span></span><span class="sig-name descname"><span class="pre">TrainedExperienceAccuracy</span></span><a class="reference internal" href="../../../../../_modules/avalanche/evaluation/metrics/accuracy/#TrainedExperienceAccuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.evaluation.metrics.accuracy.TrainedExperienceAccuracy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.evaluation.metrics.accuracy.AccuracyPluginMetric</span></code></p>
+<p>At the end of each experience, this plugin metric reports the average
+accuracy for only the experiences that the model has been trained on so far.</p>
+<p>This metric only works at eval time.</p>
+<p>Creates an instance of TrainedExperienceAccuracy metric by first
+constructing AccuracyPluginMetric</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.evaluation.metrics.accuracy.TrainedExperienceAccuracy.after_training_exp">
+<span class="sig-name descname"><span class="pre">after_training_exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/avalanche/evaluation/metrics/accuracy/#TrainedExperienceAccuracy.after_training_exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.evaluation.metrics.accuracy.TrainedExperienceAccuracy.after_training_exp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.evaluation.metrics.accuracy.TrainedExperienceAccuracy.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/evaluation/metrics/accuracy/#TrainedExperienceAccuracy.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.evaluation.metrics.accuracy.TrainedExperienceAccuracy.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Only update the accuracy with results from experiences that have been
+trained on</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.evaluation.metrics.accuracy.TrainedExperienceAccuracy.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/evaluation/metrics/accuracy/#TrainedExperienceAccuracy.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.evaluation.metrics.accuracy.TrainedExperienceAccuracy.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="avalanche.evaluation.metrics.accuracy.accuracy_metrics">
-<span class="sig-prename descclassname"><span class="pre">avalanche.evaluation.metrics.accuracy.</span></span><span class="sig-name descname"><span class="pre">accuracy_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minibatch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epoch_running</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experience</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">PluginMetric</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/avalanche/evaluation/metrics/accuracy/#accuracy_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.evaluation.metrics.accuracy.accuracy_metrics" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">avalanche.evaluation.metrics.accuracy.</span></span><span class="sig-name descname"><span class="pre">accuracy_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minibatch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epoch_running</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experience</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trained_experience</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">PluginMetric</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/avalanche/evaluation/metrics/accuracy/#accuracy_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.evaluation.metrics.accuracy.accuracy_metrics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper method that can be used to obtain the desired set of
 plugin metrics.</p>
 <dl class="field-list simple">
@@ -407,6 +438,9 @@ the running epoch accuracy at training time.</p></li>
 the accuracy on each evaluation experience.</p></li>
 <li><p><strong>stream</strong> – If True, will return a metric able to log
 the accuracy averaged over the entire evaluation stream of experiences.</p></li>
+<li><p><strong>trained_experience</strong> – If True, will return a metric able to log
+the average evaluation accuracy only for experiences that the
+model has been trained on</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

@@ -454,8 +454,48 @@
         <span class="k">return</span> <span class="s2">&quot;Top1_Acc_Stream&quot;</span></div></div>
 
 
-<div class="viewcode-block" id="accuracy_metrics"><a class="viewcode-back" href="../../../../../autoapi/avalanche/evaluation/metrics/#avalanche.evaluation.metrics.accuracy.accuracy_metrics">[docs]</a><span class="k">def</span> <span class="nf">accuracy_metrics</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">minibatch</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">epoch</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">epoch_running</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                     <span class="n">experience</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">PluginMetric</span><span class="p">]:</span>
+<div class="viewcode-block" id="TrainedExperienceAccuracy"><a class="viewcode-back" href="../../../../../autoapi/avalanche/evaluation/metrics/#avalanche.evaluation.metrics.accuracy.TrainedExperienceAccuracy">[docs]</a><span class="k">class</span> <span class="nc">TrainedExperienceAccuracy</span><span class="p">(</span><span class="n">AccuracyPluginMetric</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    At the end of each experience, this plugin metric reports the average</span>
+<span class="sd">    accuracy for only the experiences that the model has been trained on so far.</span>
+
+<span class="sd">    This metric only works at eval time.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates an instance of TrainedExperienceAccuracy metric by first </span>
+<span class="sd">        constructing AccuracyPluginMetric</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TrainedExperienceAccuracy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">reset_at</span><span class="o">=</span><span class="s1">&#39;stream&#39;</span><span class="p">,</span> <span class="n">emit_at</span><span class="o">=</span><span class="s1">&#39;stream&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;eval&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_current_experience</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="TrainedExperienceAccuracy.after_training_exp"><a class="viewcode-back" href="../../../../../autoapi/avalanche/evaluation/metrics/#avalanche.evaluation.metrics.accuracy.TrainedExperienceAccuracy.after_training_exp">[docs]</a>    <span class="k">def</span> <span class="nf">after_training_exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_current_experience</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">experience</span><span class="o">.</span><span class="n">current_experience</span>
+        <span class="c1"># Reset average after learning from a new experience </span>
+        <span class="n">AccuracyPluginMetric</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AccuracyPluginMetric</span><span class="o">.</span><span class="n">after_training_exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="TrainedExperienceAccuracy.update"><a class="viewcode-back" href="../../../../../autoapi/avalanche/evaluation/metrics/#avalanche.evaluation.metrics.accuracy.TrainedExperienceAccuracy.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Only update the accuracy with results from experiences that have been </span>
+<span class="sd">        trained on</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">strategy</span><span class="o">.</span><span class="n">experience</span><span class="o">.</span><span class="n">current_experience</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_experience</span><span class="p">:</span>
+            <span class="n">AccuracyPluginMetric</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TrainedExperienceAccuracy.__str__"><a class="viewcode-back" href="../../../../../autoapi/avalanche/evaluation/metrics/#avalanche.evaluation.metrics.accuracy.TrainedExperienceAccuracy.__str__">[docs]</a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Accuracy_On_Trained_Experiences&quot;</span></div></div>
+
+
+<div class="viewcode-block" id="accuracy_metrics"><a class="viewcode-back" href="../../../../../autoapi/avalanche/evaluation/metrics/#avalanche.evaluation.metrics.accuracy.accuracy_metrics">[docs]</a><span class="k">def</span> <span class="nf">accuracy_metrics</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> 
+                     <span class="n">minibatch</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                     <span class="n">epoch</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                     <span class="n">epoch_running</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                     <span class="n">experience</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                     <span class="n">stream</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                     <span class="n">trained_experience</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">PluginMetric</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Helper method that can be used to obtain the desired set of</span>
 <span class="sd">    plugin metrics.</span>
@@ -470,6 +510,9 @@
 <span class="sd">        the accuracy on each evaluation experience.</span>
 <span class="sd">    :param stream: If True, will return a metric able to log</span>
 <span class="sd">        the accuracy averaged over the entire evaluation stream of experiences.</span>
+<span class="sd">    :param trained_experience: If True, will return a metric able to log</span>
+<span class="sd">        the average evaluation accuracy only for experiences that the</span>
+<span class="sd">        model has been trained on         </span>
 
 <span class="sd">    :return: A list of plugin metrics.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -490,6 +533,9 @@
     <span class="k">if</span> <span class="n">stream</span><span class="p">:</span>
         <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">StreamAccuracy</span><span class="p">())</span>
 
+    <span class="k">if</span> <span class="n">trained_experience</span><span class="p">:</span>
+        <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TrainedExperienceAccuracy</span><span class="p">())</span>
+
     <span class="k">return</span> <span class="n">metrics</span></div>
 
 
@@ -500,6 +546,7 @@
     <span class="s1">&#39;RunningEpochAccuracy&#39;</span><span class="p">,</span>
     <span class="s1">&#39;ExperienceAccuracy&#39;</span><span class="p">,</span>
     <span class="s1">&#39;StreamAccuracy&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;TrainedExperienceAccuracy&#39;</span><span class="p">,</span>
     <span class="s1">&#39;accuracy_metrics&#39;</span>
 <span class="p">]</span>
 </pre></div>
