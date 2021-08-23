@@ -1,0 +1,84 @@
+:mod:`avalanche.training.plugins.gss_greedy`
+============================================
+
+.. py:module:: avalanche.training.plugins.gss_greedy
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   avalanche.training.plugins.gss_greedy.GSS_greedyPlugin
+
+
+
+.. py:class:: GSS_greedyPlugin(mem_size=200, mem_strength=5, input_size=[])
+
+   Bases: :class:`avalanche.training.plugins.strategy_plugin.StrategyPlugin`
+
+   GSSPlugin replay plugin.
+
+   Code adapted from the repository: 
+   https://github.com/RaptorMai/online-continual-learning
+   Handles an external memory fulled with samples selected 
+   using the Greedy approach of GSS algorithm. 
+   `before_forward` callback is used to process the current 
+   sample and estimate a score.    
+
+   The :mem_size: attribute controls the total number of patterns to be stored 
+   in the external memory.
+
+   .. method:: cosine_similarity(self, x1, x2=None, eps=1e-08)
+
+
+   .. method:: get_grad_vector(self, pp, grad_dims)
+
+      gather the gradients in one vector
+
+
+   .. method:: get_batch_sim(self, strategy, grad_dims, batch_x, batch_y)
+
+      Args:
+          buffer: memory buffer
+          grad_dims: gradient dimensions
+          batch_x: current batch x
+          batch_y: current batch y
+      Returns: score of current batch, gradient from memory subsets
+
+
+   .. method:: get_rand_mem_grads(self, strategy, grad_dims, gss_batch_size)
+
+      Args:
+          buffer: memory buffer
+          grad_dims: gradient dimensions
+      Returns: gradient from memory subsets
+
+
+   .. method:: get_each_batch_sample_sim(self, strategy, grad_dims, mem_grads, batch_x, batch_y)
+
+      Args:
+          buffer: memory buffer
+          grad_dims: gradient dimensions
+          mem_grads: gradient from memory subsets
+          batch_x: batch images
+          batch_y: batch labels
+      Returns: score of each sample from current batch
+
+
+   .. method:: before_training_exp(self, strategy, num_workers=0, shuffle=True, **kwargs)
+
+      Dataloader to build batches containing examples from both memories and
+      the training dataset
+
+
+   .. method:: after_forward(self, strategy, num_workers=0, shuffle=True, **kwargs)
+
+      After every forward this function select sample to fill 
+      the memory buffer based on cosine similarity
+
+
+
