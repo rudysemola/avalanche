@@ -254,7 +254,10 @@ strategies (e.g., EWC + replay).</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.training.strategies.CoPE" title="avalanche.training.strategies.CoPE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CoPE</span></code></a></p></td>
 <td><p>Continual Prototype Evolution strategy.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#avalanche.training.strategies.StreamingLDA" title="avalanche.training.strategies.StreamingLDA"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StreamingLDA</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#avalanche.training.strategies.LFL" title="avalanche.training.strategies.LFL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LFL</span></code></a></p></td>
+<td><p>Less Forgetful Learning strategy.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.training.strategies.StreamingLDA" title="avalanche.training.strategies.StreamingLDA"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StreamingLDA</span></code></a></p></td>
 <td><p>Init function for the SLDA model.</p></td>
 </tr>
 </tbody>
@@ -1477,6 +1480,50 @@ if  0: calls <cite>eval</cite> after the final epoch of each training</p>
 </dl>
 </div></blockquote>
 </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="avalanche.training.strategies.LFL">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.training.strategies.</span></span><span class="sig-name descname"><span class="pre">LFL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_e</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_mb_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_epochs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eval_mb_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plugins</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">StrategyPlugin</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluator</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">EvaluationPlugin</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">default_logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eval_every</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/strategies/strategy_wrappers/#LFL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.strategies.LFL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="base_strategy/#avalanche.training.strategies.base_strategy.BaseStrategy" title="avalanche.training.strategies.base_strategy.BaseStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.training.strategies.base_strategy.BaseStrategy</span></code></a></p>
+<dl class="simple">
+<dt>Less Forgetful Learning strategy.</dt><dd><p>See LFL plugin for details.
+Refer Paper: <a class="reference external" href="https://arxiv.org/pdf/1607.00122.pdf">https://arxiv.org/pdf/1607.00122.pdf</a>
+This strategy does not use task identities.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – The model.</p></li>
+<li><p><strong>optimizer</strong> – The optimizer to use.</p></li>
+<li><p><strong>criterion</strong> – The loss criterion to use.</p></li>
+<li><p><strong>lambda_e</strong> – euclidean loss hyper parameter. It can be either a
+float number or a list containing lambda_e for each experience.</p></li>
+<li><p><strong>train_mb_size</strong> – The train minibatch size. Defaults to 1.</p></li>
+<li><p><strong>train_epochs</strong> – The number of training epochs. Defaults to 1.</p></li>
+<li><p><strong>eval_mb_size</strong> – The eval minibatch size. Defaults to 1.</p></li>
+<li><p><strong>device</strong> – The device to use. Defaults to None (cpu).</p></li>
+<li><p><strong>plugins</strong> – Plugins to be added. Defaults to None.</p></li>
+<li><p><strong>evaluator</strong> – (optional) instance of EvaluationPlugin for logging
+and metric computations.</p></li>
+<li><p><strong>eval_every</strong> – <p>the frequency of the calls to <cite>eval</cite> inside the
+training loop.</p>
+<blockquote>
+<div><p>if -1: no evaluation during training.
+if  0: calls <cite>eval</cite> after the final epoch of each training</p>
+<blockquote>
+<div><p>experience.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>if &gt;0: calls <cite>eval</cite> every <cite>eval_every</cite> epochs and at the end</dt><dd><p>of all the epochs for a single experience.</p>
+</dd>
+</dl>
+</div></blockquote>
+</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

@@ -195,6 +195,7 @@
 <li class="toctree-l1"><a class="reference internal" href="gdumb/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.training.plugins.gdumb</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="gem/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.training.plugins.gem</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="gss_greedy/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.training.plugins.gss_greedy</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="lfl/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.training.plugins.lfl</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="lr_scheduling/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.training.plugins.lr_scheduling</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="lwf/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.training.plugins.lwf</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="replay/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.training.plugins.replay</span></code></a></li>
@@ -260,6 +261,9 @@
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#avalanche.training.plugins.PPPloss" title="avalanche.training.plugins.PPPloss"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PPPloss</span></code></a></p></td>
 <td><p>Pseudo-Prototypical Proxy loss (PPP-loss).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.training.plugins.LFLPlugin" title="avalanche.training.plugins.LFLPlugin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LFLPlugin</span></code></a></p></td>
+<td><p>Less-Forgetful Learning (LFL) Plugin</p></td>
 </tr>
 </tbody>
 </table>
@@ -1399,6 +1403,58 @@ class c vs other-classes k.</p>
 pseudo-prototypes.
 :param Bk: Batch of instances of other-than-c classes (k).
 :return: Sum_{i, part of same class c} Sum_{x_j^k} log 1 - P(c|x_j^k)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="avalanche.training.plugins.LFLPlugin">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.training.plugins.</span></span><span class="sig-name descname"><span class="pre">LFLPlugin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lambda_e</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/plugins/lfl/#LFLPlugin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.plugins.LFLPlugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="strategy_plugin/#avalanche.training.plugins.strategy_plugin.StrategyPlugin" title="avalanche.training.plugins.strategy_plugin.StrategyPlugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.training.plugins.strategy_plugin.StrategyPlugin</span></code></a></p>
+<p>Less-Forgetful Learning (LFL) Plugin
+LFL satisfies two properties to mitigate catastrophic forgetting.
+1) To keep the decision boundaries unchanged
+2) The feature space should not change much on target(new) data
+LFL uses euclidean loss between features from current and previous version
+of model as regularization to maintain the feature space and avoid
+catastrophic forgetting.
+Refer paper <a class="reference external" href="https://arxiv.org/pdf/1607.00122.pdf">https://arxiv.org/pdf/1607.00122.pdf</a> for more details
+This plugin does not use task identities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lambda_e</strong> – Euclidean loss hyper parameter</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.training.plugins.LFLPlugin.penalty">
+<span class="sig-name descname"><span class="pre">penalty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_e</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/plugins/lfl/#LFLPlugin.penalty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.plugins.LFLPlugin.penalty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute weighted euclidean loss</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.training.plugins.LFLPlugin.compute_features">
+<span class="sig-name descname"><span class="pre">compute_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/plugins/lfl/#LFLPlugin.compute_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.plugins.LFLPlugin.compute_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute features from prev model and current model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.training.plugins.LFLPlugin.before_backward">
+<span class="sig-name descname"><span class="pre">before_backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/plugins/lfl/#LFLPlugin.before_backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.plugins.LFLPlugin.before_backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add euclidean loss between prev and current features as penalty</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.training.plugins.LFLPlugin.after_training_exp">
+<span class="sig-name descname"><span class="pre">after_training_exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/plugins/lfl/#LFLPlugin.after_training_exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.plugins.LFLPlugin.after_training_exp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a copy of the model after each experience
+and freeze the prev model and freeze the last layer of current model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.training.plugins.LFLPlugin.before_training">
+<span class="sig-name descname"><span class="pre">before_training</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/plugins/lfl/#LFLPlugin.before_training"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.plugins.LFLPlugin.before_training" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the model is an instance of base class to ensure get_features()
+is implemented</p>
 </dd></dl>
 
 </dd></dl>

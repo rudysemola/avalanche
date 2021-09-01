@@ -190,6 +190,7 @@ the near future.</p>
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="base_model/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.models.base_model</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="batch_renorm/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.models.batch_renorm</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="dynamic_modules/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.models.dynamic_modules</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="dynamic_optimizers/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.models.dynamic_optimizers</span></code></a></li>
@@ -260,6 +261,9 @@ the near future.</p>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.models.NCMClassifier" title="avalanche.models.NCMClassifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NCMClassifier</span></code></a></p></td>
 <td><p>NCM Classifier.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#avalanche.models.BaseModel" title="avalanche.models.BaseModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseModel</span></code></a></p></td>
+<td><p>A base abstract class for models</p></td>
 </tr>
 </tbody>
 </table>
@@ -374,7 +378,7 @@ evaluation mode.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="avalanche.models.SimpleMLP">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.models.</span></span><span class="sig-name descname"><span class="pre">SimpleMLP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">28</span> <span class="pre">*</span> <span class="pre">28</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_layers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/avalanche/models/simple_mlp/#SimpleMLP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.models.SimpleMLP" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code>, <a class="reference internal" href="base_model/#avalanche.models.base_model.BaseModel" title="avalanche.models.base_model.BaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.models.base_model.BaseModel</span></code></a></p>
 <p>Base class for all neural network modules.</p>
 <p>Your models should also subclass this class.</p>
 <p>Modules can also contain other Modules, allowing to nest them in
@@ -406,6 +410,12 @@ evaluation mode.</p>
 <dt class="sig sig-object py" id="avalanche.models.SimpleMLP.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/avalanche/models/simple_mlp/#SimpleMLP.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.models.SimpleMLP.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.models.SimpleMLP.get_features">
+<span class="sig-name descname"><span class="pre">get_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/avalanche/models/simple_mlp/#SimpleMLP.get_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.models.SimpleMLP.get_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get features from model given input</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -953,6 +963,19 @@ used to classify input patterns.</p>
 <dt class="sig sig-object py" id="avalanche.models.NCMClassifier.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/avalanche/models/ncm_classifier/#NCMClassifier.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.models.NCMClassifier.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="avalanche.models.BaseModel">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.models.</span></span><span class="sig-name descname"><span class="pre">BaseModel</span></span><a class="reference internal" href="../../../_modules/avalanche/models/base_model/#BaseModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.models.BaseModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>A base abstract class for models</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.models.BaseModel.get_features">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">get_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/avalanche/models/base_model/#BaseModel.get_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.models.BaseModel.get_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get features from model given input</p>
+</dd></dl>
 
 </dd></dl>
 

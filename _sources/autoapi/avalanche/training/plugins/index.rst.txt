@@ -19,6 +19,7 @@ Submodules
    gdumb/index.rst
    gem/index.rst
    gss_greedy/index.rst
+   lfl/index.rst
    lr_scheduling/index.rst
    lwf/index.rst
    replay/index.rst
@@ -50,6 +51,7 @@ Classes
    avalanche.training.plugins.GSS_greedyPlugin
    avalanche.training.plugins.CoPEPlugin
    avalanche.training.plugins.PPPloss
+   avalanche.training.plugins.LFLPlugin
 
 
 
@@ -931,6 +933,50 @@ Classes
       pseudo-prototypes.
       :param Bk: Batch of instances of other-than-c classes (k).
       :return: Sum_{i, part of same class c} Sum_{x_j^k} log 1 - P(c|x_j^k)
+
+
+
+.. py:class:: LFLPlugin(lambda_e)
+
+   Bases: :class:`avalanche.training.plugins.strategy_plugin.StrategyPlugin`
+
+   Less-Forgetful Learning (LFL) Plugin
+   LFL satisfies two properties to mitigate catastrophic forgetting.
+   1) To keep the decision boundaries unchanged
+   2) The feature space should not change much on target(new) data
+   LFL uses euclidean loss between features from current and previous version
+   of model as regularization to maintain the feature space and avoid
+   catastrophic forgetting.
+   Refer paper https://arxiv.org/pdf/1607.00122.pdf for more details
+   This plugin does not use task identities.
+
+   :param lambda_e: Euclidean loss hyper parameter
+
+   .. method:: penalty(self, x, model, lambda_e)
+
+      Compute weighted euclidean loss
+
+
+   .. method:: compute_features(self, model, x)
+
+      Compute features from prev model and current model
+
+
+   .. method:: before_backward(self, strategy, **kwargs)
+
+      Add euclidean loss between prev and current features as penalty
+
+
+   .. method:: after_training_exp(self, strategy, **kwargs)
+
+      Save a copy of the model after each experience
+      and freeze the prev model and freeze the last layer of current model
+
+
+   .. method:: before_training(self, strategy, **kwargs)
+
+      Check if the model is an instance of base class to ensure get_features()
+      is implemented
 
 
 

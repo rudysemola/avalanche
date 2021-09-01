@@ -1,0 +1,31 @@
+:mod:`avalanche.models.base_model`
+==================================
+
+.. py:module:: avalanche.models.base_model
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   avalanche.models.base_model.BaseModel
+
+
+
+.. py:class:: BaseModel
+
+   Bases: :class:`abc.ABC`
+
+   A base abstract class for models
+
+   .. method:: get_features(self, x)
+      :abstractmethod:
+
+      Get features from model given input
+
+
+

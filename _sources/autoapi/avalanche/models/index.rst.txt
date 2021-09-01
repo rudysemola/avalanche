@@ -20,6 +20,7 @@ Submodules
    :titlesonly:
    :maxdepth: 1
 
+   base_model/index.rst
    batch_renorm/index.rst
    dynamic_modules/index.rst
    dynamic_optimizers/index.rst
@@ -58,6 +59,7 @@ Classes
    avalanche.models.SLDAResNetModel
    avalanche.models.IcarlNet
    avalanche.models.NCMClassifier
+   avalanche.models.BaseModel
 
 
 
@@ -153,7 +155,7 @@ Functions
 
 .. py:class:: SimpleMLP(num_classes=10, input_size=28 * 28, hidden_size=512, hidden_layers=1, drop_rate=0.5)
 
-   Bases: :class:`torch.nn.Module`
+   Bases: :class:`torch.nn.Module`, :class:`avalanche.models.base_model.BaseModel`
 
    Base class for all neural network modules.
 
@@ -185,6 +187,11 @@ Functions
    Initializes internal Module state, shared by both nn.Module and ScriptModule.
 
    .. method:: forward(self, x)
+
+
+   .. method:: get_features(self, x)
+
+      Get features from model given input
 
 
 
@@ -629,6 +636,19 @@ Functions
        used to classify input patterns.
 
    .. method:: forward(self, x)
+
+
+
+.. py:class:: BaseModel
+
+   Bases: :class:`abc.ABC`
+
+   A base abstract class for models
+
+   .. method:: get_features(self, x)
+      :abstractmethod:
+
+      Get features from model given input
 
 
 

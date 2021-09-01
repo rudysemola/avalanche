@@ -19,7 +19,7 @@ Classes
 
 .. py:class:: SimpleMLP(num_classes=10, input_size=28 * 28, hidden_size=512, hidden_layers=1, drop_rate=0.5)
 
-   Bases: :class:`torch.nn.Module`
+   Bases: :class:`torch.nn.Module`, :class:`avalanche.models.base_model.BaseModel`
 
    Base class for all neural network modules.
 
@@ -51,6 +51,11 @@ Classes
    Initializes internal Module state, shared by both nn.Module and ScriptModule.
 
    .. method:: forward(self, x)
+
+
+   .. method:: get_features(self, x)
+
+      Get features from model given input
 
 
 

@@ -198,7 +198,8 @@
 <span class="kn">from</span> <span class="nn">avalanche.training.plugins.evaluation</span> <span class="kn">import</span> <span class="n">default_logger</span>
 <span class="kn">from</span> <span class="nn">avalanche.training.plugins</span> <span class="kn">import</span> <span class="n">StrategyPlugin</span><span class="p">,</span> <span class="n">CWRStarPlugin</span><span class="p">,</span> \
     <span class="n">ReplayPlugin</span><span class="p">,</span> <span class="n">GDumbPlugin</span><span class="p">,</span> <span class="n">LwFPlugin</span><span class="p">,</span> <span class="n">AGEMPlugin</span><span class="p">,</span> <span class="n">GEMPlugin</span><span class="p">,</span> <span class="n">EWCPlugin</span><span class="p">,</span> \
-    <span class="n">EvaluationPlugin</span><span class="p">,</span> <span class="n">SynapticIntelligencePlugin</span><span class="p">,</span> <span class="n">CoPEPlugin</span><span class="p">,</span> <span class="n">GSS_greedyPlugin</span>
+    <span class="n">EvaluationPlugin</span><span class="p">,</span> <span class="n">SynapticIntelligencePlugin</span><span class="p">,</span> <span class="n">CoPEPlugin</span><span class="p">,</span> \
+    <span class="n">GSS_greedyPlugin</span><span class="p">,</span> <span class="n">LFLPlugin</span>
 <span class="kn">from</span> <span class="nn">avalanche.training.strategies.base_strategy</span> <span class="kn">import</span> <span class="n">BaseStrategy</span>
 
 
@@ -799,6 +800,53 @@
             <span class="n">evaluator</span><span class="o">=</span><span class="n">evaluator</span><span class="p">,</span> <span class="n">eval_every</span><span class="o">=</span><span class="n">eval_every</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="LFL"><a class="viewcode-back" href="../../../../../autoapi/avalanche/training/strategies/strategy_wrappers/#avalanche.training.LFL">[docs]</a><span class="k">class</span> <span class="nc">LFL</span><span class="p">(</span><span class="n">BaseStrategy</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Module</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">:</span> <span class="n">Optimizer</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span>
+                 <span class="n">lambda_e</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
+                 <span class="n">train_mb_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">train_epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                 <span class="n">eval_mb_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">plugins</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">StrategyPlugin</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">evaluator</span><span class="p">:</span> <span class="n">EvaluationPlugin</span> <span class="o">=</span> <span class="n">default_logger</span><span class="p">,</span> <span class="n">eval_every</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Less Forgetful Learning strategy.</span>
+<span class="sd">            See LFL plugin for details.</span>
+<span class="sd">            Refer Paper: https://arxiv.org/pdf/1607.00122.pdf</span>
+<span class="sd">            This strategy does not use task identities.</span>
+
+<span class="sd">        :param model: The model.</span>
+<span class="sd">        :param optimizer: The optimizer to use.</span>
+<span class="sd">        :param criterion: The loss criterion to use.</span>
+<span class="sd">        :param lambda_e: euclidean loss hyper parameter. It can be either a</span>
+<span class="sd">                float number or a list containing lambda_e for each experience.</span>
+<span class="sd">        :param train_mb_size: The train minibatch size. Defaults to 1.</span>
+<span class="sd">        :param train_epochs: The number of training epochs. Defaults to 1.</span>
+<span class="sd">        :param eval_mb_size: The eval minibatch size. Defaults to 1.</span>
+<span class="sd">        :param device: The device to use. Defaults to None (cpu).</span>
+<span class="sd">        :param plugins: Plugins to be added. Defaults to None.</span>
+<span class="sd">        :param evaluator: (optional) instance of EvaluationPlugin for logging</span>
+<span class="sd">            and metric computations.</span>
+<span class="sd">        :param eval_every: the frequency of the calls to `eval` inside the</span>
+<span class="sd">            training loop.</span>
+<span class="sd">                if -1: no evaluation during training.</span>
+<span class="sd">                if  0: calls `eval` after the final epoch of each training</span>
+<span class="sd">                    experience.</span>
+<span class="sd">                if &gt;0: calls `eval` every `eval_every` epochs and at the end</span>
+<span class="sd">                    of all the epochs for a single experience.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">lfl</span> <span class="o">=</span> <span class="n">LFLPlugin</span><span class="p">(</span><span class="n">lambda_e</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">plugins</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">plugins</span> <span class="o">=</span> <span class="p">[</span><span class="n">lfl</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">plugins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lfl</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span>
+            <span class="n">train_mb_size</span><span class="o">=</span><span class="n">train_mb_size</span><span class="p">,</span> <span class="n">train_epochs</span><span class="o">=</span><span class="n">train_epochs</span><span class="p">,</span>
+            <span class="n">eval_mb_size</span><span class="o">=</span><span class="n">eval_mb_size</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">plugins</span><span class="o">=</span><span class="n">plugins</span><span class="p">,</span>
+            <span class="n">evaluator</span><span class="o">=</span><span class="n">evaluator</span><span class="p">,</span> <span class="n">eval_every</span><span class="o">=</span><span class="n">eval_every</span><span class="p">)</span></div>
+
+
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;Naive&#39;</span><span class="p">,</span>
     <span class="s1">&#39;CWRStar&#39;</span><span class="p">,</span>
@@ -810,7 +858,8 @@
     <span class="s1">&#39;EWC&#39;</span><span class="p">,</span>
     <span class="s1">&#39;SynapticIntelligence&#39;</span><span class="p">,</span>
     <span class="s1">&#39;GSS_greedy&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;CoPE&#39;</span>
+    <span class="s1">&#39;CoPE&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;LFL&#39;</span>
 <span class="p">]</span>
 </pre></div>
 
