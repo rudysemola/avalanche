@@ -745,9 +745,18 @@ number or a list containing alpha for each experience.</p></li>
 </ul>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avalanche.training.plugins.LwFPlugin.prev_classes">
+<span class="sig-name descname"><span class="pre">prev_classes</span></span><a class="headerlink" href="#avalanche.training.plugins.LwFPlugin.prev_classes" title="Permalink to this definition">¶</a></dt>
+<dd><p>In Avalanche, targets of different experiences are not ordered.
+As a result, some units may be allocated even though their
+corresponding class has never been seen by the model.
+Knowledge distillation uses only units corresponding to old classes.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="avalanche.training.plugins.LwFPlugin.penalty">
-<span class="sig-name descname"><span class="pre">penalty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/plugins/lwf/#LwFPlugin.penalty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.plugins.LwFPlugin.penalty" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">penalty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curr_model</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/plugins/lwf/#LwFPlugin.penalty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.plugins.LwFPlugin.penalty" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute weighted distillation loss.</p>
 </dd></dl>
 
@@ -760,7 +769,8 @@ number or a list containing alpha for each experience.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="avalanche.training.plugins.LwFPlugin.after_training_exp">
 <span class="sig-name descname"><span class="pre">after_training_exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/plugins/lwf/#LwFPlugin.after_training_exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.plugins.LwFPlugin.after_training_exp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save a copy of the model after each experience</p>
+<dd><p>Save a copy of the model after each experience and
+update self.prev_classes to include the newly learned classes.</p>
 </dd></dl>
 
 </dd></dl>

@@ -92,7 +92,10 @@ Classes
       compute the output given the input `x` and task labels.
 
       :param x:
-      :param task_labels: task labels for each sample.
+      :param task_labels: task labels for each sample. if None, the
+          computation will return all the possible outputs as a dictionary
+          with task IDs as keys and the output of the corresponding task as
+          output.
       :return:
 
 

@@ -293,7 +293,10 @@ and calls <cite>forward_single_task</cite>. Subclasses must implement
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x</strong> – </p></li>
-<li><p><strong>task_labels</strong> – task labels for each sample.</p></li>
+<li><p><strong>task_labels</strong> – task labels for each sample. if None, the
+computation will return all the possible outputs as a dictionary
+with task IDs as keys and the output of the corresponding task as
+output.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -315,6 +318,22 @@ and calls <cite>forward_single_task</cite>. Subclasses must implement
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.models.dynamic_modules.MultiTaskModule.forward_all_tasks">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">forward_all_tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/models/dynamic_modules/#MultiTaskModule.forward_all_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.models.dynamic_modules.MultiTaskModule.forward_all_tasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>compute the output given the input <cite>x</cite> and task label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>all the possible outputs are returned as a dictionary
+with task IDs as keys and the output of the corresponding
+task as output.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -447,6 +466,22 @@ label to activate the correct head.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.models.dynamic_modules.MultiHeadClassifier.forward_all_tasks">
+<span class="sig-name descname"><span class="pre">forward_all_tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/models/dynamic_modules/#MultiHeadClassifier.forward_all_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.models.dynamic_modules.MultiHeadClassifier.forward_all_tasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>compute the output given the input <cite>x</cite> and task label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>all the possible outputs are returned as a dictionary
+with task IDs as keys and the output of the corresponding
+task as output.</p>
 </dd>
 </dl>
 </dd></dl>

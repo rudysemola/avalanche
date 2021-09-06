@@ -183,6 +183,7 @@
 
 <span class="kn">import</span> <span class="nn">torch</span>
 
+<span class="kn">from</span> <span class="nn">avalanche.models</span> <span class="kn">import</span> <span class="n">avalanche_forward</span><span class="p">,</span> <span class="n">DynamicModule</span><span class="p">,</span> <span class="n">MultiTaskModule</span>
 <span class="kn">from</span> <span class="nn">avalanche.training.plugins.strategy_plugin</span> <span class="kn">import</span> <span class="n">StrategyPlugin</span>
 
 
@@ -207,7 +208,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="n">temperature</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prev_model</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">_distillation_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">prev_out</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prev_classes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;0&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">()}</span>
+        <span class="sd">&quot;&quot;&quot; In Avalanche, targets of different experiences are not ordered. </span>
+<span class="sd">        As a result, some units may be allocated even though their </span>
+<span class="sd">        corresponding class has never been seen by the model.</span>
+<span class="sd">        Knowledge distillation uses only units corresponding to old classes. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_distillation_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">prev_out</span><span class="p">,</span> <span class="n">active_units</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute distillation loss between output of the current model and</span>
 <span class="sd">        and output of the previous (saved) model.</span>
@@ -215,10 +223,12 @@
 
         <span class="n">log_p</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="n">out</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">q</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">prev_out</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">kl_div</span><span class="p">(</span><span class="n">log_p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s1">&#39;batchmean&#39;</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">kl_div</span><span class="p">(</span><span class="n">log_p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="p">[:,</span> <span class="nb">list</span><span class="p">(</span><span class="n">active_units</span><span class="p">)]</span>  <span class="c1"># mask unused units</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># batch-mean</span>
         <span class="k">return</span> <span class="n">res</span>
 
-<div class="viewcode-block" id="LwFPlugin.penalty"><a class="viewcode-back" href="../../../../../autoapi/avalanche/training/plugins/lwf/#avalanche.training.plugins.LwFPlugin.penalty">[docs]</a>    <span class="k">def</span> <span class="nf">penalty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">alpha</span><span class="p">):</span>
+<div class="viewcode-block" id="LwFPlugin.penalty"><a class="viewcode-back" href="../../../../../autoapi/avalanche/training/plugins/lwf/#avalanche.training.plugins.LwFPlugin.penalty">[docs]</a>    <span class="k">def</span> <span class="nf">penalty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">curr_model</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute weighted distillation loss.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -226,8 +236,26 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">y_prev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
-            <span class="n">dist_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distillation_loss</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">y_prev</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prev_model</span><span class="p">,</span> <span class="n">MultiTaskModule</span><span class="p">):</span>
+                    <span class="c1"># output from previous output heads.</span>
+                    <span class="n">y_prev</span> <span class="o">=</span> <span class="n">avalanche_forward</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prev_model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="c1"># in a multitask scenario we need to compute the output</span>
+                    <span class="c1"># from all the heads, so we need to call forward again.</span>
+                    <span class="c1"># TODO: can we avoid this?</span>
+                    <span class="n">y_curr</span> <span class="o">=</span> <span class="n">avalanche_forward</span><span class="p">(</span><span class="n">curr_model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># no task labels</span>
+                    <span class="n">y_prev</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;0&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_model</span><span class="p">(</span><span class="n">x</span><span class="p">)}</span>
+                    <span class="n">y_curr</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;0&#39;</span><span class="p">:</span> <span class="n">out</span><span class="p">}</span>
+
+            <span class="n">dist_loss</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">task_id</span> <span class="ow">in</span> <span class="n">y_prev</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="c1"># compute kd only for previous heads.</span>
+                <span class="k">if</span> <span class="n">task_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_classes</span><span class="p">:</span>
+                    <span class="n">yp</span> <span class="o">=</span> <span class="n">y_prev</span><span class="p">[</span><span class="n">task_id</span><span class="p">]</span>
+                    <span class="n">yc</span> <span class="o">=</span> <span class="n">y_curr</span><span class="p">[</span><span class="n">task_id</span><span class="p">]</span>
+                    <span class="n">au</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_classes</span><span class="p">[</span><span class="n">task_id</span><span class="p">]</span>
+                    <span class="n">dist_loss</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distillation_loss</span><span class="p">(</span><span class="n">yc</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">au</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">dist_loss</span></div>
 
 <div class="viewcode-block" id="LwFPlugin.before_backward"><a class="viewcode-back" href="../../../../../autoapi/avalanche/training/plugins/lwf/#avalanche.training.plugins.LwFPlugin.before_backward">[docs]</a>    <span class="k">def</span> <span class="nf">before_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -236,15 +264,26 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">strategy</span><span class="o">.</span><span class="n">training_exp_counter</span><span class="p">]</span> \
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span>
-        <span class="n">penalty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">penalty</span><span class="p">(</span><span class="n">strategy</span><span class="o">.</span><span class="n">mb_output</span><span class="p">,</span> <span class="n">strategy</span><span class="o">.</span><span class="n">mb_x</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
+        <span class="n">penalty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">penalty</span><span class="p">(</span><span class="n">strategy</span><span class="o">.</span><span class="n">mb_output</span><span class="p">,</span> <span class="n">strategy</span><span class="o">.</span><span class="n">mb_x</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span>
+                               <span class="n">strategy</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
         <span class="n">strategy</span><span class="o">.</span><span class="n">loss</span> <span class="o">+=</span> <span class="n">penalty</span></div>
 
 <div class="viewcode-block" id="LwFPlugin.after_training_exp"><a class="viewcode-back" href="../../../../../autoapi/avalanche/training/plugins/lwf/#avalanche.training.plugins.LwFPlugin.after_training_exp">[docs]</a>    <span class="k">def</span> <span class="nf">after_training_exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Save a copy of the model after each experience</span>
+<span class="sd">        Save a copy of the model after each experience and</span>
+<span class="sd">        update self.prev_classes to include the newly learned classes.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prev_model</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">strategy</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+        <span class="n">task_ids</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">experience</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">task_set</span>
+        <span class="k">for</span> <span class="n">task_id</span> <span class="ow">in</span> <span class="n">task_ids</span><span class="p">:</span>
+            <span class="n">task_data</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">experience</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">task_set</span><span class="p">[</span><span class="n">task_id</span><span class="p">]</span>
+            <span class="n">pc</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">task_data</span><span class="o">.</span><span class="n">targets</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">prev_model</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">strategy</span><span class="o">.</span><span class="n">model</span><span class="p">)</span></div></div>
+            <span class="k">if</span> <span class="n">task_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_classes</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">prev_classes</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">task_id</span><span class="p">)]</span> <span class="o">=</span> <span class="n">pc</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">prev_classes</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">task_id</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_classes</span><span class="p">[</span><span class="n">task_id</span><span class="p">]</span>\
+                    <span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">pc</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

@@ -274,9 +274,15 @@
         <span class="sd">&quot;&quot;&quot; compute the output given the input `x` and task labels.</span>
 
 <span class="sd">        :param x:</span>
-<span class="sd">        :param task_labels: task labels for each sample.</span>
+<span class="sd">        :param task_labels: task labels for each sample. if None, the</span>
+<span class="sd">            computation will return all the possible outputs as a dictionary</span>
+<span class="sd">            with task IDs as keys and the output of the corresponding task as</span>
+<span class="sd">            output.</span>
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">task_labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_all_tasks</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">task_labels</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="c1"># fast path. mini-batch is single task.</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_single_task</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">task_labels</span><span class="p">)</span>
@@ -302,6 +308,16 @@
 <span class="sd">        :param x:</span>
 <span class="sd">        :param task_label: a single task label.</span>
 <span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="MultiTaskModule.forward_all_tasks"><a class="viewcode-back" href="../../../../autoapi/avalanche/models/#avalanche.models.dynamic_modules.MultiTaskModule.forward_all_tasks">[docs]</a>    <span class="k">def</span> <span class="nf">forward_all_tasks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; compute the output given the input `x` and task label.</span>
+
+<span class="sd">        :param x:</span>
+<span class="sd">        :return: all the possible outputs are returned as a dictionary</span>
+<span class="sd">            with task IDs as keys and the output of the corresponding</span>
+<span class="sd">            task as output.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
 
@@ -415,7 +431,13 @@
 <span class="sd">        :param task_label:</span>
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">classifiers</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">task_label</span><span class="p">)](</span><span class="n">x</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">classifiers</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">task_label</span><span class="p">)](</span><span class="n">x</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MultiHeadClassifier.forward_all_tasks"><a class="viewcode-back" href="../../../../autoapi/avalanche/models/#avalanche.models.dynamic_modules.MultiHeadClassifier.forward_all_tasks">[docs]</a>    <span class="k">def</span> <span class="nf">forward_all_tasks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">task_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">classifiers</span><span class="p">:</span>
+            <span class="n">res</span><span class="p">[</span><span class="n">task_id</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">classifiers</span><span class="p">[</span><span class="n">task_id</span><span class="p">](</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div></div>
 
 
 <div class="viewcode-block" id="TrainEvalModel"><a class="viewcode-back" href="../../../../autoapi/avalanche/models/#avalanche.models.dynamic_modules.TrainEvalModel">[docs]</a><span class="k">class</span> <span class="nc">TrainEvalModel</span><span class="p">(</span><span class="n">DynamicModule</span><span class="p">):</span>

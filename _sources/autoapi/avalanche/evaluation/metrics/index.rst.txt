@@ -160,6 +160,11 @@ Classes
    avalanche.evaluation.metrics.BWT
    avalanche.evaluation.metrics.ExperienceBWT
    avalanche.evaluation.metrics.StreamBWT
+   avalanche.evaluation.metrics.ForwardTransfer
+   avalanche.evaluation.metrics.GenericExperienceForwardTransfer
+   avalanche.evaluation.metrics.ExperienceForwardTransfer
+   avalanche.evaluation.metrics.GenericStreamForwardTransfer
+   avalanche.evaluation.metrics.StreamForwardTransfer
    avalanche.evaluation.metrics.MaxGPU
    avalanche.evaluation.metrics.MinibatchMaxGPU
    avalanche.evaluation.metrics.EpochMaxGPU
@@ -200,6 +205,7 @@ Functions
    avalanche.evaluation.metrics.disk_usage_metrics
    avalanche.evaluation.metrics.forgetting_metrics
    avalanche.evaluation.metrics.bwt_metrics
+   avalanche.evaluation.metrics.forward_transfer_metrics
    avalanche.evaluation.metrics.gpu_usage_metrics
    avalanche.evaluation.metrics.loss_metrics
    avalanche.evaluation.metrics.MAC_metrics
@@ -1569,6 +1575,320 @@ Functions
    :param stream: If True, will return a metric able to log
        the backward transfer averaged over the evaluation stream experiences
        which have been observed during training.
+   :return: A list of plugin metrics.
+
+
+.. py:class:: ForwardTransfer
+
+   Bases: :class:`Metric[Union[float, None, Dict[int, float]]]`
+
+   The standalone Forward Transfer metric.
+   This metric returns the forward transfer relative to a specific key.
+   Alternatively, this metric returns a dict in which each key is
+   associated to the forward transfer.
+   Forward transfer is computed as the difference between the value
+   recorded for a specific key after the previous experience has
+   been trained on, and random initialization before training.
+   The value associated to a key can be updated with the `update` method.
+
+   At initialization, this metric returns an empty dictionary.
+
+   Creates an instance of the standalone Forward Transfer metric
+
+   .. attribute:: initial
+      :annotation: :Dict[int, float]
+
+      The initial value for each key. This is the accuracy at 
+      random initialization.
+
+
+   .. attribute:: previous
+      :annotation: :Dict[int, float]
+
+      The previous experience value detected for each key
+
+
+   .. method:: update_initial(self, k, v)
+
+
+   .. method:: update_previous(self, k, v)
+
+
+   .. method:: update(self, k, v, initial=False)
+
+
+   .. method:: result(self, k=None) -> Union[float, None, Dict[int, float]]
+
+      :param k: the key for which returning forward transfer. If k is None,
+          forward transfer will be returned for all keys
+          where the previous experience has been trained on.
+
+      :return: the difference between the key value after training on the
+          previous experience, and the key at random initialization.
+
+
+   .. method:: reset(self) -> None
+
+      Resets the metric internal state.
+
+      :return: None.
+
+
+
+.. py:class:: GenericExperienceForwardTransfer
+
+   Bases: :class:`PluginMetric[Dict[int, float]]`
+
+   The GenericExperienceForwardMetric metric, describing the forward transfer
+   detected after a certain experience. The user should
+   subclass this and provide the desired metric.
+
+   In particular, the user should override:
+   * __init__ by calling `super` and instantiating the `self.current_metric`
+   property as a valid avalanche metric
+   * `metric_update`, to update `current_metric`
+   * `metric_result` to get the result from `current_metric`.
+   * `__str__` to define the experience forward transfer  name.
+
+   This metric is computed during the eval phase only.
+
+   Creates an instance of the GenericExperienceForwardTransfer metric.
+
+   .. attribute:: forward_transfer
+      
+
+      The general metric to compute forward transfer
+
+
+   .. attribute:: eval_exp_id
+      
+
+      The current evaluation experience id
+
+
+   .. attribute:: train_exp_id
+      
+
+      The last encountered training experience id
+
+
+   .. method:: reset(self) -> None
+
+      Resets the metric.
+
+      Note that this will reset the previous and initial accuracy of each
+      experience.
+
+      :return: None.
+
+
+   .. method:: update(self, k, v, initial=False)
+
+      Update forward transfer metric.
+      See `ForwardTransfer` for more detailed information.
+
+      :param k: key to update
+      :param v: value associated to k
+      :param initial: update initial value. If False, update
+          previous value.
+
+
+   .. method:: result(self, k=None) -> Union[float, None, Dict[int, float]]
+
+      Result for experience defined by a key.
+      See `ForwardTransfer` documentation for more detailed information.
+
+      k: optional key from which to compute forward transfer.
+
+
+   .. method:: before_training_exp(self, strategy: BaseStrategy) -> None
+
+      Called before `train_exp` by the `BaseStrategy`. 
+
+
+   .. method:: after_eval(self, strategy)
+
+      Called after `eval` by the `BaseStrategy`. 
+
+
+   .. method:: before_eval_exp(self, strategy: BaseStrategy) -> None
+
+      Called before `eval_exp` by the `BaseStrategy`. 
+
+
+   .. method:: after_eval_iteration(self, strategy: BaseStrategy) -> None
+
+      Called after the end of an iteration by the
+      `BaseStrategy`. 
+
+
+   .. method:: after_eval_exp(self, strategy: BaseStrategy) -> MetricResult
+
+      Called after `eval_exp` by the `BaseStrategy`. 
+
+
+   .. method:: metric_update(self, strategy)
+      :abstractmethod:
+
+
+   .. method:: metric_result(self, strategy)
+      :abstractmethod:
+
+
+   .. method:: __str__(self)
+      :abstractmethod:
+
+      Return str(self).
+
+
+
+.. py:class:: ExperienceForwardTransfer
+
+   Bases: :class:`avalanche.evaluation.metrics.forward_transfer.GenericExperienceForwardTransfer`
+
+   The Forward Transfer computed on each experience separately.
+   The transfer is computed based on the accuracy metric.
+
+   Creates an instance of the GenericExperienceForwardTransfer metric.
+
+   .. method:: metric_update(self, strategy)
+
+
+   .. method:: metric_result(self, strategy)
+
+
+   .. method:: __str__(self)
+
+      Return str(self).
+
+
+
+.. py:class:: GenericStreamForwardTransfer
+
+   Bases: :class:`avalanche.evaluation.metrics.forward_transfer.GenericExperienceForwardTransfer`
+
+   The GenericStreamForwardTransfer metric, describing the average evaluation
+   forward transfer detected over all experiences observed during training.
+
+   In particular, the user should override:
+   * __init__ by calling `super` and instantiating the `self.current_metric`
+   property as a valid avalanche metric
+   * `metric_update`, to update `current_metric`
+   * `metric_result` to get the result from `current_metric`.
+   * `__str__` to define the experience forgetting  name.
+
+   This metric is computed during the eval phase only.
+
+   Creates an instance of the GenericStreamForwardTransfer metric.
+
+   .. attribute:: stream_forward_transfer
+      
+
+      The average forward transfer over all experiences
+
+
+   .. method:: reset(self) -> None
+
+      Resets the forward transfer metrics.
+
+      Note that this will reset the previous and initial accuracy of each
+      experience.
+
+      :return: None.
+
+
+   .. method:: exp_update(self, k, v, initial=False)
+
+      Update forward transfer metric.
+      See `Forward Transfer` for more detailed information.
+
+      :param k: key to update
+      :param v: value associated to k
+      :param initial: update initial value. If False, update
+          previous value.
+
+
+   .. method:: exp_result(self, k=None) -> Union[float, None, Dict[int, float]]
+
+      Result for experience defined by a key.
+      See `ForwardTransfer` documentation for more detailed information.
+
+      k: optional key from which to compute forward transfer.
+
+
+   .. method:: result(self, k=None) -> Union[float, None, Dict[int, float]]
+
+      The average forward transfer over all experiences.
+
+      k: optional key from which to compute forward transfer.
+
+
+   .. method:: before_eval(self, strategy) -> None
+
+      Called before `eval` by the `BaseStrategy`. 
+
+
+   .. method:: after_eval_exp(self, strategy: BaseStrategy) -> None
+
+      Called after `eval_exp` by the `BaseStrategy`. 
+
+
+   .. method:: after_eval(self, strategy: BaseStrategy) -> 'MetricResult'
+
+      Called after `eval` by the `BaseStrategy`. 
+
+
+   .. method:: metric_update(self, strategy)
+      :abstractmethod:
+
+
+   .. method:: metric_result(self, strategy)
+      :abstractmethod:
+
+
+   .. method:: __str__(self)
+      :abstractmethod:
+
+      Return str(self).
+
+
+
+.. py:class:: StreamForwardTransfer
+
+   Bases: :class:`avalanche.evaluation.metrics.forward_transfer.GenericStreamForwardTransfer`
+
+   The Forward Transfer averaged over all the evaluation experiences.
+
+   This plugin metric, computed over all observed experiences during training,
+   is the average over the difference between the accuracy result obtained
+   after the previous experience and the accuracy result obtained
+   on random initialization.
+
+   Creates an instance of the GenericStreamForwardTransfer metric.
+
+   .. method:: metric_update(self, strategy)
+
+
+   .. method:: metric_result(self, strategy)
+
+
+   .. method:: __str__(self)
+
+      Return str(self).
+
+
+
+.. function:: forward_transfer_metrics(*, experience=False, stream=False)
+
+   Helper method that can be used to obtain the desired set of
+   plugin metrics.
+
+   :param experience: If True, will return a metric able to log
+       the forward transfer on each evaluation experience.
+   :param stream: If True, will return a metric able to log
+       the forward transfer averaged over the evaluation stream experiences,
+       which have been observed during training.
+
    :return: A list of plugin metrics.
 
 
