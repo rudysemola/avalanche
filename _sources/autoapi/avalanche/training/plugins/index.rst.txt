@@ -699,7 +699,7 @@ Classes
    .. method:: before_training_exp(self, strategy: BaseStrategy, **kwargs)
 
 
-   .. method:: after_backward(self, strategy: BaseStrategy, **kwargs)
+   .. method:: before_backward(self, strategy: BaseStrategy, **kwargs)
 
 
    .. method:: before_training_iteration(self, strategy: BaseStrategy, **kwargs)
