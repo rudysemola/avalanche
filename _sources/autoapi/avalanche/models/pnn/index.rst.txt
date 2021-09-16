@@ -151,7 +151,7 @@ Classes
 
 .. py:class:: PNNLayer(in_features, out_features_per_column, adapter='mlp')
 
-   Bases: :class:`avalanche.models.MultiTaskModule`, :class:`avalanche.models.DynamicModule`
+   Bases: :class:`avalanche.models.MultiTaskModule`
 
    Multi-task modules are `torch.nn.Modules`s for multi-task
    scenarios. The `forward` method accepts task labels, one for
@@ -160,6 +160,9 @@ Classes
    By default the `forward` method splits the mini-batch by task
    and calls `forward_single_task`. Subclasses must implement
    `forward_single_task` or override `forward.
+
+   if `task_labels == None`, the output is computed in parallel
+   for each task.
 
    Progressive Neural Network layer.
 
@@ -207,6 +210,9 @@ Classes
    By default the `forward` method splits the mini-batch by task
    and calls `forward_single_task`. Subclasses must implement
    `forward_single_task` or override `forward.
+
+   if `task_labels == None`, the output is computed in parallel
+   for each task.
 
    Progressive Neural Network.
 

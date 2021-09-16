@@ -277,14 +277,28 @@ use this data to <strong>train</strong> the module’s parameters.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="avalanche.models.dynamic_modules.MultiTaskModule">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.models.dynamic_modules.</span></span><span class="sig-name descname"><span class="pre">MultiTaskModule</span></span><a class="reference internal" href="../../../../_modules/avalanche/models/dynamic_modules/#MultiTaskModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.models.dynamic_modules.MultiTaskModule" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#avalanche.models.dynamic_modules.DynamicModule" title="avalanche.models.dynamic_modules.DynamicModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.models.dynamic_modules.DynamicModule</span></code></a></p>
 <p>Multi-task modules are <cite>torch.nn.Modules`s for multi-task
 scenarios. The `forward</cite> method accepts task labels, one for
 each sample in the mini-batch.</p>
 <p>By default the <cite>forward</cite> method splits the mini-batch by task
 and calls <cite>forward_single_task</cite>. Subclasses must implement
 <cite>forward_single_task</cite> or override <a href="#id5"><span class="problematic" id="id6">`</span></a>forward.</p>
+<p>if <cite>task_labels == None</cite>, the output is computed in parallel
+for each task.</p>
 <p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avalanche.models.dynamic_modules.MultiTaskModule.known_train_tasks_labels">
+<span class="sig-name descname"><span class="pre">known_train_tasks_labels</span></span><a class="headerlink" href="#avalanche.models.dynamic_modules.MultiTaskModule.known_train_tasks_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set of task labels encountered up to now.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.models.dynamic_modules.MultiTaskModule.train_adaptation">
+<span class="sig-name descname"><span class="pre">train_adaptation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">AvalancheDataset</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/models/dynamic_modules/#MultiTaskModule.train_adaptation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.models.dynamic_modules.MultiTaskModule.train_adaptation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update known task labels.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="avalanche.models.dynamic_modules.MultiTaskModule.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_labels</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="reference internal" href="../../../../_modules/avalanche/models/dynamic_modules/#MultiTaskModule.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.models.dynamic_modules.MultiTaskModule.forward" title="Permalink to this definition">¶</a></dt>
@@ -324,8 +338,9 @@ output.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="avalanche.models.dynamic_modules.MultiTaskModule.forward_all_tasks">
-<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">forward_all_tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/models/dynamic_modules/#MultiTaskModule.forward_all_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.models.dynamic_modules.MultiTaskModule.forward_all_tasks" title="Permalink to this definition">¶</a></dt>
-<dd><p>compute the output given the input <cite>x</cite> and task label.</p>
+<span class="sig-name descname"><span class="pre">forward_all_tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/models/dynamic_modules/#MultiTaskModule.forward_all_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.models.dynamic_modules.MultiTaskModule.forward_all_tasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>compute the output given the input <cite>x</cite> and task label.
+By default, it considers only tasks seen at training time.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>x</strong> – </p>
@@ -397,13 +412,15 @@ the task label.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="avalanche.models.dynamic_modules.MultiHeadClassifier">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.models.dynamic_modules.</span></span><span class="sig-name descname"><span class="pre">MultiHeadClassifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_out_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/models/dynamic_modules/#MultiHeadClassifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.models.dynamic_modules.MultiHeadClassifier" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#avalanche.models.dynamic_modules.MultiTaskModule" title="avalanche.models.dynamic_modules.MultiTaskModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.models.dynamic_modules.MultiTaskModule</span></code></a>, <a class="reference internal" href="#avalanche.models.dynamic_modules.DynamicModule" title="avalanche.models.dynamic_modules.DynamicModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.models.dynamic_modules.DynamicModule</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#avalanche.models.dynamic_modules.MultiTaskModule" title="avalanche.models.dynamic_modules.MultiTaskModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.models.dynamic_modules.MultiTaskModule</span></code></a></p>
 <p>Multi-task modules are <cite>torch.nn.Modules`s for multi-task
 scenarios. The `forward</cite> method accepts task labels, one for
 each sample in the mini-batch.</p>
 <p>By default the <cite>forward</cite> method splits the mini-batch by task
 and calls <cite>forward_single_task</cite>. Subclasses must implement
 <cite>forward_single_task</cite> or override <a href="#id7"><span class="problematic" id="id8">`</span></a>forward.</p>
+<p>if <cite>task_labels == None</cite>, the output is computed in parallel
+for each task.</p>
 <p>Multi-head classifier with separate heads for each task.</p>
 <p>Typically used in task-incremental benchmarks where task labels are
 available and provided to the model.</p>
@@ -466,22 +483,6 @@ label to activate the correct head.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="avalanche.models.dynamic_modules.MultiHeadClassifier.forward_all_tasks">
-<span class="sig-name descname"><span class="pre">forward_all_tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/models/dynamic_modules/#MultiHeadClassifier.forward_all_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.models.dynamic_modules.MultiHeadClassifier.forward_all_tasks" title="Permalink to this definition">¶</a></dt>
-<dd><p>compute the output given the input <cite>x</cite> and task label.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>x</strong> – </p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>all the possible outputs are returned as a dictionary
-with task IDs as keys and the output of the corresponding
-task as output.</p>
 </dd>
 </dl>
 </dd></dl>

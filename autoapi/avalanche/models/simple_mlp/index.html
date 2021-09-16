@@ -254,6 +254,8 @@ each sample in the mini-batch.</p>
 <p>By default the <cite>forward</cite> method splits the mini-batch by task
 and calls <cite>forward_single_task</cite>. Subclasses must implement
 <cite>forward_single_task</cite> or override <a href="#id3"><span class="problematic" id="id4">`</span></a>forward.</p>
+<p>if <cite>task_labels == None</cite>, the output is computed in parallel
+for each task.</p>
 <p>Multi-task MLP with multi-head classifier.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="avalanche.models.simple_mlp.MTSimpleMLP.forward">

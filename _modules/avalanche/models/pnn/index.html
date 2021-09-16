@@ -288,7 +288,7 @@
         <span class="k">return</span> <span class="n">hs</span></div></div>
 
 
-<div class="viewcode-block" id="PNNLayer"><a class="viewcode-back" href="../../../../autoapi/avalanche/models/pnn/#avalanche.models.pnn.PNNLayer">[docs]</a><span class="k">class</span> <span class="nc">PNNLayer</span><span class="p">(</span><span class="n">MultiTaskModule</span><span class="p">,</span> <span class="n">DynamicModule</span><span class="p">):</span>
+<div class="viewcode-block" id="PNNLayer"><a class="viewcode-back" href="../../../../autoapi/avalanche/models/pnn/#avalanche.models.pnn.PNNLayer">[docs]</a><span class="k">class</span> <span class="nc">PNNLayer</span><span class="p">(</span><span class="n">MultiTaskModule</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_features</span><span class="p">,</span> <span class="n">out_features_per_column</span><span class="p">,</span> <span class="n">adapter</span><span class="o">=</span><span class="s1">&#39;mlp&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Progressive Neural Network layer.</span>
 
@@ -324,6 +324,7 @@
 <span class="sd">        :param dataset:</span>
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">train_adaptation</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
         <span class="n">task_labels</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">targets_task_labels</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">task_labels</span><span class="p">,</span> <span class="n">ConstantSequence</span><span class="p">):</span>
             <span class="c1"># task label is unique. Don&#39;t check duplicates.</span>

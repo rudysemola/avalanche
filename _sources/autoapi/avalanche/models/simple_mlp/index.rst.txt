@@ -71,6 +71,9 @@ Classes
    and calls `forward_single_task`. Subclasses must implement
    `forward_single_task` or override `forward.
 
+   if `task_labels == None`, the output is computed in parallel
+   for each task.
+
    Multi-task MLP with multi-head classifier.
 
    .. method:: forward(self, x, task_labels)

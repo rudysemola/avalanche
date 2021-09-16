@@ -360,13 +360,15 @@ evaluation mode.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="avalanche.models.pnn.PNNLayer">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.models.pnn.</span></span><span class="sig-name descname"><span class="pre">PNNLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_features_per_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mlp'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/models/pnn/#PNNLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.models.pnn.PNNLayer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../#avalanche.models.MultiTaskModule" title="avalanche.models.MultiTaskModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.models.MultiTaskModule</span></code></a>, <a class="reference internal" href="../#avalanche.models.DynamicModule" title="avalanche.models.DynamicModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.models.DynamicModule</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="../#avalanche.models.MultiTaskModule" title="avalanche.models.MultiTaskModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.models.MultiTaskModule</span></code></a></p>
 <p>Multi-task modules are <cite>torch.nn.Modules`s for multi-task
 scenarios. The `forward</cite> method accepts task labels, one for
 each sample in the mini-batch.</p>
 <p>By default the <cite>forward</cite> method splits the mini-batch by task
 and calls <cite>forward_single_task</cite>. Subclasses must implement
 <cite>forward_single_task</cite> or override <a href="#id5"><span class="problematic" id="id6">`</span></a>forward.</p>
+<p>if <cite>task_labels == None</cite>, the output is computed in parallel
+for each task.</p>
 <p>Progressive Neural Network layer.</p>
 <p>The adaptation phase assumes that each experience is a separate task.
 Multiple experiences with the same task label or multiple task labels
@@ -429,6 +431,8 @@ each sample in the mini-batch.</p>
 <p>By default the <cite>forward</cite> method splits the mini-batch by task
 and calls <cite>forward_single_task</cite>. Subclasses must implement
 <cite>forward_single_task</cite> or override <a href="#id7"><span class="problematic" id="id8">`</span></a>forward.</p>
+<p>if <cite>task_labels == None</cite>, the output is computed in parallel
+for each task.</p>
 <p>Progressive Neural Network.</p>
 <p>The model assumes that each experience is a separate task.
 Multiple experiences with the same task label or multiple task labels
