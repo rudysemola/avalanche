@@ -1,0 +1,32 @@
+:mod:`avalanche.models.helper_method`
+=====================================
+
+.. py:module:: avalanche.models.helper_method
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   avalanche.models.helper_method.as_multitask
+
+
+.. function:: as_multitask(model: nn.Module, classifier_name: str) -> MultiTaskModule
+
+   Wraps around a model to make it a multitask model 
+
+   :param model: model to be converted into MultiTaskModule
+   :param classifier_name: the name of the attribute containing 
+                           the classification layer (nn.Linear). It can also 
+                           be an instance of nn.Sequential containing multiple
+                           layers as long as the classification layer is the
+                           last layer.
+   :return the decorated model, now subclassing MultiTaskModule, and
+   accepting task_labels as forward() method argument
+
+

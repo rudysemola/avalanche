@@ -1,75 +1,34 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>avalanche.benchmarks.utils.datasets_from_filelists &mdash; Avalanche 0.1 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../../../_static/css/mystyle.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../../_static/css/mystyle.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../../_static/graphviz.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/mystyle.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/graphviz.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
         <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
         <script src="../../../../../_static/jquery.js"></script>
         <script src="../../../../../_static/underscore.js"></script>
         <script src="../../../../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
-
-    
+    <script src="../../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex/" />
     <link rel="search" title="Search" href="../../../../../search/" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../../../../../">
-          
-
-          
-            
             <img src="../../../../../_static/avalanche_logo.png" class="logo" alt="Logo"/>
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../../search/" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -77,18 +36,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Avalanche API:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../../../../">API Reference</a><ul class="current">
@@ -115,79 +63,38 @@
 </li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../../../">Avalanche</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../../../../../" class="icon icon-home"></a> &raquo;</li>
-        
       <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.benchmarks.utils.datasets_from_filelists</span></code></li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="../../../../../_sources/autoapi/avalanche/benchmarks/utils/datasets_from_filelists/index.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="module-avalanche.benchmarks.utils.datasets_from_filelists">
-<span id="avalanche-benchmarks-utils-datasets-from-filelists"></span><h1><a class="reference internal" href="../#avalanche.benchmarks.utils.datasets_from_filelists" title="avalanche.benchmarks.utils.datasets_from_filelists"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.benchmarks.utils.datasets_from_filelists</span></code></a><a class="headerlink" href="#module-avalanche.benchmarks.utils.datasets_from_filelists" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="module-avalanche.benchmarks.utils.datasets_from_filelists">
+<span id="avalanche-benchmarks-utils-datasets-from-filelists"></span><h1><a class="reference internal" href="../#avalanche.benchmarks.utils.datasets_from_filelists" title="avalanche.benchmarks.utils.datasets_from_filelists"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.benchmarks.utils.datasets_from_filelists</span></code></a><a class="headerlink" href="#module-avalanche.benchmarks.utils.datasets_from_filelists" title="Permalink to this headline"></a></h1>
 <p>This module contains useful utility functions and classes to generate
 pytorch datasets based on filelists (Caffe style)</p>
-<div class="section" id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline"></a></h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -202,9 +109,9 @@ pytorch datasets based on filelists (Caffe style)</p>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline"></a></h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -230,7 +137,7 @@ pytorch datasets based on filelists (Caffe style)</p>
 </table>
 <dl class="py function">
 <dt class="sig sig-object py" id="avalanche.benchmarks.utils.datasets_from_filelists.default_image_loader">
-<span class="sig-prename descclassname"><span class="pre">avalanche.benchmarks.utils.datasets_from_filelists.</span></span><span class="sig-name descname"><span class="pre">default_image_loader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/benchmarks/utils/datasets_from_filelists/#default_image_loader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.utils.datasets_from_filelists.default_image_loader" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">avalanche.benchmarks.utils.datasets_from_filelists.</span></span><span class="sig-name descname"><span class="pre">default_image_loader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/benchmarks/utils/datasets_from_filelists/#default_image_loader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.utils.datasets_from_filelists.default_image_loader" title="Permalink to this definition"></a></dt>
 <dd><p>Sets the default image loader for the Pytorch Dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -244,7 +151,7 @@ pytorch datasets based on filelists (Caffe style)</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="avalanche.benchmarks.utils.datasets_from_filelists.default_flist_reader">
-<span class="sig-prename descclassname"><span class="pre">avalanche.benchmarks.utils.datasets_from_filelists.</span></span><span class="sig-name descname"><span class="pre">default_flist_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flist</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/benchmarks/utils/datasets_from_filelists/#default_flist_reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.utils.datasets_from_filelists.default_flist_reader" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">avalanche.benchmarks.utils.datasets_from_filelists.</span></span><span class="sig-name descname"><span class="pre">default_flist_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flist</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/benchmarks/utils/datasets_from_filelists/#default_flist_reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.utils.datasets_from_filelists.default_flist_reader" title="Permalink to this definition"></a></dt>
 <dd><p>This reader reads a filelist and return a list of paths.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -259,7 +166,7 @@ impath label, impath label,  …(same to caffe’s filelist)</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="avalanche.benchmarks.utils.datasets_from_filelists.PathsDataset">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.benchmarks.utils.datasets_from_filelists.</span></span><span class="sig-name descname"><span class="pre">PathsDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">default_image_loader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/benchmarks/utils/datasets_from_filelists/#PathsDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.utils.datasets_from_filelists.PathsDataset" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.benchmarks.utils.datasets_from_filelists.</span></span><span class="sig-name descname"><span class="pre">PathsDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">default_image_loader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/benchmarks/utils/datasets_from_filelists/#PathsDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.utils.datasets_from_filelists.PathsDataset" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.Dataset</span></code></p>
 <p>This class extends the basic Pytorch Dataset class to handle list of paths
 as the main data source.</p>
@@ -281,7 +188,7 @@ cropping (top, left, height, width).</p></li>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="avalanche.benchmarks.utils.datasets_from_filelists.PathsDataset.__getitem__">
-<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/benchmarks/utils/datasets_from_filelists/#PathsDataset.__getitem__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.utils.datasets_from_filelists.PathsDataset.__getitem__" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/benchmarks/utils/datasets_from_filelists/#PathsDataset.__getitem__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.utils.datasets_from_filelists.PathsDataset.__getitem__" title="Permalink to this definition"></a></dt>
 <dd><p>Returns next element in the dataset given the current index.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -295,7 +202,7 @@ cropping (top, left, height, width).</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="avalanche.benchmarks.utils.datasets_from_filelists.PathsDataset.__len__">
-<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/benchmarks/utils/datasets_from_filelists/#PathsDataset.__len__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.utils.datasets_from_filelists.PathsDataset.__len__" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/benchmarks/utils/datasets_from_filelists/#PathsDataset.__len__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.utils.datasets_from_filelists.PathsDataset.__len__" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the total number of elements in the dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -308,7 +215,7 @@ cropping (top, left, height, width).</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="avalanche.benchmarks.utils.datasets_from_filelists.FilelistDataset">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.benchmarks.utils.datasets_from_filelists.</span></span><span class="sig-name descname"><span class="pre">FilelistDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flist_reader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">default_flist_reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">default_image_loader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/benchmarks/utils/datasets_from_filelists/#FilelistDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.utils.datasets_from_filelists.FilelistDataset" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.benchmarks.utils.datasets_from_filelists.</span></span><span class="sig-name descname"><span class="pre">FilelistDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flist_reader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">default_flist_reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">default_image_loader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/benchmarks/utils/datasets_from_filelists/#FilelistDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.utils.datasets_from_filelists.FilelistDataset" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#avalanche.benchmarks.utils.datasets_from_filelists.PathsDataset" title="avalanche.benchmarks.utils.datasets_from_filelists.PathsDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.benchmarks.utils.datasets_from_filelists.PathsDataset</span></code></a></p>
 <p>This class extends the basic Pytorch Dataset class to handle filelists as
 main data source.</p>
@@ -350,7 +257,7 @@ path.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="avalanche.benchmarks.utils.datasets_from_filelists.datasets_from_filelists">
-<span class="sig-prename descclassname"><span class="pre">avalanche.benchmarks.utils.datasets_from_filelists.</span></span><span class="sig-name descname"><span class="pre">datasets_from_filelists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_filelists</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_filelists</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">complete_test_set_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_target_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_target_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/benchmarks/utils/datasets_from_filelists/#datasets_from_filelists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.utils.datasets_from_filelists.datasets_from_filelists" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">avalanche.benchmarks.utils.datasets_from_filelists.</span></span><span class="sig-name descname"><span class="pre">datasets_from_filelists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_filelists</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_filelists</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">complete_test_set_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_target_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_target_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/benchmarks/utils/datasets_from_filelists/#datasets_from_filelists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.utils.datasets_from_filelists.datasets_from_filelists" title="Permalink to this definition"></a></dt>
 <dd><p>This reader reads a list of Caffe-style filelists and returns the proper
 Dataset objects.</p>
 <p>A Caffe-style list is just a text file where, for each line, two elements
@@ -394,7 +301,7 @@ filelist in the list.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="avalanche.benchmarks.utils.datasets_from_filelists.datasets_from_paths">
-<span class="sig-prename descclassname"><span class="pre">avalanche.benchmarks.utils.datasets_from_filelists.</span></span><span class="sig-name descname"><span class="pre">datasets_from_paths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">complete_test_set_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_target_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_target_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/benchmarks/utils/datasets_from_filelists/#datasets_from_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.utils.datasets_from_filelists.datasets_from_paths" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">avalanche.benchmarks.utils.datasets_from_filelists.</span></span><span class="sig-name descname"><span class="pre">datasets_from_paths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">complete_test_set_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_target_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_target_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/benchmarks/utils/datasets_from_filelists/#datasets_from_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.utils.datasets_from_filelists.datasets_from_paths" title="Permalink to this definition"></a></dt>
 <dd><p>This utility takes, for each dataset to generate, a list of tuples each
 containing two elements: the full path to the pattern and its class label.
 Optionally, the tuple may contain a third element describing the bounding
@@ -439,55 +346,39 @@ patterns targets. Defaults to None.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="avalanche.benchmarks.utils.datasets_from_filelists.common_paths_root">
-<span class="sig-prename descclassname"><span class="pre">avalanche.benchmarks.utils.datasets_from_filelists.</span></span><span class="sig-name descname"><span class="pre">common_paths_root</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exp_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/benchmarks/utils/datasets_from_filelists/#common_paths_root"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.utils.datasets_from_filelists.common_paths_root" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">avalanche.benchmarks.utils.datasets_from_filelists.</span></span><span class="sig-name descname"><span class="pre">common_paths_root</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exp_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/benchmarks/utils/datasets_from_filelists/#common_paths_root"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.utils.datasets_from_filelists.common_paths_root" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>
-           
           </div>
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, ContinualAI.
-
-    </p>
+    <p>&#169; Copyright 2021, ContinualAI.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

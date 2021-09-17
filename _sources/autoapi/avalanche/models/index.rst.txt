@@ -24,6 +24,7 @@ Submodules
    batch_renorm/index.rst
    dynamic_modules/index.rst
    dynamic_optimizers/index.rst
+   helper_method/index.rst
    icarl_resnet/index.rst
    mlp_tiny_imagenet/index.rst
    mobilenetv1/index.rst
@@ -71,6 +72,7 @@ Functions
    avalanche.models.avalanche_forward
    avalanche.models.initialize_icarl_net
    avalanche.models.make_icarl_net
+   avalanche.models.as_multitask
 
 
 .. py:class:: SimpleCNN(num_classes=10)
@@ -690,5 +692,19 @@ Functions
 
       Get features from model given input
 
+
+
+.. function:: as_multitask(model: nn.Module, classifier_name: str) -> MultiTaskModule
+
+   Wraps around a model to make it a multitask model 
+
+   :param model: model to be converted into MultiTaskModule
+   :param classifier_name: the name of the attribute containing 
+                           the classification layer (nn.Linear). It can also 
+                           be an instance of nn.Sequential containing multiple
+                           layers as long as the classification layer is the
+                           last layer.
+   :return the decorated model, now subclassing MultiTaskModule, and
+   accepting task_labels as forward() method argument
 
 

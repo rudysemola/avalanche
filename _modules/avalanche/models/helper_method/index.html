@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>avalanche.models.helper_method &mdash; Avalanche 0.1 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/mystyle.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../">
+            <img src="../../../../_static/avalanche_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Avalanche API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../autoapi/">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../autoapi/avalanche/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../autoapi/avalanche/#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/avalanche/benchmarks/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.benchmarks</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/avalanche/evaluation/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.evaluation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/avalanche/logging/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.logging</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/avalanche/models/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.models</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/avalanche/training/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.training</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../autoapi/avalanche/#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/avalanche/core/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.core</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../autoapi/avalanche/#package-contents">Package Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/avalanche/#avalanche.__version__">__version__</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">Avalanche</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../">Module code</a> &raquo;</li>
+      <li>avalanche.models.helper_method</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for avalanche.models.helper_method</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+
+<span class="kn">from</span> <span class="nn">avalanche.models.dynamic_modules</span> <span class="kn">import</span> <span class="n">MultiTaskModule</span><span class="p">,</span> \
+                                             <span class="n">MultiHeadClassifier</span>
+
+
+<span class="k">class</span> <span class="nc">MultiTaskDecorator</span><span class="p">(</span><span class="n">MultiTaskModule</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Encapsulates an existing nn.Module to make it subclass MultiTaskModule,</span>
+<span class="sd">    the user should still be able to interact with the encapsulated module </span>
+<span class="sd">    as if it was the module itself. </span>
+<span class="sd">    </span>
+<span class="sd">    The only things that change are the following, the classifier from the</span>
+<span class="sd">    given model will be replaced by a MultiHeadClassifier, and the forward()</span>
+<span class="sd">    implementation will be overwritten by one that accepts task labels. </span>
+<span class="sd">    The encapsulated module will then be automatically extended to</span>
+<span class="sd">    fit new classes during calls to model.adaptation()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">classifier_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param model: pytorch nn.Module that does not support multitask</span>
+<span class="sd">        :param classifier_name: attribute name of the existing classification</span>
+<span class="sd">                                layer inside the module </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;_initialized&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classifier_name</span> <span class="o">=</span> <span class="n">classifier_name</span>
+
+        <span class="n">old_classifier</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">classifier_name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">old_classifier</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">):</span>
+            <span class="n">in_size</span> <span class="o">=</span> <span class="n">old_classifier</span><span class="o">.</span><span class="n">in_features</span> 
+            <span class="n">out_size</span> <span class="o">=</span> <span class="n">old_classifier</span><span class="o">.</span><span class="n">out_features</span> 
+            <span class="n">old_params</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> 
+                          <span class="n">old_classifier</span><span class="o">.</span><span class="n">parameters</span><span class="p">()]</span>
+            <span class="c1"># Replace old classifier by empty block</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">classifier_name</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">old_classifier</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">):</span>
+            <span class="n">in_size</span> <span class="o">=</span> <span class="n">old_classifier</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">in_features</span> 
+            <span class="n">out_size</span> <span class="o">=</span> <span class="n">old_classifier</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">out_features</span> 
+            <span class="n">old_params</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> 
+                          <span class="n">old_classifier</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">parameters</span><span class="p">()]</span>
+            <span class="k">del</span> <span class="n">old_classifier</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot handle the following type </span><span class="se">\</span>
+<span class="s2">            of classification layer </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">old_classifier</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Set new classifier and initialize to previous param values</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">classifier_name</span><span class="p">,</span> <span class="n">MultiHeadClassifier</span><span class="p">(</span><span class="n">in_size</span><span class="p">,</span> <span class="n">out_size</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">param</span><span class="p">,</span> <span class="n">param_old</span> <span class="ow">in</span> \
+                <span class="nb">zip</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">classifier_name</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">old_params</span><span class="p">):</span>
+            <span class="n">param</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">param_old</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initialized</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">forward_single_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">task_label</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>  
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">classifier_name</span><span class="p">)(</span><span class="n">out</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> 
+                                                   <span class="n">task_labels</span><span class="o">=</span><span class="n">task_label</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="c1"># Override pytorch impl from nn.Module</span>
+
+        <span class="c1"># Its a bit particular since pytorch nn.Module does not</span>
+        <span class="c1"># keep some attributes in a classical manner in self.__dict__</span>
+        <span class="c1"># rather it puts them into _parameters, _buffers and</span>
+        <span class="c1"># _modules attributes. We have to add these lines to avoid recursion</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;model&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;_modules&#39;</span><span class="p">][</span><span class="s1">&#39;model&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">classifier_name</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;_modules&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">classifier_name</span><span class="p">]</span>
+
+        <span class="c1"># If its a different attribute, return the one from the model</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="c1"># During initialization, use pytorch routine</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;_initialized&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> 
+
+
+<div class="viewcode-block" id="as_multitask"><a class="viewcode-back" href="../../../../autoapi/avalanche/models/#avalanche.models.helper_method.as_multitask">[docs]</a><span class="k">def</span> <span class="nf">as_multitask</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">classifier_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MultiTaskModule</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Wraps around a model to make it a multitask model </span>
+
+<span class="sd">    :param model: model to be converted into MultiTaskModule</span>
+<span class="sd">    :param classifier_name: the name of the attribute containing </span>
+<span class="sd">                            the classification layer (nn.Linear). It can also </span>
+<span class="sd">                            be an instance of nn.Sequential containing multiple</span>
+<span class="sd">                            layers as long as the classification layer is the</span>
+<span class="sd">                            last layer.</span>
+<span class="sd">    :return the decorated model, now subclassing MultiTaskModule, and</span>
+<span class="sd">    accepting task_labels as forward() method argument</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">MultiTaskDecorator</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">classifier_name</span><span class="p">)</span></div>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;as_multitask&#39;</span><span class="p">]</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, ContinualAI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
