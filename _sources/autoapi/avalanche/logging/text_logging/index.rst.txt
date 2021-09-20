@@ -52,17 +52,17 @@ Classes
    :param file: destination file to which print metrics
        (default=sys.stdout).
 
-   .. method:: log_metric(self, metric_value: MetricValue, callback: str) -> None
+   .. method:: log_single_metric(self, name, value, x_plot) -> None
 
-      This abstract method will has to be implemented by child classes.
-      This method will be invoked on each callback.
-      The `callback` parameter describes the callback from which the metric
-      value is coming from.
+      This abstract method will have to be implemented by each subclass.
+      This method takes a metric name, a metric value and a x value and
+      decides how to show the metric value.
 
-      :param metric_value: The value to be logged.
-      :param callback: The name of the callback (event) from which the
-          metric value was obtained.
-      :return: None
+      :param name: str, metric name
+      :param value: the metric value, will be ignored if
+          not supported by the logger
+      :param x_plot: an integer representing the x value
+          associated to the metric value
 
 
    .. method:: print_current_metrics(self)

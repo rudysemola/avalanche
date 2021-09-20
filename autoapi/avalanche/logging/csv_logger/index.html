@@ -140,22 +140,20 @@ will be used.</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="avalanche.logging.csv_logger.CSVLogger.log_metric">
-<span class="sig-name descname"><span class="pre">log_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">MetricValue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../_modules/avalanche/logging/csv_logger/#CSVLogger.log_metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.logging.csv_logger.CSVLogger.log_metric" title="Permalink to this definition"></a></dt>
-<dd><p>This abstract method will has to be implemented by child classes.
-This method will be invoked on each callback.
-The <cite>callback</cite> parameter describes the callback from which the metric
-value is coming from.</p>
+<dt class="sig sig-object py" id="avalanche.logging.csv_logger.CSVLogger.log_single_metric">
+<span class="sig-name descname"><span class="pre">log_single_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_plot</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../_modules/avalanche/logging/csv_logger/#CSVLogger.log_single_metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.logging.csv_logger.CSVLogger.log_single_metric" title="Permalink to this definition"></a></dt>
+<dd><p>This abstract method will have to be implemented by each subclass.
+This method takes a metric name, a metric value and a x value and
+decides how to show the metric value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>metric_value</strong> – The value to be logged.</p></li>
-<li><p><strong>callback</strong> – The name of the callback (event) from which the
-metric value was obtained.</p></li>
+<li><p><strong>name</strong> – str, metric name</p></li>
+<li><p><strong>value</strong> – the metric value, will be ignored if
+not supported by the logger</p></li>
+<li><p><strong>x_plot</strong> – an integer representing the x value
+associated to the metric value</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>

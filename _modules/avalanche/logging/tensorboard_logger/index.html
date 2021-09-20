@@ -153,34 +153,30 @@
 <div class="viewcode-block" id="TensorboardLogger.__del__"><a class="viewcode-back" href="../../../../autoapi/avalanche/logging/tensorboard_logger/#avalanche.logging.TensorboardLogger.__del__">[docs]</a>    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="TensorboardLogger.log_metric"><a class="viewcode-back" href="../../../../autoapi/avalanche/logging/tensorboard_logger/#avalanche.logging.TensorboardLogger.log_metric">[docs]</a>    <span class="k">def</span> <span class="nf">log_metric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metric_value</span><span class="p">:</span> <span class="n">MetricValue</span><span class="p">,</span> <span class="n">callback</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="n">metric_value</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">metric_value</span><span class="o">.</span><span class="n">name</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">metric_value</span><span class="o">.</span><span class="n">value</span>
-
+<div class="viewcode-block" id="TensorboardLogger.log_single_metric"><a class="viewcode-back" href="../../../../autoapi/avalanche/logging/tensorboard_logger/#avalanche.logging.TensorboardLogger.log_single_metric">[docs]</a>    <span class="k">def</span> <span class="nf">log_single_metric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">x_plot</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">AlternativeValues</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">best_supported_value</span><span class="p">(</span><span class="n">Image</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">TensorImage</span><span class="p">,</span>
                                                <span class="n">Figure</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Figure</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">add_figure</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span>
-                                   <span class="n">global_step</span><span class="o">=</span><span class="n">metric_value</span><span class="o">.</span><span class="n">x_plot</span><span class="p">)</span>
+                                   <span class="n">global_step</span><span class="o">=</span><span class="n">x_plot</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Image</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">add_image</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">to_tensor</span><span class="p">(</span><span class="n">value</span><span class="p">),</span>
-                                  <span class="n">global_step</span><span class="o">=</span><span class="n">metric_value</span><span class="o">.</span><span class="n">x_plot</span><span class="p">)</span>
+                                  <span class="n">global_step</span><span class="o">=</span><span class="n">x_plot</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">add_histogram</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span>
-                                      <span class="n">global_step</span><span class="o">=</span><span class="n">metric_value</span><span class="o">.</span><span class="n">x_plot</span><span class="p">)</span>
+                                      <span class="n">global_step</span><span class="o">=</span><span class="n">x_plot</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">add_scalar</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span>
-                                   <span class="n">global_step</span><span class="o">=</span><span class="n">metric_value</span><span class="o">.</span><span class="n">x_plot</span><span class="p">)</span>
+                                   <span class="n">global_step</span><span class="o">=</span><span class="n">x_plot</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">TensorImage</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">add_image</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">image</span><span class="p">,</span>
-                                  <span class="n">global_step</span><span class="o">=</span><span class="n">metric_value</span><span class="o">.</span><span class="n">x_plot</span><span class="p">)</span></div></div>
+                                  <span class="n">global_step</span><span class="o">=</span><span class="n">x_plot</span><span class="p">)</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">_make_path_if_local</span><span class="p">(</span><span class="n">tb_log_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]:</span>

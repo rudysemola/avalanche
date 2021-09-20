@@ -120,9 +120,22 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
+<div class="viewcode-block" id="StrategyLogger.log_single_metric"><a class="viewcode-back" href="../../../../autoapi/avalanche/logging/strategy_logger/#avalanche.logging.StrategyLogger.log_single_metric">[docs]</a>    <span class="k">def</span> <span class="nf">log_single_metric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">x_plot</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This abstract method will have to be implemented by each subclass.</span>
+<span class="sd">        This method takes a metric name, a metric value and a x value and</span>
+<span class="sd">        decides how to show the metric value.</span>
+
+<span class="sd">        :param name: str, metric name</span>
+<span class="sd">        :param value: the metric value, will be ignored if</span>
+<span class="sd">            not supported by the logger</span>
+<span class="sd">        :param x_plot: an integer representing the x value</span>
+<span class="sd">            associated to the metric value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
 <div class="viewcode-block" id="StrategyLogger.log_metric"><a class="viewcode-back" href="../../../../autoapi/avalanche/logging/strategy_logger/#avalanche.logging.StrategyLogger.log_metric">[docs]</a>    <span class="k">def</span> <span class="nf">log_metric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metric_value</span><span class="p">:</span> <span class="s1">&#39;MetricValue&#39;</span><span class="p">,</span> <span class="n">callback</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This abstract method will has to be implemented by child classes.</span>
 <span class="sd">        This method will be invoked on each callback.</span>
 <span class="sd">        The `callback` parameter describes the callback from which the metric</span>
 <span class="sd">        value is coming from.</span>
@@ -132,7 +145,16 @@
 <span class="sd">            metric value was obtained.</span>
 <span class="sd">        :return: None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">metric_value</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">metric_value</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">x_plot</span> <span class="o">=</span> <span class="n">metric_value</span><span class="o">.</span><span class="n">x_plot</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">n</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log_single_metric</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">x_plot</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_single_metric</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">x_plot</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="StrategyLogger.before_training"><a class="viewcode-back" href="../../../../autoapi/avalanche/logging/strategy_logger/#avalanche.logging.StrategyLogger.before_training">[docs]</a>    <span class="k">def</span> <span class="nf">before_training</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">:</span> <span class="s1">&#39;BaseStrategy&#39;</span><span class="p">,</span>
                         <span class="n">metric_values</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s1">&#39;MetricValue&#39;</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
