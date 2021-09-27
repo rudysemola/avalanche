@@ -193,7 +193,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.benchmarks.datasets.default_dataset_location" title="avalanche.benchmarks.datasets.default_dataset_location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_dataset_location</span></code></a>(dataset_name: str) → Path</p></td>
-<td><p>Return the default location of a dataset.</p></td>
+<td><p>Returns the default download location for Avalanche datasets.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#avalanche.benchmarks.datasets.MNIST" title="avalanche.benchmarks.datasets.MNIST"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MNIST</span></code></a>(*args, **kwargs)</p></td>
 <td><p></p></td>
@@ -290,12 +290,13 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="avalanche.benchmarks.datasets.default_dataset_location">
 <span class="sig-prename descclassname"><span class="pre">avalanche.benchmarks.datasets.</span></span><span class="sig-name descname"><span class="pre">default_dataset_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="../../../../_modules/avalanche/benchmarks/datasets/dataset_utils/#default_dataset_location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.datasets.default_dataset_location" title="Permalink to this definition"></a></dt>
-<dd><p>Return the default location of a dataset.</p>
-<p>This currently returns “~/.avalanche/data/&lt;dataset_name&gt;” but in the future
-an environment variable bay be introduced to change the root path.</p>
+<dd><p>Returns the default download location for Avalanche datasets.</p>
+<p>The default value is “~/.avalanche/data/&lt;dataset_name&gt;”, but it may be
+changed via the <cite>dataset_location</cite> value in the configuration file
+in <cite>~/.avalanche/config.json</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>dataset_name</strong> – The name of the dataset. Consider using a string that
+<dd class="field-odd"><p><strong>dataset_name</strong> – The name of the dataset. Must be a string that
 can be used to name a directory in most filesystems!</p>
 </dd>
 <dt class="field-even">Returns</dt>

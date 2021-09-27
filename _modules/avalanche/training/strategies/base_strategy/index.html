@@ -98,6 +98,7 @@
 <span class="c1"># Website: avalanche.continualai.org                                           #</span>
 <span class="c1">################################################################################</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
@@ -111,6 +112,7 @@
 <span class="kn">from</span> <span class="nn">avalanche.models</span> <span class="kn">import</span> <span class="n">DynamicModule</span>
 <span class="kn">from</span> <span class="nn">avalanche.models.dynamic_optimizers</span> <span class="kn">import</span> <span class="n">reset_optimizer</span>
 <span class="kn">from</span> <span class="nn">avalanche.models.utils</span> <span class="kn">import</span> <span class="n">avalanche_forward</span>
+<span class="kn">from</span> <span class="nn">avalanche.training.plugins.clock</span> <span class="kn">import</span> <span class="n">Clock</span>
 <span class="kn">from</span> <span class="nn">avalanche.training.plugins.evaluation</span> <span class="kn">import</span> <span class="n">default_logger</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 
@@ -223,19 +225,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">evaluator</span> <span class="o">=</span> <span class="n">evaluator</span>
         <span class="sd">&quot;&quot;&quot; EvaluationPlugin used for logging and metric computations. &quot;&quot;&quot;</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">clock</span> <span class="o">=</span> <span class="n">Clock</span><span class="p">()</span>
+        <span class="sd">&quot;&quot;&quot; Incremental counters for strategy events. &quot;&quot;&quot;</span>
+        <span class="c1"># WARNING: Clock needs to be the last plugin, otherwise</span>
+        <span class="c1"># counters will be wrong for plugins called after it.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clock</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">eval_every</span> <span class="o">=</span> <span class="n">eval_every</span>
         <span class="sd">&quot;&quot;&quot; Frequency of the evaluation during training. &quot;&quot;&quot;</span>
 
         <span class="c1">###################################################################</span>
         <span class="c1"># State variables. These are updated during the train/eval loops. #</span>
         <span class="c1">###################################################################</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">training_exp_counter</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="sd">&quot;&quot;&quot; Counts the number of training steps. +1 at the end of each </span>
-<span class="sd">        experience. &quot;&quot;&quot;</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="sd">&quot;&quot;&quot; Epoch counter. &quot;&quot;&quot;</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">experience</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="sd">&quot;&quot;&quot; Current experience. &quot;&quot;&quot;</span>
 
@@ -252,9 +253,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="sd">&quot;&quot;&quot; Dataloader. &quot;&quot;&quot;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">mb_it</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="sd">&quot;&quot;&quot; Iteration counter. Reset at the start of a new epoch. &quot;&quot;&quot;</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">mbatch</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="sd">&quot;&quot;&quot; Current mini-batch. &quot;&quot;&quot;</span>
 
@@ -268,12 +266,38 @@
         <span class="sd">&quot;&quot;&quot; True if the strategy is in training mode. &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">current_eval_stream</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="sd">&quot;&quot;&quot;User-provided evaluation stream on `eval` call&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot; User-provided evaluation stream on `eval` call. &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_stop_training</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_warn_for_disabled_plugins_callbacks</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_warn_for_disabled_metrics_callbacks</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">training_exp_counter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Counts the number of training steps. +1 at the end of each</span>
+<span class="sd">        experience. &quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;Deprecated attribute. You should use self.clock.train_exp_counter&quot;</span>
+            <span class="s2">&quot; instead.&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">clock</span><span class="o">.</span><span class="n">train_exp_counter</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Epoch counter. &quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;Deprecated attribute. You should use self.clock.train_exp_epochs&quot;</span>
+            <span class="s2">&quot; instead.&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">clock</span><span class="o">.</span><span class="n">train_exp_epochs</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mb_it</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Iteration counter. Reset at the start of a new epoch. &quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;Deprecated attribute. You should use &quot;</span>
+            <span class="s2">&quot;self.clock.train_epoch_iterations&quot;</span>
+            <span class="s2">&quot; instead.&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">clock</span><span class="o">.</span><span class="n">train_epoch_iterations</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -376,8 +400,7 @@
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_epochs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_every</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">do_final</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_epochs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_epochs</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">before_training_epoch</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_training</span><span class="p">:</span>  <span class="c1"># Early stopping</span>
@@ -398,24 +421,24 @@
         <span class="c1"># loop, we need to save the training state, and restore it after the</span>
         <span class="c1"># eval is done.</span>
         <span class="n">_prev_state</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">experience</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">adapted_dataset</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">is_training</span><span class="p">)</span>
-
+        
+        <span class="n">curr_epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clock</span><span class="o">.</span><span class="n">train_exp_epochs</span>
         <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_every</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">(</span><span class="n">do_final</span> <span class="ow">or</span> <span class="n">do_initial</span><span class="p">))</span> <span class="ow">or</span> \
            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_every</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">do_initial</span><span class="p">)</span> <span class="ow">or</span> \
-                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_every</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_every</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_every</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">curr_epoch</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_every</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
             <span class="c1"># in the first case we are outside epoch loop</span>
             <span class="c1"># in the second case we are within epoch loop</span>
             <span class="k">for</span> <span class="n">exp</span> <span class="ow">in</span> <span class="n">eval_streams</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
 
         <span class="c1"># restore train-state variables and training mode.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">experience</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">adapted_dataset</span> <span class="o">=</span> <span class="n">_prev_state</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">_prev_state</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">is_training</span> <span class="o">=</span> <span class="n">_prev_state</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">experience</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">adapted_dataset</span> <span class="o">=</span> <span class="n">_prev_state</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">_prev_state</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_training</span> <span class="o">=</span> <span class="n">_prev_state</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
 
 <div class="viewcode-block" id="BaseStrategy.stop_training"><a class="viewcode-back" href="../../../../../autoapi/avalanche/training/strategies/#avalanche.training.BaseStrategy.stop_training">[docs]</a>    <span class="k">def</span> <span class="nf">stop_training</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -537,7 +560,7 @@
 <span class="sd">        :param kwargs:</span>
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="bp">self</span><span class="o">.</span><span class="n">mb_it</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mbatch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span><span class="p">):</span>
+        <span class="k">for</span> <span class="bp">self</span><span class="o">.</span><span class="n">mbatch</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_training</span><span class="p">:</span>
                 <span class="k">break</span>
 
@@ -622,8 +645,7 @@
 
 <div class="viewcode-block" id="BaseStrategy.after_training_exp"><a class="viewcode-back" href="../../../../../autoapi/avalanche/training/strategies/#avalanche.training.BaseStrategy.after_training_exp">[docs]</a>    <span class="k">def</span> <span class="nf">after_training_exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugins</span><span class="p">:</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">after_training_exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">training_exp_counter</span> <span class="o">+=</span> <span class="mi">1</span></div>
+            <span class="n">p</span><span class="o">.</span><span class="n">after_training_exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="BaseStrategy.before_eval"><a class="viewcode-back" href="../../../../../autoapi/avalanche/training/strategies/#avalanche.training.BaseStrategy.before_eval">[docs]</a>    <span class="k">def</span> <span class="nf">before_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugins</span><span class="p">:</span>
@@ -647,8 +669,7 @@
             <span class="n">p</span><span class="o">.</span><span class="n">after_eval_dataset_adaptation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="BaseStrategy.eval_epoch"><a class="viewcode-back" href="../../../../../autoapi/avalanche/training/strategies/#avalanche.training.BaseStrategy.eval_epoch">[docs]</a>    <span class="k">def</span> <span class="nf">eval_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">for</span> <span class="bp">self</span><span class="o">.</span><span class="n">mb_it</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mbatch</span> <span class="ow">in</span> \
-                <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span><span class="p">):</span>
+        <span class="k">for</span> <span class="bp">self</span><span class="o">.</span><span class="n">mbatch</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_unpack_minibatch</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">before_eval_iteration</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 

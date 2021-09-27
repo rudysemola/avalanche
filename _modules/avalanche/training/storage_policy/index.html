@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>avalanche.training.storage_policy &mdash; Avalanche 0.1 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/mystyle.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../">
+            <img src="../../../../_static/avalanche_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Avalanche API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../autoapi/">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../autoapi/avalanche/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../autoapi/avalanche/#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/avalanche/benchmarks/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.benchmarks</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/avalanche/evaluation/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.evaluation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/avalanche/logging/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.logging</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/avalanche/models/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.models</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/avalanche/training/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.training</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../autoapi/avalanche/#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/avalanche/core/"><code class="xref py py-mod docutils literal notranslate"><span class="pre">avalanche.core</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../autoapi/avalanche/#package-contents">Package Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/avalanche/#avalanche.__version__">__version__</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">Avalanche</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../">Module code</a> &raquo;</li>
+      <li>avalanche.training.storage_policy</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for avalanche.training.storage_policy</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">inf</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">cat</span><span class="p">,</span> <span class="n">Tensor</span>
+<span class="kn">from</span> <span class="nn">torch.nn</span> <span class="kn">import</span> <span class="n">Module</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">random_split</span><span class="p">,</span> <span class="n">DataLoader</span>
+
+<span class="kn">from</span> <span class="nn">avalanche.benchmarks.utils</span> <span class="kn">import</span> <span class="n">AvalancheDataset</span><span class="p">,</span> <span class="n">AvalancheSubset</span><span class="p">,</span> \
+    <span class="n">AvalancheConcatDataset</span>
+<span class="kn">from</span> <span class="nn">avalanche.models</span> <span class="kn">import</span> <span class="n">FeatureExtractorBackbone</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">.strategies</span> <span class="kn">import</span> <span class="n">BaseStrategy</span>
+
+
+<div class="viewcode-block" id="StoragePolicy"><a class="viewcode-back" href="../../../../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.StoragePolicy">[docs]</a><span class="k">class</span> <span class="nc">StoragePolicy</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A policy to store exemplars in a replay memory.</span>
+
+<span class="sd">    :param ext_mem: The replay memory dictionary to store samples.</span>
+<span class="sd">    :param mem_size: max number of total input samples in the replay memory.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ext_mem</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">AvalancheDataset</span><span class="p">],</span> <span class="n">mem_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ext_mem</span> <span class="o">=</span> <span class="n">ext_mem</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mem_size</span> <span class="o">=</span> <span class="n">mem_size</span>
+
+<div class="viewcode-block" id="StoragePolicy.__call__"><a class="viewcode-back" href="../../../../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.StoragePolicy.__call__">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_source</span><span class="p">:</span> <span class="n">AvalancheDataset</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Store exemplars in the replay memory&quot;&quot;&quot;</span></div></div>
+
+
+<div class="viewcode-block" id="ExperienceBalancedStoragePolicy"><a class="viewcode-back" href="../../../../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ExperienceBalancedStoragePolicy">[docs]</a><span class="k">class</span> <span class="nc">ExperienceBalancedStoragePolicy</span><span class="p">(</span><span class="n">StoragePolicy</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ext_mem</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">mem_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">adaptive_size</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                 <span class="n">num_experiences</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Stores samples for replay, equally divided over experiences.</span>
+<span class="sd">        Because it is conditioned on the experience, it should be called in</span>
+<span class="sd">        the &#39;after_training_exp&#39; phase.</span>
+
+<span class="sd">        The number of experiences can be fixed up front or adaptive, based on</span>
+<span class="sd">        the &#39;adaptive_size&#39; attribute. When adaptive, the memory is equally</span>
+<span class="sd">        divided over all the unique observed experiences so far.</span>
+
+<span class="sd">        :param ext_mem: The replay memory dictionary to store samples.</span>
+<span class="sd">        :param mem_size: max number of total input samples in the replay memory.</span>
+<span class="sd">        :param adaptive_size: True if mem_size is divided equally over all</span>
+<span class="sd">                              observed experiences (keys in replay_mem).</span>
+<span class="sd">        :param num_experiences: If adaptive size is False, the fixed number</span>
+<span class="sd">                                of experiences to divide capacity over.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">ext_mem</span><span class="p">,</span> <span class="n">mem_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adaptive_size</span> <span class="o">=</span> <span class="n">adaptive_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_experiences</span> <span class="o">=</span> <span class="n">num_experiences</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">adaptive_size</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_experiences</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> \
+                <span class="sd">&quot;&quot;&quot;When fixed exp mem size, num_experiences should be &gt; 0.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ExperienceBalancedStoragePolicy.subsample_single"><a class="viewcode-back" href="../../../../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ExperienceBalancedStoragePolicy.subsample_single">[docs]</a>    <span class="k">def</span> <span class="nf">subsample_single</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">AvalancheDataset</span><span class="p">,</span> <span class="n">new_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Subsample `data` to match length `new_size`. &quot;&quot;&quot;</span>
+        <span class="n">removed_els</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">new_size</span>
+        <span class="k">if</span> <span class="n">removed_els</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">random_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">[</span><span class="n">new_size</span><span class="p">,</span> <span class="n">removed_els</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">data</span></div>
+
+<div class="viewcode-block" id="ExperienceBalancedStoragePolicy.subsample_all_groups"><a class="viewcode-back" href="../../../../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ExperienceBalancedStoragePolicy.subsample_all_groups">[docs]</a>    <span class="k">def</span> <span class="nf">subsample_all_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Subsample all groups equally to match total buffer size</span>
+<span class="sd">        `new_size`. &quot;&quot;&quot;</span>
+        <span class="n">groups</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ext_mem</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">groups</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>  <span class="c1"># buffer is empty.</span>
+
+        <span class="n">num_groups</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">groups</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">adaptive_size</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_experiences</span>
+        <span class="n">group_size</span> <span class="o">=</span> <span class="n">new_size</span> <span class="o">//</span> <span class="n">num_groups</span>
+        <span class="n">last_group_size</span> <span class="o">=</span> <span class="n">group_size</span> <span class="o">+</span> <span class="p">(</span><span class="n">new_size</span> <span class="o">%</span> <span class="n">num_groups</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ext_mem</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subsample_single</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ext_mem</span><span class="p">[</span><span class="n">g</span><span class="p">],</span> <span class="n">group_size</span><span class="p">)</span>
+        <span class="c1"># last group may be bigger</span>
+        <span class="n">last</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ext_mem</span><span class="p">[</span><span class="n">groups</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ext_mem</span><span class="p">[</span><span class="n">groups</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subsample_single</span><span class="p">(</span><span class="n">last</span><span class="p">,</span> <span class="n">last_group_size</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExperienceBalancedStoragePolicy.__call__"><a class="viewcode-back" href="../../../../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ExperienceBalancedStoragePolicy.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">:</span> <span class="s2">&quot;BaseStrategy&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">num_exps</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">clock</span><span class="o">.</span><span class="n">train_exp_counter</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">num_exps</span> <span class="o">=</span> <span class="n">num_exps</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">adaptive_size</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_experiences</span>
+        <span class="n">curr_data</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">experience</span><span class="o">.</span><span class="n">dataset</span>
+
+        <span class="c1"># new group may be bigger because of the remainder.</span>
+        <span class="n">group_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mem_size</span> <span class="o">//</span> <span class="n">num_exps</span>
+        <span class="n">new_group_size</span> <span class="o">=</span> <span class="n">group_size</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mem_size</span> <span class="o">%</span> <span class="n">num_exps</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">subsample_all_groups</span><span class="p">(</span><span class="n">group_size</span> <span class="o">*</span> <span class="p">(</span><span class="n">num_exps</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">curr_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subsample_single</span><span class="p">(</span><span class="n">curr_data</span><span class="p">,</span> <span class="n">new_group_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ext_mem</span><span class="p">[</span><span class="n">strategy</span><span class="o">.</span><span class="n">clock</span><span class="o">.</span><span class="n">train_exp_counter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">curr_data</span>
+
+        <span class="c1"># buffer size should always equal self.mem_size</span>
+        <span class="n">len_tot</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">el</span><span class="p">)</span> <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ext_mem</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="k">assert</span> <span class="n">len_tot</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">mem_size</span></div></div>
+
+
+<div class="viewcode-block" id="ClassBalancedStoragePolicy"><a class="viewcode-back" href="../../../../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ClassBalancedStoragePolicy">[docs]</a><span class="k">class</span> <span class="nc">ClassBalancedStoragePolicy</span><span class="p">(</span><span class="n">StoragePolicy</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ext_mem</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">mem_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">adaptive_size</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                 <span class="n">total_num_classes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">selection_strategy</span><span class="p">:</span>
+                 <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ClassExemplarsSelectionStrategy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Stores samples for replay, equally divided over classes.</span>
+<span class="sd">        It should be called in the &#39;after_training_exp&#39; phase (see</span>
+<span class="sd">        ExperienceBalancedStoragePolicy).</span>
+<span class="sd">        The number of classes can be fixed up front or adaptive, based on</span>
+<span class="sd">        the &#39;adaptive_size&#39; attribute. When adaptive, the memory is equally</span>
+<span class="sd">        divided over all the unique observed classes so far.</span>
+<span class="sd">        :param ext_mem: The replay memory dictionary to store samples in.</span>
+<span class="sd">        :param mem_size: The max capacity of the replay memory.</span>
+<span class="sd">        :param adaptive_size: True if mem_size is divided equally over all</span>
+<span class="sd">                            observed experiences (keys in replay_mem).</span>
+<span class="sd">        :param total_num_classes: If adaptive size is False, the fixed number</span>
+<span class="sd">                                  of classes to divide capacity over.</span>
+<span class="sd">        :param selection_strategy: The strategy used to select exemplars to </span>
+<span class="sd">                                   keep in memory when cutting it off</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">ext_mem</span><span class="p">,</span> <span class="n">mem_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selection_strategy</span> <span class="o">=</span> <span class="n">selection_strategy</span> <span class="ow">or</span> \
+            <span class="n">RandomExemplarsSelectionStrategy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adaptive_size</span> <span class="o">=</span> <span class="n">adaptive_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_num_classes</span> <span class="o">=</span> <span class="n">total_num_classes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seen_classes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">adaptive_size</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_num_classes</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> \
+                <span class="sd">&quot;&quot;&quot;When fixed exp mem size, total_num_classes should be &gt; 0.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ClassBalancedStoragePolicy.__call__"><a class="viewcode-back" href="../../../../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ClassBalancedStoragePolicy.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">:</span> <span class="s2">&quot;BaseStrategy&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">new_data</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">experience</span><span class="o">.</span><span class="n">dataset</span>
+
+        <span class="c1"># Get sample idxs per class</span>
+        <span class="n">cl_idxs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">new_data</span><span class="o">.</span><span class="n">targets</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">target</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cl_idxs</span><span class="p">:</span>
+                <span class="n">cl_idxs</span><span class="p">[</span><span class="n">target</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">cl_idxs</span><span class="p">[</span><span class="n">target</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+
+        <span class="c1"># Make AvalancheSubset per class</span>
+        <span class="n">cl_datasets</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">c_idxs</span> <span class="ow">in</span> <span class="n">cl_idxs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">cl_datasets</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">AvalancheSubset</span><span class="p">(</span><span class="n">new_data</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="n">c_idxs</span><span class="p">)</span>
+
+        <span class="c1"># Update seen classes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seen_classes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cl_datasets</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+        <span class="c1"># how many experiences to divide the memory over</span>
+        <span class="n">div_cnt</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seen_classes</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">adaptive_size</span> \
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_num_classes</span>
+        <span class="n">class_mem_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mem_size</span> <span class="o">//</span> <span class="n">div_cnt</span>
+
+        <span class="c1"># Add current classes data to memory</span>
+        <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">c_mem</span> <span class="ow">in</span> <span class="n">cl_datasets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ext_mem</span><span class="p">:</span>  <span class="c1"># Merge data with previous seen data</span>
+                <span class="n">c_mem</span> <span class="o">=</span> <span class="n">AvalancheConcatDataset</span><span class="p">((</span><span class="n">c_mem</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ext_mem</span><span class="p">[</span><span class="n">c</span><span class="p">]))</span>
+            <span class="n">sorted_indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selection_strategy</span><span class="o">.</span><span class="n">make_sorted_indices</span><span class="p">(</span>
+                <span class="n">strategy</span><span class="p">,</span> <span class="n">c_mem</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ext_mem</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">AvalancheSubset</span><span class="p">(</span><span class="n">c_mem</span><span class="p">,</span> <span class="n">sorted_indices</span><span class="p">)</span>
+
+        <span class="c1"># Distribute remaining samples using counts</span>
+        <span class="n">cutoff_per_exp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">divide_remaining_samples</span><span class="p">(</span><span class="n">class_mem_size</span><span class="p">,</span> <span class="n">div_cnt</span><span class="p">)</span>
+
+        <span class="c1"># Use counts to remove samples from memory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cutoff_memory</span><span class="p">(</span><span class="n">cutoff_per_exp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ClassBalancedStoragePolicy.divide_remaining_samples"><a class="viewcode-back" href="../../../../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ClassBalancedStoragePolicy.divide_remaining_samples">[docs]</a>    <span class="k">def</span> <span class="nf">divide_remaining_samples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exp_mem_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">div_cnt</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> \
+            <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="c1"># Find number of remaining samples</span>
+        <span class="n">samples_per_exp</span> <span class="o">=</span> <span class="p">{</span><span class="n">exp</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">mem</span><span class="p">)</span> <span class="k">for</span> <span class="n">exp</span><span class="p">,</span> <span class="n">mem</span> <span class="ow">in</span>
+                           <span class="bp">self</span><span class="o">.</span><span class="n">ext_mem</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="n">rem_from_exps</span> <span class="o">=</span> <span class="p">{</span><span class="n">exp</span><span class="p">:</span> <span class="n">exp_mem_size</span> <span class="o">-</span> <span class="n">memsize</span> <span class="k">for</span> <span class="n">exp</span><span class="p">,</span> <span class="n">memsize</span> <span class="ow">in</span>
+                         <span class="n">samples_per_exp</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span>
+                         <span class="n">exp_mem_size</span> <span class="o">-</span> <span class="n">memsize</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">}</span>
+        <span class="n">rem_from_div</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mem_size</span> <span class="o">%</span> <span class="n">div_cnt</span>
+        <span class="n">free_mem</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rem_from_exps</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">+</span> <span class="n">rem_from_div</span>
+
+        <span class="c1"># Divide the remaining samples randomly over the experiences</span>
+        <span class="n">cutoff_per_exp</span> <span class="o">=</span> <span class="p">{</span><span class="n">exp</span><span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="n">exp_mem_size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
+                          <span class="k">for</span> <span class="n">exp</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ext_mem</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+        <span class="c1"># Find remaining data samples to divide</span>
+        <span class="n">rem_samples_exp</span> <span class="o">=</span> <span class="p">{</span><span class="n">exp</span><span class="p">:</span> <span class="n">memsize</span> <span class="o">-</span> <span class="n">exp_mem_size</span> <span class="k">for</span> <span class="n">exp</span><span class="p">,</span> <span class="n">memsize</span> <span class="ow">in</span>
+                           <span class="n">samples_per_exp</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                           <span class="k">if</span> <span class="n">memsize</span> <span class="o">-</span> <span class="n">exp_mem_size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">}</span>
+
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">rem_samples_exp</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">free_mem</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">exp</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">rem_samples_exp</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+            <span class="n">cutoff_per_exp</span><span class="p">[</span><span class="n">exp</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">free_mem</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">rem_samples_exp</span><span class="p">[</span><span class="n">exp</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">rem_samples_exp</span><span class="p">[</span><span class="n">exp</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">rem_samples_exp</span><span class="p">[</span><span class="n">exp</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">cutoff_per_exp</span></div>
+
+<div class="viewcode-block" id="ClassBalancedStoragePolicy.cutoff_memory"><a class="viewcode-back" href="../../../../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ClassBalancedStoragePolicy.cutoff_memory">[docs]</a>    <span class="k">def</span> <span class="nf">cutoff_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cutoff_per_exp</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]):</span>
+        <span class="c1"># No need to reselect at this point, we expect the first selection to</span>
+        <span class="c1"># have sorted the exemplars</span>
+        <span class="k">for</span> <span class="n">exp</span><span class="p">,</span> <span class="n">cutoff</span> <span class="ow">in</span> <span class="n">cutoff_per_exp</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ext_mem</span><span class="p">[</span><span class="n">exp</span><span class="p">]</span> <span class="o">=</span> <span class="n">AvalancheSubset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ext_mem</span><span class="p">[</span><span class="n">exp</span><span class="p">],</span>
+                                                <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">cutoff</span><span class="p">)))</span></div></div>
+
+
+<div class="viewcode-block" id="ClassExemplarsSelectionStrategy"><a class="viewcode-back" href="../../../../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ClassExemplarsSelectionStrategy">[docs]</a><span class="k">class</span> <span class="nc">ClassExemplarsSelectionStrategy</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class to define how to select class exemplars from a dataset</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ClassExemplarsSelectionStrategy.make_sorted_indices"><a class="viewcode-back" href="../../../../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ClassExemplarsSelectionStrategy.make_sorted_indices">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">make_sorted_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">:</span> <span class="s2">&quot;BaseStrategy&quot;</span><span class="p">,</span>
+                            <span class="n">data</span><span class="p">:</span> <span class="n">AvalancheDataset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Should return the sorted list of indices to keep as exemplars.</span>
+
+<span class="sd">        The last indices will be the first to be removed when cutoff memory.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div></div>
+
+
+<div class="viewcode-block" id="RandomExemplarsSelectionStrategy"><a class="viewcode-back" href="../../../../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.RandomExemplarsSelectionStrategy">[docs]</a><span class="k">class</span> <span class="nc">RandomExemplarsSelectionStrategy</span><span class="p">(</span><span class="n">ClassExemplarsSelectionStrategy</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Select the exemplars at random in the dataset&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="RandomExemplarsSelectionStrategy.make_sorted_indices"><a class="viewcode-back" href="../../../../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.RandomExemplarsSelectionStrategy.make_sorted_indices">[docs]</a>    <span class="k">def</span> <span class="nf">make_sorted_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">:</span> <span class="s2">&quot;BaseStrategy&quot;</span><span class="p">,</span>
+                            <span class="n">data</span><span class="p">:</span> <span class="n">AvalancheDataset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)))</span>
+        <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">indices</span></div></div>
+
+
+<div class="viewcode-block" id="FeatureBasedExemplarsSelectionStrategy"><a class="viewcode-back" href="../../../../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.FeatureBasedExemplarsSelectionStrategy">[docs]</a><span class="k">class</span> <span class="nc">FeatureBasedExemplarsSelectionStrategy</span><span class="p">(</span><span class="n">ClassExemplarsSelectionStrategy</span><span class="p">,</span>
+                                             <span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class to select exemplars from their features&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Module</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_extractor</span> <span class="o">=</span> <span class="n">FeatureExtractorBackbone</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FeatureBasedExemplarsSelectionStrategy.make_sorted_indices"><a class="viewcode-back" href="../../../../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.FeatureBasedExemplarsSelectionStrategy.make_sorted_indices">[docs]</a>    <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">make_sorted_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">:</span> <span class="s2">&quot;BaseStrategy&quot;</span><span class="p">,</span>
+                            <span class="n">data</span><span class="p">:</span> <span class="n">AvalancheDataset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_extractor</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="n">cat</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">feature_extractor</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">strategy</span><span class="o">.</span><span class="n">device</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="ow">in</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">strategy</span><span class="o">.</span><span class="n">eval_mb_size</span><span class="p">)</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_sorted_indices_from_features</span><span class="p">(</span><span class="n">features</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FeatureBasedExemplarsSelectionStrategy.make_sorted_indices_from_features"><a class="viewcode-back" href="../../../../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.FeatureBasedExemplarsSelectionStrategy.make_sorted_indices_from_features">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">make_sorted_indices_from_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">Tensor</span>
+                                          <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Should return the sorted list of indices to keep as exemplars.</span>
+
+<span class="sd">        The last indices will be the first to be removed when cutoff memory.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div></div>
+
+
+<div class="viewcode-block" id="HerdingSelectionStrategy"><a class="viewcode-back" href="../../../../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.HerdingSelectionStrategy">[docs]</a><span class="k">class</span> <span class="nc">HerdingSelectionStrategy</span><span class="p">(</span><span class="n">FeatureBasedExemplarsSelectionStrategy</span><span class="p">):</span>
+<div class="viewcode-block" id="HerdingSelectionStrategy.make_sorted_indices_from_features"><a class="viewcode-back" href="../../../../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.HerdingSelectionStrategy.make_sorted_indices_from_features">[docs]</a>    <span class="k">def</span> <span class="nf">make_sorted_indices_from_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">Tensor</span>
+                                          <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The herding strategy as described in iCaRL</span>
+
+<span class="sd">        It is a greedy algorithm, that select the remaining exemplar that get</span>
+<span class="sd">        the center of already selected exemplars as close as possible as the</span>
+<span class="sd">        center of all elements (in the feature space).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">selected_indices</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">center</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">current_center</span> <span class="o">=</span> <span class="n">center</span> <span class="o">*</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="p">)):</span>
+            <span class="c1"># Compute distances with real center</span>
+            <span class="n">candidate_centers</span> <span class="o">=</span> <span class="n">current_center</span> <span class="o">*</span> <span class="n">i</span> <span class="o">/</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">features</span> <span class="o">/</span> <span class="p">(</span><span class="n">i</span>
+                                                                           <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">distances</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">candidate_centers</span> <span class="o">-</span> <span class="n">center</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">distances</span><span class="p">[</span><span class="n">selected_indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">inf</span>
+
+            <span class="c1"># Select best candidate</span>
+            <span class="n">new_index</span> <span class="o">=</span> <span class="n">distances</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="n">selected_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_index</span><span class="p">)</span>
+            <span class="n">current_center</span> <span class="o">=</span> <span class="n">candidate_centers</span><span class="p">[</span><span class="n">new_index</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">selected_indices</span></div></div>
+
+
+<div class="viewcode-block" id="ClosestToCenterSelectionStrategy"><a class="viewcode-back" href="../../../../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ClosestToCenterSelectionStrategy">[docs]</a><span class="k">class</span> <span class="nc">ClosestToCenterSelectionStrategy</span><span class="p">(</span><span class="n">FeatureBasedExemplarsSelectionStrategy</span><span class="p">):</span>
+<div class="viewcode-block" id="ClosestToCenterSelectionStrategy.make_sorted_indices_from_features"><a class="viewcode-back" href="../../../../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ClosestToCenterSelectionStrategy.make_sorted_indices_from_features">[docs]</a>    <span class="k">def</span> <span class="nf">make_sorted_indices_from_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">Tensor</span>
+                                          <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A greedy algorithm that select the remaining exemplar that is the</span>
+<span class="sd">        closest to the center of all elements (in feature space)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">distances</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">features</span> <span class="o">-</span> <span class="n">center</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">distances</span><span class="o">.</span><span class="n">argsort</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, ContinualAI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

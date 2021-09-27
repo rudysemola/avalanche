@@ -30,6 +30,7 @@ Submodules
    metric_definitions/index.rst
    metric_results/index.rst
    metric_utils/index.rst
+   plot_utils/index.rst
 
 
 Package Contents
@@ -108,12 +109,6 @@ Classes
    Child classes can safely invoke this (super) constructor as the first
    experience.
 
-   .. attribute:: global_it_counter
-      :annotation: = 0
-
-      Counter that can be used by each metric to get increasing x values.
-
-
    .. method:: result(self, **kwargs) -> Optional[TResult]
       :abstractmethod:
 
@@ -128,11 +123,6 @@ Classes
       Resets the metric internal state.
 
       :return: None.
-
-
-   .. method:: get_global_counter(self)
-
-      :return: the global counter incremented after each minibatch.
 
 
    .. method:: before_training(self, strategy: BaseStrategy) -> 'MetricResult'

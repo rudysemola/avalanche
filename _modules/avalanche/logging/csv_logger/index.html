@@ -210,7 +210,8 @@
                 <span class="k">elif</span> <span class="n">val</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Loss_Epoch&#39;</span><span class="p">):</span>
                     <span class="n">train_loss</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">value</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">print_train_metrics</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">training_exp_id</span><span class="p">,</span> <span class="n">strategy</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_train_metrics</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">training_exp_id</span><span class="p">,</span>
+                                 <span class="n">strategy</span><span class="o">.</span><span class="n">clock</span><span class="o">.</span><span class="n">train_exp_epochs</span><span class="p">,</span>
                                  <span class="n">train_acc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_acc</span><span class="p">,</span> <span class="n">train_loss</span><span class="p">,</span>
                                  <span class="bp">self</span><span class="o">.</span><span class="n">val_loss</span><span class="p">)</span></div>
 

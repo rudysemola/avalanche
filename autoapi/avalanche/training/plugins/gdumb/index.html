@@ -100,7 +100,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.training.plugins.gdumb.GDumbPlugin" title="avalanche.training.plugins.gdumb.GDumbPlugin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GDumbPlugin</span></code></a></p></td>
-<td><p>A GDumb plugin. At each experience the model</p></td>
+<td><p>GDumb plugin.</p></td>
 </tr>
 </tbody>
 </table>
@@ -108,20 +108,25 @@
 <dt class="sig sig-object py" id="avalanche.training.plugins.gdumb.GDumbPlugin">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.training.plugins.gdumb.</span></span><span class="sig-name descname"><span class="pre">GDumbPlugin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mem_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/training/plugins/gdumb/#GDumbPlugin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.plugins.gdumb.GDumbPlugin" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../strategy_plugin/#avalanche.training.plugins.strategy_plugin.StrategyPlugin" title="avalanche.training.plugins.strategy_plugin.StrategyPlugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.training.plugins.strategy_plugin.StrategyPlugin</span></code></a></p>
-<p>A GDumb plugin. At each experience the model
-is trained with all and only the data of the external memory.
-The memory is updated at the end of each experience to add new classes or
+<p>GDumb plugin.</p>
+<p>At each experience the model is trained  from scratch using a buffer of
+samples collected from all the previous learning experiences.
+The buffer is updated at the start of each experience to add new classes or
 new examples of already encountered classes.
 In multitask scenarios, mem_size is the memory size for each task.
 This plugin can be combined with a Naive strategy to obtain the
 standard GDumb strategy.
 <a class="reference external" href="https://www.robots.ox.ac.uk/~tvg/publications/2020/gdumb.pdf">https://www.robots.ox.ac.uk/~tvg/publications/2020/gdumb.pdf</a></p>
 <dl class="py method">
+<dt class="sig sig-object py" id="avalanche.training.plugins.gdumb.GDumbPlugin.before_train_dataset_adaptation">
+<span class="sig-name descname"><span class="pre">before_train_dataset_adaptation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BaseStrategy</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/training/plugins/gdumb/#GDumbPlugin.before_train_dataset_adaptation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.plugins.gdumb.GDumbPlugin.before_train_dataset_adaptation" title="Permalink to this definition"></a></dt>
+<dd><p>Reset model.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="avalanche.training.plugins.gdumb.GDumbPlugin.after_train_dataset_adaptation">
 <span class="sig-name descname"><span class="pre">after_train_dataset_adaptation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BaseStrategy</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/training/plugins/gdumb/#GDumbPlugin.after_train_dataset_adaptation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.plugins.gdumb.GDumbPlugin.after_train_dataset_adaptation" title="Permalink to this definition"></a></dt>
-<dd><p>Before training we make sure to organize the memory following
-GDumb approach and updating the dataset accordingly.</p>
-</dd></dl>
+<dd></dd></dl>
 
 </dd></dl>
 

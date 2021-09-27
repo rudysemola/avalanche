@@ -408,7 +408,7 @@
             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>
                     <span class="n">phase_name</span><span class="p">,</span>
                     <span class="n">stream</span><span class="p">)</span>
-        <span class="n">plot_x_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_global_counter</span><span class="p">()</span>
+        <span class="n">plot_x_position</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">clock</span><span class="o">.</span><span class="n">train_iterations</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_save_image</span><span class="p">:</span>
             <span class="n">class_order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_display_class_order</span><span class="p">(</span><span class="n">exp_cm</span><span class="p">,</span> <span class="n">strategy</span><span class="p">)</span>
@@ -494,7 +494,7 @@
             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>
                     <span class="n">phase_name</span><span class="p">,</span>
                     <span class="n">stream</span><span class="p">)</span>
-        <span class="n">plot_x_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_global_counter</span><span class="p">()</span>
+        <span class="n">plot_x_position</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">clock</span><span class="o">.</span><span class="n">train_iterations</span>
 
         <span class="c1"># compute predicted classes</span>
         <span class="n">preds</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>

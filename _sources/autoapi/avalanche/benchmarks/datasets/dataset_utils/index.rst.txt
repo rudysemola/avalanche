@@ -18,12 +18,13 @@ Functions
 
 .. function:: default_dataset_location(dataset_name: str) -> Path
 
-   Return the default location of a dataset.
+   Returns the default download location for Avalanche datasets.
 
-   This currently returns "~/.avalanche/data/<dataset_name>" but in the future
-   an environment variable bay be introduced to change the root path.
+   The default value is "~/.avalanche/data/<dataset_name>", but it may be
+   changed via the `dataset_location` value in the configuration file
+   in `~/.avalanche/config.json`.
 
-   :param dataset_name: The name of the dataset. Consider using a string that
+   :param dataset_name: The name of the dataset. Must be a string that
        can be used to name a directory in most filesystems!
    :return: The default path for the dataset.
 

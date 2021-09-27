@@ -87,7 +87,8 @@
            <div itemprop="articleBody">
              
   <h1>Source code for avalanche.training.plugins.gdumb</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span></span><span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">TYPE_CHECKING</span><span class="p">,</span>
     <span class="n">Any</span><span class="p">,</span>
@@ -106,16 +107,18 @@
 
 <span class="kn">from</span> <span class="nn">avalanche.benchmarks.utils</span> <span class="kn">import</span> <span class="n">AvalancheConcatDataset</span><span class="p">,</span> <span class="n">AvalancheDataset</span>
 <span class="kn">from</span> <span class="nn">avalanche.training.plugins.strategy_plugin</span> <span class="kn">import</span> <span class="n">StrategyPlugin</span>
+<span class="kn">from</span> <span class="nn">avalanche.training.storage_policy</span> <span class="kn">import</span> <span class="n">ClassBalancedStoragePolicy</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">avalanche.training.strategies</span> <span class="kn">import</span> <span class="n">BaseStrategy</span>
 
 
 <div class="viewcode-block" id="GDumbPlugin"><a class="viewcode-back" href="../../../../../autoapi/avalanche/training/plugins/#avalanche.training.plugins.gdumb.GDumbPlugin">[docs]</a><span class="k">class</span> <span class="nc">GDumbPlugin</span><span class="p">(</span><span class="n">StrategyPlugin</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A GDumb plugin. At each experience the model</span>
-<span class="sd">    is trained with all and only the data of the external memory.</span>
-<span class="sd">    The memory is updated at the end of each experience to add new classes or</span>
+    <span class="sd">&quot;&quot;&quot; GDumb plugin.</span>
+
+<span class="sd">    At each experience the model is trained  from scratch using a buffer of</span>
+<span class="sd">    samples collected from all the previous learning experiences.</span>
+<span class="sd">    The buffer is updated at the start of each experience to add new classes or</span>
 <span class="sd">    new examples of already encountered classes.</span>
 <span class="sd">    In multitask scenarios, mem_size is the memory size for each task.</span>
 <span class="sd">    This plugin can be combined with a Naive strategy to obtain the</span>
@@ -126,77 +129,29 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mem_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mem_size</span> <span class="o">=</span> <span class="n">mem_size</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ext_mem</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1"># count occurrences for each class</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
 
-<div class="viewcode-block" id="GDumbPlugin.after_train_dataset_adaptation"><a class="viewcode-back" href="../../../../../autoapi/avalanche/training/plugins/#avalanche.training.plugins.gdumb.GDumbPlugin.after_train_dataset_adaptation">[docs]</a>    <span class="k">def</span> <span class="nf">after_train_dataset_adaptation</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">:</span> <span class="s2">&quot;BaseStrategy&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-    <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Before training we make sure to organize the memory following</span>
-<span class="sd">        GDumb approach and updating the dataset accordingly.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="c1"># for each pattern, add it to the memory or not</span>
-        <span class="k">assert</span> <span class="n">strategy</span><span class="o">.</span><span class="n">experience</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="n">dataset</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">experience</span><span class="o">.</span><span class="n">dataset</span>
-        <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span>
-            <span class="n">dataset</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Exhausting dataset to create GDumb buffer&quot;</span>
+        <span class="c1"># model initialization</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">storage_policy</span> <span class="o">=</span> <span class="n">ClassBalancedStoragePolicy</span><span class="p">(</span>
+            <span class="n">ext_mem</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">,</span>
+            <span class="n">mem_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mem_size</span><span class="p">,</span>
+            <span class="n">adaptive_size</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
-        <span class="k">for</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">task_id</span> <span class="ow">in</span> <span class="n">pbar</span><span class="p">:</span>
-            <span class="n">target</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
-            <span class="n">target_value</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_model</span> <span class="o">=</span> <span class="kc">None</span>
 
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pattern</span><span class="o">.</span><span class="n">size</span><span class="p">())</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<div class="viewcode-block" id="GDumbPlugin.before_train_dataset_adaptation"><a class="viewcode-back" href="../../../../../autoapi/avalanche/training/plugins/#avalanche.training.plugins.gdumb.GDumbPlugin.before_train_dataset_adaptation">[docs]</a>    <span class="k">def</span> <span class="nf">before_train_dataset_adaptation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">:</span> <span class="s1">&#39;BaseStrategy&#39;</span><span class="p">,</span>
+                                        <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Reset model. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">init_model</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">strategy</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">strategy</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">init_model</span><span class="p">)</span></div>
 
-            <span class="n">current_counter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span>
-            <span class="n">current_mem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ext_mem</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="p">([],</span> <span class="p">[]))</span>
-
-            <span class="k">if</span> <span class="n">current_counter</span> <span class="o">==</span> <span class="p">{}:</span>
-                <span class="c1"># any positive (&gt;0) number is ok</span>
-                <span class="n">patterns_per_class</span> <span class="o">=</span> <span class="mi">1</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">patterns_per_class</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">mem_size</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_counter</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-                <span class="p">)</span>
-
-            <span class="k">if</span> <span class="p">(</span>
-                <span class="n">target_value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">current_counter</span>
-                <span class="ow">or</span> <span class="n">current_counter</span><span class="p">[</span><span class="n">target_value</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">patterns_per_class</span>
-            <span class="p">):</span>
-                <span class="c1"># add new pattern into memory</span>
-                <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">current_counter</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mem_size</span><span class="p">:</span>
-                    <span class="c1"># full memory: replace item from most represented class</span>
-                    <span class="c1"># with current pattern</span>
-                    <span class="n">to_remove</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">current_counter</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">current_counter</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
-
-                    <span class="n">dataset_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_mem</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dataset_size</span><span class="p">):</span>
-                        <span class="k">if</span> <span class="n">current_mem</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">==</span> <span class="n">to_remove</span><span class="p">:</span>
-                            <span class="n">current_mem</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">pattern</span>
-                            <span class="n">current_mem</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">target</span>
-                            <span class="k">break</span>
-                    <span class="n">current_counter</span><span class="p">[</span><span class="n">to_remove</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="c1"># memory not full: add new pattern</span>
-                    <span class="n">current_mem</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
-                    <span class="n">current_mem</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
-
-                <span class="c1"># Indicate that we&#39;ve changed the number of stored instances of</span>
-                <span class="c1"># this class.</span>
-                <span class="n">current_counter</span><span class="p">[</span><span class="n">target_value</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-
-        <span class="n">task_datasets</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">TensorDataset</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">task_mem_tuple</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ext_mem</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">patterns</span><span class="p">,</span> <span class="n">targets</span> <span class="o">=</span> <span class="n">task_mem_tuple</span>
-            <span class="n">task_dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">patterns</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">targets</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-            <span class="p">)</span>
-            <span class="n">task_datasets</span><span class="p">[</span><span class="n">task_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">task_dataset</span>
-
-        <span class="n">adapted_dataset</span> <span class="o">=</span> <span class="n">AvalancheConcatDataset</span><span class="p">(</span><span class="n">task_datasets</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-        <span class="n">strategy</span><span class="o">.</span><span class="n">adapted_dataset</span> <span class="o">=</span> <span class="n">adapted_dataset</span></div></div>
+<div class="viewcode-block" id="GDumbPlugin.after_train_dataset_adaptation"><a class="viewcode-back" href="../../../../../autoapi/avalanche/training/plugins/#avalanche.training.plugins.gdumb.GDumbPlugin.after_train_dataset_adaptation">[docs]</a>    <span class="k">def</span> <span class="nf">after_train_dataset_adaptation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">:</span> <span class="s2">&quot;BaseStrategy&quot;</span><span class="p">,</span>
+                                       <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">storage_policy</span><span class="p">(</span><span class="n">strategy</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">cat_data</span> <span class="o">=</span> <span class="n">AvalancheConcatDataset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">strategy</span><span class="o">.</span><span class="n">adapted_dataset</span> <span class="o">=</span> <span class="n">cat_data</span></div></div>
 </pre></div>
 
            </div>

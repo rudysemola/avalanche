@@ -92,27 +92,60 @@
 <span class="c1"># Copyrights licensed under the MIT License.                                   #</span>
 <span class="c1"># See the accompanying LICENSE file for terms.                                 #</span>
 <span class="c1">#                                                                              #</span>
-<span class="c1"># Date: 25-05-2021                                                             #</span>
-<span class="c1"># Author: Lorenzo Pellegrini                                                   #</span>
+<span class="c1"># Date: 24-09-2021                                                             #</span>
+<span class="c1"># Author: Lorenzo Pellegrini, Antonio Carta                                    #</span>
 <span class="c1"># E-mail: contact@continualai.org                                              #</span>
 <span class="c1"># Website: www.continualai.org                                                 #</span>
 <span class="c1">################################################################################</span>
 
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<span class="n">AVALANCHE_CONFIG_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~/.avalanche&#39;</span><span class="p">)</span>
+<span class="n">AVALANCHE_CONFIG_FILENAME</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~/.avalanche/config.json&#39;</span><span class="p">)</span>
+
 
 <div class="viewcode-block" id="default_dataset_location"><a class="viewcode-back" href="../../../../../autoapi/avalanche/benchmarks/datasets/#avalanche.benchmarks.datasets.dataset_utils.default_dataset_location">[docs]</a><span class="k">def</span> <span class="nf">default_dataset_location</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Return the default location of a dataset.</span>
+    <span class="sd">&quot;&quot;&quot; Returns the default download location for Avalanche datasets.</span>
 
-<span class="sd">    This currently returns &quot;~/.avalanche/data/&lt;dataset_name&gt;&quot; but in the future</span>
-<span class="sd">    an environment variable bay be introduced to change the root path.</span>
+<span class="sd">    The default value is &quot;~/.avalanche/data/&lt;dataset_name&gt;&quot;, but it may be</span>
+<span class="sd">    changed via the `dataset_location` value in the configuration file</span>
+<span class="sd">    in `~/.avalanche/config.json`.</span>
 
-<span class="sd">    :param dataset_name: The name of the dataset. Consider using a string that</span>
+<span class="sd">    :param dataset_name: The name of the dataset. Must be a string that</span>
 <span class="sd">        can be used to name a directory in most filesystems!</span>
 <span class="sd">    :return: The default path for the dataset.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;.avalanche/data/</span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2">&quot;</span></div>
+    <span class="n">base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">AVALANCHE_CONFIG</span><span class="p">[</span><span class="s1">&#39;dataset_location&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_dir</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">load_config_file</span><span class="p">():</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">AVALANCHE_CONFIG_FILENAME</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">maybe_init_config_file</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Initialize Avalanche user&#39;s config file, if it does not exists yet.</span>
+
+<span class="sd">    The file is located in `~/.avalanche/config.json`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">AVALANCHE_CONFIG_FILENAME</span><span class="p">):</span>
+        <span class="k">return</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">AVALANCHE_CONFIG_ROOT</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">default_config</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;dataset_location&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~/.avalanche/data&#39;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">AVALANCHE_CONFIG_FILENAME</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">default_config</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+
+<span class="n">maybe_init_config_file</span><span class="p">()</span>
+<span class="n">AVALANCHE_CONFIG</span> <span class="o">=</span> <span class="n">load_config_file</span><span class="p">()</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>

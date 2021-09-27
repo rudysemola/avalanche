@@ -297,22 +297,15 @@ training on the first experience.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="avalanche.training.strategies.BaseStrategy.clock">
+<span class="sig-name descname"><span class="pre">clock</span></span><a class="headerlink" href="#avalanche.training.strategies.BaseStrategy.clock" title="Permalink to this definition"></a></dt>
+<dd><p>Incremental counters for strategy events.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="avalanche.training.strategies.BaseStrategy.eval_every">
 <span class="sig-name descname"><span class="pre">eval_every</span></span><a class="headerlink" href="#avalanche.training.strategies.BaseStrategy.eval_every" title="Permalink to this definition"></a></dt>
 <dd><p>Frequency of the evaluation during training.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="avalanche.training.strategies.BaseStrategy.training_exp_counter">
-<span class="sig-name descname"><span class="pre">training_exp_counter</span></span><em class="property"> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#avalanche.training.strategies.BaseStrategy.training_exp_counter" title="Permalink to this definition"></a></dt>
-<dd><p>Counts the number of training steps. +1 at the end of each
-experience.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="avalanche.training.strategies.BaseStrategy.epoch">
-<span class="sig-name descname"><span class="pre">epoch</span></span><em class="property"> <span class="pre">:Optional[int]</span></em><a class="headerlink" href="#avalanche.training.strategies.BaseStrategy.epoch" title="Permalink to this definition"></a></dt>
-<dd><p>Epoch counter.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -338,12 +331,6 @@ use <a class="reference internal" href="#avalanche.training.strategies.BaseStrat
 <dt class="sig sig-object py" id="avalanche.training.strategies.BaseStrategy.dataloader">
 <span class="sig-name descname"><span class="pre">dataloader</span></span><a class="headerlink" href="#avalanche.training.strategies.BaseStrategy.dataloader" title="Permalink to this definition"></a></dt>
 <dd><p>Dataloader.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="avalanche.training.strategies.BaseStrategy.mb_it">
-<span class="sig-name descname"><span class="pre">mb_it</span></span><a class="headerlink" href="#avalanche.training.strategies.BaseStrategy.mb_it" title="Permalink to this definition"></a></dt>
-<dd><p>Iteration counter. Reset at the start of a new epoch.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -373,7 +360,26 @@ use <a class="reference internal" href="#avalanche.training.strategies.BaseStrat
 <dl class="py attribute">
 <dt class="sig sig-object py" id="avalanche.training.strategies.BaseStrategy.current_eval_stream">
 <span class="sig-name descname"><span class="pre">current_eval_stream</span></span><a class="headerlink" href="#avalanche.training.strategies.BaseStrategy.current_eval_stream" title="Permalink to this definition"></a></dt>
-<dd><p>User-provided evaluation stream on <cite>eval</cite> call</p>
+<dd><p>User-provided evaluation stream on <cite>eval</cite> call.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.training.strategies.BaseStrategy.training_exp_counter">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">training_exp_counter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#avalanche.training.strategies.BaseStrategy.training_exp_counter" title="Permalink to this definition"></a></dt>
+<dd><p>Counts the number of training steps. +1 at the end of each
+experience.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.training.strategies.BaseStrategy.epoch">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">epoch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#avalanche.training.strategies.BaseStrategy.epoch" title="Permalink to this definition"></a></dt>
+<dd><p>Epoch counter.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.training.strategies.BaseStrategy.mb_it">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">mb_it</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#avalanche.training.strategies.BaseStrategy.mb_it" title="Permalink to this definition"></a></dt>
+<dd><p>Iteration counter. Reset at the start of a new epoch.</p>
 </dd></dl>
 
 <dl class="py method">

@@ -1,0 +1,27 @@
+:mod:`avalanche.evaluation.plot_utils`
+======================================
+
+.. py:module:: avalanche.evaluation.plot_utils
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   avalanche.evaluation.plot_utils.learning_curves_plot
+
+
+.. function:: learning_curves_plot(all_metrics)
+
+   Creates a plot with separate learning curves for each experience.
+
+   :param all_metrics: Dictionary of metrics as returned by
+       EvaluationPlugin.get_all_metrics
+   :return: matplotlib figure
+
+

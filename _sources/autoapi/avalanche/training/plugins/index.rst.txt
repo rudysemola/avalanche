@@ -11,6 +11,7 @@ Submodules
    :maxdepth: 1
 
    agem/index.rst
+   clock/index.rst
    cope/index.rst
    cwr_star/index.rst
    early_stopping/index.rst
@@ -43,9 +44,6 @@ Classes
    avalanche.training.plugins.GEMPlugin
    avalanche.training.plugins.LwFPlugin
    avalanche.training.plugins.ReplayPlugin
-   avalanche.training.plugins.StoragePolicy
-   avalanche.training.plugins.ClassBalancedStoragePolicy
-   avalanche.training.plugins.ExperienceBalancedStoragePolicy
    avalanche.training.plugins.StrategyPlugin
    avalanche.training.plugins.SynapticIntelligencePlugin
    avalanche.training.plugins.GSS_greedyPlugin
@@ -344,19 +342,23 @@ Classes
 
    Bases: :class:`avalanche.training.plugins.strategy_plugin.StrategyPlugin`
 
-   A GDumb plugin. At each experience the model
-   is trained with all and only the data of the external memory.
-   The memory is updated at the end of each experience to add new classes or
+   GDumb plugin.
+
+   At each experience the model is trained  from scratch using a buffer of
+   samples collected from all the previous learning experiences.
+   The buffer is updated at the start of each experience to add new classes or
    new examples of already encountered classes.
    In multitask scenarios, mem_size is the memory size for each task.
    This plugin can be combined with a Naive strategy to obtain the
    standard GDumb strategy.
    https://www.robots.ox.ac.uk/~tvg/publications/2020/gdumb.pdf
 
-   .. method:: after_train_dataset_adaptation(self, strategy: BaseStrategy, **kwargs)
+   .. method:: before_train_dataset_adaptation(self, strategy: BaseStrategy, **kwargs)
 
-      Before training we make sure to organize the memory following
-      GDumb approach and updating the dataset accordingly.
+      Reset model. 
+
+
+   .. method:: after_train_dataset_adaptation(self, strategy: BaseStrategy, **kwargs)
 
 
 
@@ -474,101 +476,6 @@ Classes
 
 
    .. method:: after_training_exp(self, strategy: BaseStrategy, **kwargs)
-
-
-
-.. py:class:: StoragePolicy(ext_mem: Dict[int, AvalancheDataset], mem_size: int)
-
-   Bases: :class:`abc.ABC`
-
-   A policy to store exemplars in a replay memory.
-
-   :param ext_mem: The replay memory dictionary to store samples.
-   :param mem_size: max number of total input samples in the replay memory.
-
-   Initialize self.  See help(type(self)) for accurate signature.
-
-   .. method:: __call__(self, data_source: AvalancheDataset, **kwargs)
-      :abstractmethod:
-
-      Store exemplars in the replay memory
-
-
-
-.. py:class:: ClassBalancedStoragePolicy(ext_mem: Dict, mem_size: int, adaptive_size: bool = True, total_num_classes: int = -1, selection_strategy: Optional['ClassExemplarsSelectionStrategy'] = None)
-
-   Bases: :class:`avalanche.training.plugins.replay.StoragePolicy`
-
-   A policy to store exemplars in a replay memory.
-
-   :param ext_mem: The replay memory dictionary to store samples.
-   :param mem_size: max number of total input samples in the replay memory.
-
-   Stores samples for replay, equally divided over classes.
-   It should be called in the 'after_training_exp' phase (see
-   ExperienceBalancedStoragePolicy).
-   The number of classes can be fixed up front or adaptive, based on
-   the 'adaptive_size' attribute. When adaptive, the memory is equally
-   divided over all the unique observed classes so far.
-   :param ext_mem: The replay memory dictionary to store samples in.
-   :param mem_size: The max capacity of the replay memory.
-   :param adaptive_size: True if mem_size is divided equally over all
-                       observed experiences (keys in replay_mem).
-   :param total_num_classes: If adaptive size is False, the fixed number
-                             of classes to divide capacity over.
-   :param selection_strategy: The strategy used to select exemplars to 
-                              keep in memory when cutting it off
-
-   .. method:: __call__(self, strategy: BaseStrategy, **kwargs)
-
-      Store exemplars in the replay memory
-
-
-   .. method:: divide_remaining_samples(self, exp_mem_size: int, div_cnt: int) -> Dict[int, int]
-
-
-   .. method:: cutoff_memory(self, cutoff_per_exp: Dict[int, int])
-
-
-
-.. py:class:: ExperienceBalancedStoragePolicy(ext_mem: Dict, mem_size: int, adaptive_size: bool = True, num_experiences=-1)
-
-   Bases: :class:`avalanche.training.plugins.replay.StoragePolicy`
-
-   A policy to store exemplars in a replay memory.
-
-   :param ext_mem: The replay memory dictionary to store samples.
-   :param mem_size: max number of total input samples in the replay memory.
-
-   Stores samples for replay, equally divided over experiences.
-   Because it is conditioned on the experience, it should be called in
-   the 'after_training_exp' phase.
-
-   The number of experiences can be fixed up front or adaptive, based on
-   the 'adaptive_size' attribute. When adaptive, the memory is equally
-   divided over all the unique observed experiences so far.
-
-   :param ext_mem: The replay memory dictionary to store samples.
-   :param mem_size: max number of total input samples in the replay memory.
-   :param adaptive_size: True if mem_size is divided equally over all
-                         observed experiences (keys in replay_mem).
-   :param num_experiences: If adaptive size is False, the fixed number
-                           of experiences to divide capacity over.
-
-   .. method:: subsample_single(self, data: AvalancheDataset, new_size: int)
-
-      Subsample `data` to match length `new_size`. 
-
-
-   .. method:: subsample_all_groups(self, new_size: int)
-
-      Subsample all groups equally to match total buffer size
-      `new_size`. 
-
-
-   .. method:: __call__(self, strategy: BaseStrategy, **kwargs)
-
-      Store exemplars in the replay memory
 
 
 

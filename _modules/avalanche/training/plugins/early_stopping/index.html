@@ -133,7 +133,7 @@
 
 <div class="viewcode-block" id="EarlyStoppingPlugin.before_training_epoch"><a class="viewcode-back" href="../../../../../autoapi/avalanche/training/plugins/early_stopping/#avalanche.training.plugins.early_stopping.EarlyStoppingPlugin.before_training_epoch">[docs]</a>    <span class="k">def</span> <span class="nf">before_training_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_best</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">strategy</span><span class="o">.</span><span class="n">epoch</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_epoch</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">patience</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">strategy</span><span class="o">.</span><span class="n">clock</span><span class="o">.</span><span class="n">train_exp_epochs</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_epoch</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">patience</span><span class="p">:</span>
             <span class="n">strategy</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">best_state</span><span class="p">)</span>
             <span class="n">strategy</span><span class="o">.</span><span class="n">stop_training</span><span class="p">()</span></div>
 
@@ -143,7 +143,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_val</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">operator</span><span class="p">(</span><span class="n">val_acc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_val</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">best_state</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">strategy</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">best_val</span> <span class="o">=</span> <span class="n">val_acc</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">best_epoch</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">epoch</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">best_epoch</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">clock</span><span class="o">.</span><span class="n">train_exp_epochs</span></div>
 </pre></div>
 
            </div>

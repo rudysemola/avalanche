@@ -134,21 +134,15 @@
       <li><a href="../autoapi/avalanche/training/losses/#avalanche.training.losses.ICaRLLossPlugin.__call__">__call__() (avalanche.training.losses.ICaRLLossPlugin method)</a>
 
       <ul>
-        <li><a href="../autoapi/avalanche/training/plugins/#avalanche.training.plugins.ClassBalancedStoragePolicy.__call__">(avalanche.training.plugins.ClassBalancedStoragePolicy method)</a>
-</li>
         <li><a href="../autoapi/avalanche/training/plugins/cope/#avalanche.training.plugins.cope.PPPloss.__call__">(avalanche.training.plugins.cope.PPPloss method)</a>
-</li>
-        <li><a href="../autoapi/avalanche/training/plugins/#avalanche.training.plugins.ExperienceBalancedStoragePolicy.__call__">(avalanche.training.plugins.ExperienceBalancedStoragePolicy method)</a>
 </li>
         <li><a href="../autoapi/avalanche/training/plugins/#avalanche.training.plugins.PPPloss.__call__">(avalanche.training.plugins.PPPloss method)</a>
 </li>
-        <li><a href="../autoapi/avalanche/training/plugins/replay/#avalanche.training.plugins.replay.ClassBalancedStoragePolicy.__call__">(avalanche.training.plugins.replay.ClassBalancedStoragePolicy method)</a>
+        <li><a href="../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ClassBalancedStoragePolicy.__call__">(avalanche.training.storage_policy.ClassBalancedStoragePolicy method)</a>
 </li>
-        <li><a href="../autoapi/avalanche/training/plugins/replay/#avalanche.training.plugins.replay.ExperienceBalancedStoragePolicy.__call__">(avalanche.training.plugins.replay.ExperienceBalancedStoragePolicy method)</a>
+        <li><a href="../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ExperienceBalancedStoragePolicy.__call__">(avalanche.training.storage_policy.ExperienceBalancedStoragePolicy method)</a>
 </li>
-        <li><a href="../autoapi/avalanche/training/plugins/replay/#avalanche.training.plugins.replay.StoragePolicy.__call__">(avalanche.training.plugins.replay.StoragePolicy method)</a>
-</li>
-        <li><a href="../autoapi/avalanche/training/plugins/#avalanche.training.plugins.StoragePolicy.__call__">(avalanche.training.plugins.StoragePolicy method)</a>
+        <li><a href="../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.StoragePolicy.__call__">(avalanche.training.storage_policy.StoragePolicy method)</a>
 </li>
       </ul></li>
       <li><a href="../autoapi/avalanche/logging/tensorboard_logger/#avalanche.logging.tensorboard_logger.TensorboardLogger.__del__">__del__() (avalanche.logging.tensorboard_logger.TensorboardLogger method)</a>
@@ -343,8 +337,6 @@
         <li><a href="../autoapi/avalanche/benchmarks/utils/#avalanche.benchmarks.utils.AvalancheDataset.__radd__">(avalanche.benchmarks.utils.AvalancheDataset method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="../autoapi/avalanche/benchmarks/classic/#avalanche.benchmarks.classic.Stream51.__repr__">__repr__() (avalanche.benchmarks.classic.Stream51 method)</a>
 
       <ul>
@@ -359,6 +351,8 @@
         <li><a href="../autoapi/avalanche/benchmarks/#avalanche.benchmarks.Stream51.__repr__">(avalanche.benchmarks.Stream51 method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="../autoapi/avalanche/benchmarks/utils/dataset_utils/#avalanche.benchmarks.utils.dataset_utils.ConstantSequence.__str__">__str__() (avalanche.benchmarks.utils.dataset_utils.ConstantSequence method)</a>
 
       <ul>
@@ -884,6 +878,8 @@
 </li>
         <li><a href="../autoapi/avalanche/training/#avalanche.training.BaseStrategy.after_eval_iteration">(avalanche.training.BaseStrategy method)</a>
 </li>
+        <li><a href="../autoapi/avalanche/training/plugins/clock/#avalanche.training.plugins.clock.Clock.after_eval_iteration">(avalanche.training.plugins.clock.Clock method)</a>
+</li>
         <li><a href="../autoapi/avalanche/training/plugins/cope/#avalanche.training.plugins.cope.CoPEPlugin.after_eval_iteration">(avalanche.training.plugins.cope.CoPEPlugin method)</a>
 </li>
         <li><a href="../autoapi/avalanche/training/plugins/#avalanche.training.plugins.CoPEPlugin.after_eval_iteration">(avalanche.training.plugins.CoPEPlugin method)</a>
@@ -1048,6 +1044,8 @@
 </li>
         <li><a href="../autoapi/avalanche/training/#avalanche.training.BaseStrategy.after_training_epoch">(avalanche.training.BaseStrategy method)</a>
 </li>
+        <li><a href="../autoapi/avalanche/training/plugins/clock/#avalanche.training.plugins.clock.Clock.after_training_epoch">(avalanche.training.plugins.clock.Clock method)</a>
+</li>
         <li><a href="../autoapi/avalanche/training/plugins/evaluation/#avalanche.training.plugins.evaluation.EvaluationPlugin.after_training_epoch">(avalanche.training.plugins.evaluation.EvaluationPlugin method)</a>
 </li>
         <li><a href="../autoapi/avalanche/training/plugins/#avalanche.training.plugins.EvaluationPlugin.after_training_epoch">(avalanche.training.plugins.EvaluationPlugin method)</a>
@@ -1091,6 +1089,8 @@
         <li><a href="../autoapi/avalanche/training/plugins/agem/#avalanche.training.plugins.agem.AGEMPlugin.after_training_exp">(avalanche.training.plugins.agem.AGEMPlugin method)</a>
 </li>
         <li><a href="../autoapi/avalanche/training/plugins/#avalanche.training.plugins.AGEMPlugin.after_training_exp">(avalanche.training.plugins.AGEMPlugin method)</a>
+</li>
+        <li><a href="../autoapi/avalanche/training/plugins/clock/#avalanche.training.plugins.clock.Clock.after_training_exp">(avalanche.training.plugins.clock.Clock method)</a>
 </li>
         <li><a href="../autoapi/avalanche/training/plugins/cope/#avalanche.training.plugins.cope.CoPEPlugin.after_training_exp">(avalanche.training.plugins.cope.CoPEPlugin method)</a>
 </li>
@@ -1171,6 +1171,8 @@
         <li><a href="../autoapi/avalanche/logging/#avalanche.logging.StrategyLogger.after_training_iteration">(avalanche.logging.StrategyLogger method)</a>
 </li>
         <li><a href="../autoapi/avalanche/training/#avalanche.training.BaseStrategy.after_training_iteration">(avalanche.training.BaseStrategy method)</a>
+</li>
+        <li><a href="../autoapi/avalanche/training/plugins/clock/#avalanche.training.plugins.clock.Clock.after_training_iteration">(avalanche.training.plugins.clock.Clock method)</a>
 </li>
         <li><a href="../autoapi/avalanche/training/plugins/cope/#avalanche.training.plugins.cope.CoPEPlugin.after_training_iteration">(avalanche.training.plugins.cope.CoPEPlugin method)</a>
 </li>
@@ -1909,6 +1911,13 @@
 </li>
       </ul></li>
       <li>
+    avalanche.evaluation.plot_utils
+
+      <ul>
+        <li><a href="../autoapi/avalanche/evaluation/plot_utils/#module-avalanche.evaluation.plot_utils">module</a>
+</li>
+      </ul></li>
+      <li>
     avalanche.logging
 
       <ul>
@@ -2098,6 +2107,13 @@
 </li>
       </ul></li>
       <li>
+    avalanche.training.plugins.clock
+
+      <ul>
+        <li><a href="../autoapi/avalanche/training/plugins/clock/#module-avalanche.training.plugins.clock">module</a>
+</li>
+      </ul></li>
+      <li>
     avalanche.training.plugins.cope
 
       <ul>
@@ -2193,6 +2209,13 @@
 
       <ul>
         <li><a href="../autoapi/avalanche/training/plugins/synaptic_intelligence/#module-avalanche.training.plugins.synaptic_intelligence">module</a>
+</li>
+      </ul></li>
+      <li>
+    avalanche.training.storage_policy
+
+      <ul>
+        <li><a href="../autoapi/avalanche/training/storage_policy/#module-avalanche.training.storage_policy">module</a>
 </li>
       </ul></li>
       <li>
@@ -2619,6 +2642,10 @@
 </li>
         <li><a href="../autoapi/avalanche/training/plugins/#avalanche.training.plugins.EvaluationPlugin.before_train_dataset_adaptation">(avalanche.training.plugins.EvaluationPlugin method)</a>
 </li>
+        <li><a href="../autoapi/avalanche/training/plugins/gdumb/#avalanche.training.plugins.gdumb.GDumbPlugin.before_train_dataset_adaptation">(avalanche.training.plugins.gdumb.GDumbPlugin method)</a>
+</li>
+        <li><a href="../autoapi/avalanche/training/plugins/#avalanche.training.plugins.GDumbPlugin.before_train_dataset_adaptation">(avalanche.training.plugins.GDumbPlugin method)</a>
+</li>
         <li><a href="../autoapi/avalanche/training/plugins/strategy_plugin/#avalanche.training.plugins.strategy_plugin.StrategyPlugin.before_train_dataset_adaptation">(avalanche.training.plugins.strategy_plugin.StrategyPlugin method)</a>
 </li>
         <li><a href="../autoapi/avalanche/training/plugins/#avalanche.training.plugins.StrategyPlugin.before_train_dataset_adaptation">(avalanche.training.plugins.StrategyPlugin method)</a>
@@ -2731,6 +2758,8 @@
 </li>
         <li><a href="../autoapi/avalanche/training/#avalanche.training.BaseStrategy.before_training_epoch">(avalanche.training.BaseStrategy method)</a>
 </li>
+        <li><a href="../autoapi/avalanche/training/plugins/clock/#avalanche.training.plugins.clock.Clock.before_training_epoch">(avalanche.training.plugins.clock.Clock method)</a>
+</li>
         <li><a href="../autoapi/avalanche/training/plugins/early_stopping/#avalanche.training.plugins.early_stopping.EarlyStoppingPlugin.before_training_epoch">(avalanche.training.plugins.early_stopping.EarlyStoppingPlugin method)</a>
 </li>
         <li><a href="../autoapi/avalanche/training/plugins/evaluation/#avalanche.training.plugins.evaluation.EvaluationPlugin.before_training_epoch">(avalanche.training.plugins.evaluation.EvaluationPlugin method)</a>
@@ -2778,6 +2807,8 @@
         <li><a href="../autoapi/avalanche/training/#avalanche.training.AR1.before_training_exp">(avalanche.training.AR1 method)</a>
 </li>
         <li><a href="../autoapi/avalanche/training/#avalanche.training.BaseStrategy.before_training_exp">(avalanche.training.BaseStrategy method)</a>
+</li>
+        <li><a href="../autoapi/avalanche/training/plugins/clock/#avalanche.training.plugins.clock.Clock.before_training_exp">(avalanche.training.plugins.clock.Clock method)</a>
 </li>
         <li><a href="../autoapi/avalanche/training/plugins/cope/#avalanche.training.plugins.cope.CoPEPlugin.before_training_exp">(avalanche.training.plugins.cope.CoPEPlugin method)</a>
 </li>
@@ -3014,12 +3045,8 @@
         <li><a href="../autoapi/avalanche/benchmarks/datasets/#avalanche.benchmarks.datasets.MiniImageNetDataset.class_to_idx">(avalanche.benchmarks.datasets.MiniImageNetDataset attribute)</a>
 </li>
       </ul></li>
-      <li><a href="../autoapi/avalanche/training/plugins/#avalanche.training.plugins.ClassBalancedStoragePolicy">ClassBalancedStoragePolicy (class in avalanche.training.plugins)</a>
-
-      <ul>
-        <li><a href="../autoapi/avalanche/training/plugins/replay/#avalanche.training.plugins.replay.ClassBalancedStoragePolicy">(class in avalanche.training.plugins.replay)</a>
+      <li><a href="../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ClassBalancedStoragePolicy">ClassBalancedStoragePolicy (class in avalanche.training.storage_policy)</a>
 </li>
-      </ul></li>
       <li><a href="../autoapi/avalanche/benchmarks/datasets/mini_imagenet/mini_imagenet/#avalanche.benchmarks.datasets.mini_imagenet.mini_imagenet.MiniImageNetDataset.classes">classes (avalanche.benchmarks.datasets.mini_imagenet.mini_imagenet.MiniImageNetDataset attribute)</a>
 
       <ul>
@@ -3082,7 +3109,7 @@
         <li><a href="../autoapi/avalanche/benchmarks/scenarios/generic_cl_scenario/#avalanche.benchmarks.scenarios.generic_cl_scenario.AbstractExperience.classes_seen_so_far">(avalanche.benchmarks.scenarios.generic_cl_scenario.AbstractExperience attribute)</a>
 </li>
       </ul></li>
-      <li><a href="../autoapi/avalanche/training/plugins/replay/#avalanche.training.plugins.replay.ClassExemplarsSelectionStrategy">ClassExemplarsSelectionStrategy (class in avalanche.training.plugins.replay)</a>
+      <li><a href="../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ClassExemplarsSelectionStrategy">ClassExemplarsSelectionStrategy (class in avalanche.training.storage_policy)</a>
 </li>
       <li><a href="../autoapi/avalanche/benchmarks/utils/avalanche_dataset/#avalanche.benchmarks.utils.avalanche_dataset.AvalancheDatasetType.CLASSIFICATION">CLASSIFICATION (avalanche.benchmarks.utils.avalanche_dataset.AvalancheDatasetType attribute)</a>
 
@@ -3094,13 +3121,23 @@
 </li>
       <li><a href="../autoapi/avalanche/benchmarks/utils/dataset_utils/#avalanche.benchmarks.utils.dataset_utils.ClassificationSubset">ClassificationSubset (class in avalanche.benchmarks.utils.dataset_utils)</a>
 </li>
+      <li><a href="../autoapi/avalanche/training/#avalanche.training.BaseStrategy.clock">clock (avalanche.training.BaseStrategy attribute)</a>
+
+      <ul>
+        <li><a href="../autoapi/avalanche/training/strategies/base_strategy/#avalanche.training.strategies.base_strategy.BaseStrategy.clock">(avalanche.training.strategies.base_strategy.BaseStrategy attribute)</a>
+</li>
+        <li><a href="../autoapi/avalanche/training/strategies/#avalanche.training.strategies.BaseStrategy.clock">(avalanche.training.strategies.BaseStrategy attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="../autoapi/avalanche/training/plugins/clock/#avalanche.training.plugins.clock.Clock">Clock (class in avalanche.training.plugins.clock)</a>
+</li>
       <li><a href="../autoapi/avalanche/logging/csv_logger/#avalanche.logging.csv_logger.CSVLogger.close">close() (avalanche.logging.csv_logger.CSVLogger method)</a>
 
       <ul>
         <li><a href="../autoapi/avalanche/logging/#avalanche.logging.CSVLogger.close">(avalanche.logging.CSVLogger method)</a>
 </li>
       </ul></li>
-      <li><a href="../autoapi/avalanche/training/plugins/replay/#avalanche.training.plugins.replay.ClosestToCenterSelectionStrategy">ClosestToCenterSelectionStrategy (class in avalanche.training.plugins.replay)</a>
+      <li><a href="../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ClosestToCenterSelectionStrategy">ClosestToCenterSelectionStrategy (class in avalanche.training.storage_policy)</a>
 </li>
       <li><a href="../autoapi/avalanche/benchmarks/datasets/#avalanche.benchmarks.datasets.CocoCaptions">CocoCaptions() (in module avalanche.benchmarks.datasets)</a>
 
@@ -3146,14 +3183,14 @@
         <li><a href="../autoapi/avalanche/training/plugins/#avalanche.training.plugins.LFLPlugin.compute_features">(avalanche.training.plugins.LFLPlugin method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="../autoapi/avalanche/training/plugins/ewc/#avalanche.training.plugins.ewc.EWCPlugin.compute_importances">compute_importances() (avalanche.training.plugins.ewc.EWCPlugin method)</a>
 
       <ul>
         <li><a href="../autoapi/avalanche/training/plugins/#avalanche.training.plugins.EWCPlugin.compute_importances">(avalanche.training.plugins.EWCPlugin method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="../autoapi/avalanche/benchmarks/utils/#avalanche.benchmarks.utils.concat_datasets_sequentially">concat_datasets_sequentially() (in module avalanche.benchmarks.utils)</a>
 
       <ul>
@@ -3340,12 +3377,8 @@
         <li><a href="../autoapi/avalanche/benchmarks/utils/#avalanche.benchmarks.utils.AvalancheDataset.current_transform_group">(avalanche.benchmarks.utils.AvalancheDataset attribute)</a>
 </li>
       </ul></li>
-      <li><a href="../autoapi/avalanche/training/plugins/#avalanche.training.plugins.ClassBalancedStoragePolicy.cutoff_memory">cutoff_memory() (avalanche.training.plugins.ClassBalancedStoragePolicy method)</a>
-
-      <ul>
-        <li><a href="../autoapi/avalanche/training/plugins/replay/#avalanche.training.plugins.replay.ClassBalancedStoragePolicy.cutoff_memory">(avalanche.training.plugins.replay.ClassBalancedStoragePolicy method)</a>
+      <li><a href="../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ClassBalancedStoragePolicy.cutoff_memory">cutoff_memory() (avalanche.training.storage_policy.ClassBalancedStoragePolicy method)</a>
 </li>
-      </ul></li>
       <li><a href="../autoapi/avalanche/training/#avalanche.training.CWRStar">CWRStar (class in avalanche.training)</a>
 
       <ul>
@@ -3518,12 +3551,8 @@
         <li><a href="../autoapi/avalanche/evaluation/metrics/disk_usage/#avalanche.evaluation.metrics.disk_usage.DiskUsage">(class in avalanche.evaluation.metrics.disk_usage)</a>
 </li>
       </ul></li>
-      <li><a href="../autoapi/avalanche/training/plugins/#avalanche.training.plugins.ClassBalancedStoragePolicy.divide_remaining_samples">divide_remaining_samples() (avalanche.training.plugins.ClassBalancedStoragePolicy method)</a>
-
-      <ul>
-        <li><a href="../autoapi/avalanche/training/plugins/replay/#avalanche.training.plugins.replay.ClassBalancedStoragePolicy.divide_remaining_samples">(avalanche.training.plugins.replay.ClassBalancedStoragePolicy method)</a>
+      <li><a href="../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ClassBalancedStoragePolicy.divide_remaining_samples">divide_remaining_samples() (avalanche.training.storage_policy.ClassBalancedStoragePolicy method)</a>
 </li>
-      </ul></li>
       <li><a href="../autoapi/avalanche/benchmarks/datasets/downloadable_dataset/#avalanche.benchmarks.datasets.downloadable_dataset.DownloadableDataset.download">download (avalanche.benchmarks.datasets.downloadable_dataset.DownloadableDataset attribute)</a>
 
       <ul>
@@ -3574,12 +3603,12 @@
         <li><a href="../autoapi/avalanche/benchmarks/datasets/torchvision_wrapper/#avalanche.benchmarks.datasets.torchvision_wrapper.EMNIST">(in module avalanche.benchmarks.datasets.torchvision_wrapper)</a>
 </li>
       </ul></li>
-      <li><a href="../autoapi/avalanche/training/#avalanche.training.BaseStrategy.epoch">epoch (avalanche.training.BaseStrategy attribute)</a>
+      <li><a href="../autoapi/avalanche/training/#avalanche.training.BaseStrategy.epoch">epoch() (avalanche.training.BaseStrategy property)</a>
 
       <ul>
-        <li><a href="../autoapi/avalanche/training/strategies/base_strategy/#avalanche.training.strategies.base_strategy.BaseStrategy.epoch">(avalanche.training.strategies.base_strategy.BaseStrategy attribute)</a>
+        <li><a href="../autoapi/avalanche/training/strategies/base_strategy/#avalanche.training.strategies.base_strategy.BaseStrategy.epoch">(avalanche.training.strategies.base_strategy.BaseStrategy property)</a>
 </li>
-        <li><a href="../autoapi/avalanche/training/strategies/#avalanche.training.strategies.BaseStrategy.epoch">(avalanche.training.strategies.BaseStrategy attribute)</a>
+        <li><a href="../autoapi/avalanche/training/strategies/#avalanche.training.strategies.BaseStrategy.epoch">(avalanche.training.strategies.BaseStrategy property)</a>
 </li>
       </ul></li>
       <li><a href="../autoapi/avalanche/evaluation/metrics/#avalanche.evaluation.metrics.EpochAccuracy">EpochAccuracy (class in avalanche.evaluation.metrics)</a>
@@ -3728,10 +3757,10 @@
         <li><a href="../autoapi/avalanche/training/plugins/ewc/#avalanche.training.plugins.ewc.EWCPlugin">(class in avalanche.training.plugins.ewc)</a>
 </li>
       </ul></li>
-      <li><a href="../autoapi/avalanche/training/utils/#avalanche.training.utils.examples_per_class">examples_per_class() (in module avalanche.training.utils)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="../autoapi/avalanche/training/utils/#avalanche.training.utils.examples_per_class">examples_per_class() (in module avalanche.training.utils)</a>
+</li>
       <li><a href="../autoapi/avalanche/evaluation/metrics/forgetting_bwt/#avalanche.evaluation.metrics.forgetting_bwt.GenericStreamForgetting.exp_result">exp_result() (avalanche.evaluation.metrics.forgetting_bwt.GenericStreamForgetting method)</a>
 
       <ul>
@@ -3784,12 +3813,8 @@
         <li><a href="../autoapi/avalanche/evaluation/metrics/accuracy/#avalanche.evaluation.metrics.accuracy.ExperienceAccuracy">(class in avalanche.evaluation.metrics.accuracy)</a>
 </li>
       </ul></li>
-      <li><a href="../autoapi/avalanche/training/plugins/#avalanche.training.plugins.ExperienceBalancedStoragePolicy">ExperienceBalancedStoragePolicy (class in avalanche.training.plugins)</a>
-
-      <ul>
-        <li><a href="../autoapi/avalanche/training/plugins/replay/#avalanche.training.plugins.replay.ExperienceBalancedStoragePolicy">(class in avalanche.training.plugins.replay)</a>
+      <li><a href="../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ExperienceBalancedStoragePolicy">ExperienceBalancedStoragePolicy (class in avalanche.training.storage_policy)</a>
 </li>
-      </ul></li>
       <li><a href="../autoapi/avalanche/evaluation/metrics/#avalanche.evaluation.metrics.ExperienceBWT">ExperienceBWT (class in avalanche.evaluation.metrics)</a>
 
       <ul>
@@ -3916,7 +3941,7 @@
         <li><a href="../autoapi/avalanche/benchmarks/datasets/torchvision_wrapper/#avalanche.benchmarks.datasets.torchvision_wrapper.FashionMNIST">(in module avalanche.benchmarks.datasets.torchvision_wrapper)</a>
 </li>
       </ul></li>
-      <li><a href="../autoapi/avalanche/training/plugins/replay/#avalanche.training.plugins.replay.FeatureBasedExemplarsSelectionStrategy">FeatureBasedExemplarsSelectionStrategy (class in avalanche.training.plugins.replay)</a>
+      <li><a href="../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.FeatureBasedExemplarsSelectionStrategy">FeatureBasedExemplarsSelectionStrategy (class in avalanche.training.storage_policy)</a>
 </li>
       <li><a href="../autoapi/avalanche/models/#avalanche.models.FeatureExtractorBackbone">FeatureExtractorBackbone (class in avalanche.models)</a>
 
@@ -4300,12 +4325,6 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="../autoapi/avalanche/evaluation/metric_definitions/#avalanche.evaluation.metric_definitions.PluginMetric.get_global_counter">get_global_counter() (avalanche.evaluation.metric_definitions.PluginMetric method)</a>
-
-      <ul>
-        <li><a href="../autoapi/avalanche/evaluation/#avalanche.evaluation.PluginMetric.get_global_counter">(avalanche.evaluation.PluginMetric method)</a>
-</li>
-      </ul></li>
       <li><a href="../autoapi/avalanche/training/plugins/gss_greedy/#avalanche.training.plugins.gss_greedy.GSS_greedyPlugin.get_grad_vector">get_grad_vector() (avalanche.training.plugins.gss_greedy.GSS_greedyPlugin method)</a>
 
       <ul>
@@ -4394,12 +4413,6 @@
         <li><a href="../autoapi/avalanche/benchmarks/utils/#avalanche.benchmarks.utils.AvalancheDataset.get_transforms">(avalanche.benchmarks.utils.AvalancheDataset method)</a>
 </li>
       </ul></li>
-      <li><a href="../autoapi/avalanche/evaluation/metric_definitions/#avalanche.evaluation.metric_definitions.PluginMetric.global_it_counter">global_it_counter (avalanche.evaluation.metric_definitions.PluginMetric attribute)</a>
-
-      <ul>
-        <li><a href="../autoapi/avalanche/evaluation/#avalanche.evaluation.PluginMetric.global_it_counter">(avalanche.evaluation.PluginMetric attribute)</a>
-</li>
-      </ul></li>
       <li><a href="../autoapi/avalanche/evaluation/metrics/#avalanche.evaluation.metrics.gpu_usage_metrics">gpu_usage_metrics() (in module avalanche.evaluation.metrics)</a>
 
       <ul>
@@ -4434,7 +4447,7 @@
 <h2 id="H">H</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="../autoapi/avalanche/training/plugins/replay/#avalanche.training.plugins.replay.HerdingSelectionStrategy">HerdingSelectionStrategy (class in avalanche.training.plugins.replay)</a>
+      <li><a href="../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.HerdingSelectionStrategy">HerdingSelectionStrategy (class in avalanche.training.storage_policy)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -4684,6 +4697,8 @@
 </li>
       <li><a href="../autoapi/avalanche/benchmarks/scenarios/generic_benchmark_creation/#avalanche.benchmarks.scenarios.generic_benchmark_creation.LazyStreamDefinition">LazyStreamDefinition (class in avalanche.benchmarks.scenarios.generic_benchmark_creation)</a>
 </li>
+      <li><a href="../autoapi/avalanche/evaluation/plot_utils/#avalanche.evaluation.plot_utils.learning_curves_plot">learning_curves_plot() (in module avalanche.evaluation.plot_utils)</a>
+</li>
       <li><a href="../autoapi/avalanche/training/#avalanche.training.LFL">LFL (class in avalanche.training)</a>
 
       <ul>
@@ -4854,20 +4869,20 @@
         <li><a href="../autoapi/avalanche/training/#avalanche.training.StreamingLDA.make_optimizer">(avalanche.training.StreamingLDA method)</a>
 </li>
       </ul></li>
-      <li><a href="../autoapi/avalanche/training/plugins/replay/#avalanche.training.plugins.replay.ClassExemplarsSelectionStrategy.make_sorted_indices">make_sorted_indices() (avalanche.training.plugins.replay.ClassExemplarsSelectionStrategy method)</a>
+      <li><a href="../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ClassExemplarsSelectionStrategy.make_sorted_indices">make_sorted_indices() (avalanche.training.storage_policy.ClassExemplarsSelectionStrategy method)</a>
 
       <ul>
-        <li><a href="../autoapi/avalanche/training/plugins/replay/#avalanche.training.plugins.replay.FeatureBasedExemplarsSelectionStrategy.make_sorted_indices">(avalanche.training.plugins.replay.FeatureBasedExemplarsSelectionStrategy method)</a>
+        <li><a href="../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.FeatureBasedExemplarsSelectionStrategy.make_sorted_indices">(avalanche.training.storage_policy.FeatureBasedExemplarsSelectionStrategy method)</a>
 </li>
-        <li><a href="../autoapi/avalanche/training/plugins/replay/#avalanche.training.plugins.replay.RandomExemplarsSelectionStrategy.make_sorted_indices">(avalanche.training.plugins.replay.RandomExemplarsSelectionStrategy method)</a>
+        <li><a href="../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.RandomExemplarsSelectionStrategy.make_sorted_indices">(avalanche.training.storage_policy.RandomExemplarsSelectionStrategy method)</a>
 </li>
       </ul></li>
-      <li><a href="../autoapi/avalanche/training/plugins/replay/#avalanche.training.plugins.replay.ClosestToCenterSelectionStrategy.make_sorted_indices_from_features">make_sorted_indices_from_features() (avalanche.training.plugins.replay.ClosestToCenterSelectionStrategy method)</a>
+      <li><a href="../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ClosestToCenterSelectionStrategy.make_sorted_indices_from_features">make_sorted_indices_from_features() (avalanche.training.storage_policy.ClosestToCenterSelectionStrategy method)</a>
 
       <ul>
-        <li><a href="../autoapi/avalanche/training/plugins/replay/#avalanche.training.plugins.replay.FeatureBasedExemplarsSelectionStrategy.make_sorted_indices_from_features">(avalanche.training.plugins.replay.FeatureBasedExemplarsSelectionStrategy method)</a>
+        <li><a href="../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.FeatureBasedExemplarsSelectionStrategy.make_sorted_indices_from_features">(avalanche.training.storage_policy.FeatureBasedExemplarsSelectionStrategy method)</a>
 </li>
-        <li><a href="../autoapi/avalanche/training/plugins/replay/#avalanche.training.plugins.replay.HerdingSelectionStrategy.make_sorted_indices_from_features">(avalanche.training.plugins.replay.HerdingSelectionStrategy method)</a>
+        <li><a href="../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.HerdingSelectionStrategy.make_sorted_indices_from_features">(avalanche.training.storage_policy.HerdingSelectionStrategy method)</a>
 </li>
       </ul></li>
       <li><a href="../autoapi/avalanche/training/#avalanche.training.AR1.make_train_dataloader">make_train_dataloader() (avalanche.training.AR1 method)</a>
@@ -4908,12 +4923,12 @@
         <li><a href="../autoapi/avalanche/evaluation/metrics/ram_usage/#avalanche.evaluation.metrics.ram_usage.MaxRAM">(class in avalanche.evaluation.metrics.ram_usage)</a>
 </li>
       </ul></li>
-      <li><a href="../autoapi/avalanche/training/#avalanche.training.BaseStrategy.mb_it">mb_it (avalanche.training.BaseStrategy attribute)</a>
+      <li><a href="../autoapi/avalanche/training/#avalanche.training.BaseStrategy.mb_it">mb_it() (avalanche.training.BaseStrategy property)</a>
 
       <ul>
-        <li><a href="../autoapi/avalanche/training/strategies/base_strategy/#avalanche.training.strategies.base_strategy.BaseStrategy.mb_it">(avalanche.training.strategies.base_strategy.BaseStrategy attribute)</a>
+        <li><a href="../autoapi/avalanche/training/strategies/base_strategy/#avalanche.training.strategies.base_strategy.BaseStrategy.mb_it">(avalanche.training.strategies.base_strategy.BaseStrategy property)</a>
 </li>
-        <li><a href="../autoapi/avalanche/training/strategies/#avalanche.training.strategies.BaseStrategy.mb_it">(avalanche.training.strategies.BaseStrategy attribute)</a>
+        <li><a href="../autoapi/avalanche/training/strategies/#avalanche.training.strategies.BaseStrategy.mb_it">(avalanche.training.strategies.BaseStrategy property)</a>
 </li>
       </ul></li>
       <li><a href="../autoapi/avalanche/training/#avalanche.training.BaseStrategy.mb_output">mb_output (avalanche.training.BaseStrategy attribute)</a>
@@ -5308,6 +5323,8 @@
 </li>
         <li><a href="../autoapi/avalanche/evaluation/metrics/timing/#module-avalanche.evaluation.metrics.timing">avalanche.evaluation.metrics.timing</a>
 </li>
+        <li><a href="../autoapi/avalanche/evaluation/plot_utils/#module-avalanche.evaluation.plot_utils">avalanche.evaluation.plot_utils</a>
+</li>
         <li><a href="../autoapi/avalanche/logging/#module-avalanche.logging">avalanche.logging</a>
 </li>
         <li><a href="../autoapi/avalanche/logging/csv_logger/#module-avalanche.logging.csv_logger">avalanche.logging.csv_logger</a>
@@ -5362,6 +5379,8 @@
 </li>
         <li><a href="../autoapi/avalanche/training/plugins/agem/#module-avalanche.training.plugins.agem">avalanche.training.plugins.agem</a>
 </li>
+        <li><a href="../autoapi/avalanche/training/plugins/clock/#module-avalanche.training.plugins.clock">avalanche.training.plugins.clock</a>
+</li>
         <li><a href="../autoapi/avalanche/training/plugins/cope/#module-avalanche.training.plugins.cope">avalanche.training.plugins.cope</a>
 </li>
         <li><a href="../autoapi/avalanche/training/plugins/cwr_star/#module-avalanche.training.plugins.cwr_star">avalanche.training.plugins.cwr_star</a>
@@ -5389,6 +5408,8 @@
         <li><a href="../autoapi/avalanche/training/plugins/strategy_plugin/#module-avalanche.training.plugins.strategy_plugin">avalanche.training.plugins.strategy_plugin</a>
 </li>
         <li><a href="../autoapi/avalanche/training/plugins/synaptic_intelligence/#module-avalanche.training.plugins.synaptic_intelligence">avalanche.training.plugins.synaptic_intelligence</a>
+</li>
+        <li><a href="../autoapi/avalanche/training/storage_policy/#module-avalanche.training.storage_policy">avalanche.training.storage_policy</a>
 </li>
         <li><a href="../autoapi/avalanche/training/strategies/#module-avalanche.training.strategies">avalanche.training.strategies</a>
 </li>
@@ -5903,7 +5924,7 @@
         <li><a href="../autoapi/avalanche/evaluation/metrics/ram_usage/#avalanche.evaluation.metrics.ram_usage.ram_usage_metrics">(in module avalanche.evaluation.metrics.ram_usage)</a>
 </li>
       </ul></li>
-      <li><a href="../autoapi/avalanche/training/plugins/replay/#avalanche.training.plugins.replay.RandomExemplarsSelectionStrategy">RandomExemplarsSelectionStrategy (class in avalanche.training.plugins.replay)</a>
+      <li><a href="../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.RandomExemplarsSelectionStrategy">RandomExemplarsSelectionStrategy (class in avalanche.training.storage_policy)</a>
 </li>
       <li><a href="../autoapi/avalanche/benchmarks/utils/avalanche_dataset/#avalanche.benchmarks.utils.avalanche_dataset.AvalancheDatasetType.REGRESSION">REGRESSION (avalanche.benchmarks.utils.avalanche_dataset.AvalancheDatasetType attribute)</a>
 
@@ -6473,12 +6494,8 @@
         <li><a href="../autoapi/avalanche/training/strategies/#avalanche.training.strategies.BaseStrategy.stop_training">(avalanche.training.strategies.BaseStrategy method)</a>
 </li>
       </ul></li>
-      <li><a href="../autoapi/avalanche/training/plugins/#avalanche.training.plugins.StoragePolicy">StoragePolicy (class in avalanche.training.plugins)</a>
-
-      <ul>
-        <li><a href="../autoapi/avalanche/training/plugins/replay/#avalanche.training.plugins.replay.StoragePolicy">(class in avalanche.training.plugins.replay)</a>
+      <li><a href="../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.StoragePolicy">StoragePolicy (class in avalanche.training.storage_policy)</a>
 </li>
-      </ul></li>
       <li><a href="../autoapi/avalanche/core/#avalanche.core.StrategyCallbacks">StrategyCallbacks (class in avalanche.core)</a>
 </li>
       <li><a href="../autoapi/avalanche/logging/#avalanche.logging.StrategyLogger">StrategyLogger (class in avalanche.logging)</a>
@@ -6621,18 +6638,10 @@
         <li><a href="../autoapi/avalanche/benchmarks/scenarios/generic_cl_scenario/#avalanche.benchmarks.scenarios.generic_cl_scenario.StreamUserDef">(class in avalanche.benchmarks.scenarios.generic_cl_scenario)</a>
 </li>
       </ul></li>
-      <li><a href="../autoapi/avalanche/training/plugins/#avalanche.training.plugins.ExperienceBalancedStoragePolicy.subsample_all_groups">subsample_all_groups() (avalanche.training.plugins.ExperienceBalancedStoragePolicy method)</a>
-
-      <ul>
-        <li><a href="../autoapi/avalanche/training/plugins/replay/#avalanche.training.plugins.replay.ExperienceBalancedStoragePolicy.subsample_all_groups">(avalanche.training.plugins.replay.ExperienceBalancedStoragePolicy method)</a>
+      <li><a href="../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ExperienceBalancedStoragePolicy.subsample_all_groups">subsample_all_groups() (avalanche.training.storage_policy.ExperienceBalancedStoragePolicy method)</a>
 </li>
-      </ul></li>
-      <li><a href="../autoapi/avalanche/training/plugins/#avalanche.training.plugins.ExperienceBalancedStoragePolicy.subsample_single">subsample_single() (avalanche.training.plugins.ExperienceBalancedStoragePolicy method)</a>
-
-      <ul>
-        <li><a href="../autoapi/avalanche/training/plugins/replay/#avalanche.training.plugins.replay.ExperienceBalancedStoragePolicy.subsample_single">(avalanche.training.plugins.replay.ExperienceBalancedStoragePolicy method)</a>
+      <li><a href="../autoapi/avalanche/training/storage_policy/#avalanche.training.storage_policy.ExperienceBalancedStoragePolicy.subsample_single">subsample_single() (avalanche.training.storage_policy.ExperienceBalancedStoragePolicy method)</a>
 </li>
-      </ul></li>
       <li><a href="../autoapi/avalanche/benchmarks/utils/dataset_utils/#avalanche.benchmarks.utils.dataset_utils.SubSequence">SubSequence (class in avalanche.benchmarks.utils.dataset_utils)</a>
 </li>
       <li><a href="../autoapi/avalanche/benchmarks/utils/dataset_utils/#avalanche.benchmarks.utils.dataset_utils.SubsetWithTargets">SubsetWithTargets (class in avalanche.benchmarks.utils.dataset_utils)</a>
@@ -6875,6 +6884,8 @@
         <li><a href="../autoapi/avalanche/benchmarks/datasets/tiny_imagenet/tiny_imagenet/#avalanche.benchmarks.datasets.tiny_imagenet.tiny_imagenet.TinyImagenet">(class in avalanche.benchmarks.datasets.tiny_imagenet.tiny_imagenet)</a>
 </li>
       </ul></li>
+      <li><a href="../autoapi/avalanche/training/plugins/clock/#avalanche.training.plugins.clock.Clock.total_iterations">total_iterations (avalanche.training.plugins.clock.Clock attribute)</a>
+</li>
       <li><a href="../autoapi/avalanche/benchmarks/utils/avalanche_dataset/#avalanche.benchmarks.utils.avalanche_dataset.AvalancheDataset.train">train() (avalanche.benchmarks.utils.avalanche_dataset.AvalancheDataset method)</a>
 
       <ul>
@@ -6931,6 +6942,8 @@
         <li><a href="../autoapi/avalanche/training/strategies/#avalanche.training.strategies.JointTraining.train_dataset_adaptation">(avalanche.training.strategies.JointTraining method)</a>
 </li>
       </ul></li>
+      <li><a href="../autoapi/avalanche/training/plugins/clock/#avalanche.training.plugins.clock.Clock.train_epoch_iterations">train_epoch_iterations (avalanche.training.plugins.clock.Clock attribute)</a>
+</li>
       <li><a href="../autoapi/avalanche/training/#avalanche.training.BaseStrategy.train_epochs">train_epochs (avalanche.training.BaseStrategy attribute)</a>
 
       <ul>
@@ -6955,6 +6968,10 @@
         <li><a href="../autoapi/avalanche/training/strategies/#avalanche.training.strategies.BaseStrategy.train_exp">(avalanche.training.strategies.BaseStrategy method)</a>
 </li>
       </ul></li>
+      <li><a href="../autoapi/avalanche/training/plugins/clock/#avalanche.training.plugins.clock.Clock.train_exp_counter">train_exp_counter (avalanche.training.plugins.clock.Clock attribute)</a>
+</li>
+      <li><a href="../autoapi/avalanche/training/plugins/clock/#avalanche.training.plugins.clock.Clock.train_exp_epochs">train_exp_epochs (avalanche.training.plugins.clock.Clock attribute)</a>
+</li>
       <li><a href="../autoapi/avalanche/evaluation/metrics/forgetting_bwt/#avalanche.evaluation.metrics.forgetting_bwt.GenericExperienceForgetting.train_exp_id">train_exp_id (avalanche.evaluation.metrics.forgetting_bwt.GenericExperienceForgetting attribute)</a>
 
       <ul>
@@ -6963,6 +6980,8 @@
         <li><a href="../autoapi/avalanche/evaluation/metrics/#avalanche.evaluation.metrics.GenericExperienceForgetting.train_exp_id">(avalanche.evaluation.metrics.GenericExperienceForgetting attribute)</a>
 </li>
       </ul></li>
+      <li><a href="../autoapi/avalanche/training/plugins/clock/#avalanche.training.plugins.clock.Clock.train_exp_iterations">train_exp_iterations (avalanche.training.plugins.clock.Clock attribute)</a>
+</li>
       <li><a href="../autoapi/avalanche/benchmarks/#avalanche.benchmarks.NCScenario.train_exps_patterns_assignment">train_exps_patterns_assignment (avalanche.benchmarks.NCScenario attribute)</a>
 
       <ul>
@@ -6981,6 +7000,8 @@
         <li><a href="../autoapi/avalanche/benchmarks/scenarios/#avalanche.benchmarks.scenarios.NIScenario.train_exps_patterns_assignment">(avalanche.benchmarks.scenarios.NIScenario attribute)</a>
 </li>
       </ul></li>
+      <li><a href="../autoapi/avalanche/training/plugins/clock/#avalanche.training.plugins.clock.Clock.train_iterations">train_iterations (avalanche.training.plugins.clock.Clock attribute)</a>
+</li>
       <li><a href="../autoapi/avalanche/training/#avalanche.training.BaseStrategy.train_mb_size">train_mb_size (avalanche.training.BaseStrategy attribute)</a>
 
       <ul>
@@ -7029,12 +7050,12 @@
         <li><a href="../autoapi/avalanche/training/#avalanche.training.StreamingLDA.training_epoch">(avalanche.training.StreamingLDA method)</a>
 </li>
       </ul></li>
-      <li><a href="../autoapi/avalanche/training/#avalanche.training.BaseStrategy.training_exp_counter">training_exp_counter (avalanche.training.BaseStrategy attribute)</a>
+      <li><a href="../autoapi/avalanche/training/#avalanche.training.BaseStrategy.training_exp_counter">training_exp_counter() (avalanche.training.BaseStrategy property)</a>
 
       <ul>
-        <li><a href="../autoapi/avalanche/training/strategies/base_strategy/#avalanche.training.strategies.base_strategy.BaseStrategy.training_exp_counter">(avalanche.training.strategies.base_strategy.BaseStrategy attribute)</a>
+        <li><a href="../autoapi/avalanche/training/strategies/base_strategy/#avalanche.training.strategies.base_strategy.BaseStrategy.training_exp_counter">(avalanche.training.strategies.base_strategy.BaseStrategy property)</a>
 </li>
-        <li><a href="../autoapi/avalanche/training/strategies/#avalanche.training.strategies.BaseStrategy.training_exp_counter">(avalanche.training.strategies.BaseStrategy attribute)</a>
+        <li><a href="../autoapi/avalanche/training/strategies/#avalanche.training.strategies.BaseStrategy.training_exp_counter">(avalanche.training.strategies.BaseStrategy property)</a>
 </li>
       </ul></li>
       <li><a href="../autoapi/avalanche/benchmarks/utils/avalanche_dataset/#avalanche.benchmarks.utils.avalanche_dataset.AvalancheDataset.transform">transform (avalanche.benchmarks.utils.avalanche_dataset.AvalancheDataset attribute)</a>

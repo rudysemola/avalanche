@@ -130,23 +130,16 @@ Classes
       EvaluationPlugin used for logging and metric computations. 
 
 
+   .. attribute:: clock
+      
+
+      Incremental counters for strategy events. 
+
+
    .. attribute:: eval_every
       
 
       Frequency of the evaluation during training. 
-
-
-   .. attribute:: training_exp_counter
-      :annotation: = 0
-
-      Counts the number of training steps. +1 at the end of each 
-      experience. 
-
-
-   .. attribute:: epoch
-      :annotation: :Optional[int]
-
-      Epoch counter. 
 
 
    .. attribute:: experience
@@ -171,12 +164,6 @@ Classes
       
 
       Dataloader. 
-
-
-   .. attribute:: mb_it
-      
-
-      Iteration counter. Reset at the start of a new epoch. 
 
 
    .. attribute:: mbatch
@@ -206,7 +193,26 @@ Classes
    .. attribute:: current_eval_stream
       
 
-      User-provided evaluation stream on `eval` call
+      User-provided evaluation stream on `eval` call. 
+
+
+   .. method:: training_exp_counter(self)
+      :property:
+
+      Counts the number of training steps. +1 at the end of each
+      experience. 
+
+
+   .. method:: epoch(self)
+      :property:
+
+      Epoch counter. 
+
+
+   .. method:: mb_it(self)
+      :property:
+
+      Iteration counter. Reset at the start of a new epoch. 
 
 
    .. method:: is_eval(self)

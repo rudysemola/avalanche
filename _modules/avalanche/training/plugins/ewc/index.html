@@ -152,21 +152,21 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute EWC penalty and add it to the loss.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">if</span> <span class="n">strategy</span><span class="o">.</span><span class="n">training_exp_counter</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">exp_counter</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">clock</span><span class="o">.</span><span class="n">train_exp_counter</span>
+        <span class="k">if</span> <span class="n">exp_counter</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span>
 
         <span class="n">penalty</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">strategy</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;separate&#39;</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">experience</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">strategy</span><span class="o">.</span><span class="n">training_exp_counter</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">experience</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">exp_counter</span><span class="p">):</span>
                 <span class="k">for</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">cur_param</span><span class="p">),</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">saved_param</span><span class="p">),</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">imp</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
                         <span class="n">strategy</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">(),</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">saved_params</span><span class="p">[</span><span class="n">experience</span><span class="p">],</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">importances</span><span class="p">[</span><span class="n">experience</span><span class="p">]):</span>
                     <span class="n">penalty</span> <span class="o">+=</span> <span class="p">(</span><span class="n">imp</span> <span class="o">*</span> <span class="p">(</span><span class="n">cur_param</span> <span class="o">-</span> <span class="n">saved_param</span><span class="p">)</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;online&#39;</span><span class="p">:</span>
-            <span class="n">prev_exp</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">training_exp_counter</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">prev_exp</span> <span class="o">=</span> <span class="n">exp_counter</span> <span class="o">-</span> <span class="mi">1</span>
             <span class="k">for</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">cur_param</span><span class="p">),</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">saved_param</span><span class="p">),</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">imp</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
                     <span class="n">strategy</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">(),</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">saved_params</span><span class="p">[</span><span class="n">prev_exp</span><span class="p">],</span>
@@ -181,20 +181,20 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute importances of parameters after each experience.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
+        <span class="n">exp_counter</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">clock</span><span class="o">.</span><span class="n">train_exp_counter</span>
         <span class="n">importances</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_importances</span><span class="p">(</span><span class="n">strategy</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
                                                <span class="n">strategy</span><span class="o">.</span><span class="n">_criterion</span><span class="p">,</span>
                                                <span class="n">strategy</span><span class="o">.</span><span class="n">optimizer</span><span class="p">,</span>
                                                <span class="n">strategy</span><span class="o">.</span><span class="n">experience</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span>
                                                <span class="n">strategy</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
                                                <span class="n">strategy</span><span class="o">.</span><span class="n">train_mb_size</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_importances</span><span class="p">(</span><span class="n">importances</span><span class="p">,</span> <span class="n">strategy</span><span class="o">.</span><span class="n">training_exp_counter</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">saved_params</span><span class="p">[</span><span class="n">strategy</span><span class="o">.</span><span class="n">training_exp_counter</span><span class="p">]</span> <span class="o">=</span> \
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_importances</span><span class="p">(</span><span class="n">importances</span><span class="p">,</span> <span class="n">exp_counter</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saved_params</span><span class="p">[</span><span class="n">exp_counter</span><span class="p">]</span> <span class="o">=</span> \
             <span class="n">copy_params_dict</span><span class="p">(</span><span class="n">strategy</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
         <span class="c1"># clear previous parameter values</span>
-        <span class="k">if</span> <span class="n">strategy</span><span class="o">.</span><span class="n">training_exp_counter</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> \
+        <span class="k">if</span> <span class="n">exp_counter</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> \
                 <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_importance_data</span><span class="p">):</span>
-            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_params</span><span class="p">[</span><span class="n">strategy</span><span class="o">.</span><span class="n">training_exp_counter</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span></div>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_params</span><span class="p">[</span><span class="n">exp_counter</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="EWCPlugin.compute_importances"><a class="viewcode-back" href="../../../../../autoapi/avalanche/training/plugins/#avalanche.training.plugins.ewc.EWCPlugin.compute_importances">[docs]</a>    <span class="k">def</span> <span class="nf">compute_importances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span>
                             <span class="n">dataset</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>

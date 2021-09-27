@@ -171,12 +171,6 @@ reset and emit metric results at appropriate times
 <p>Creates an instance of a plugin metric.</p>
 <p>Child classes can safely invoke this (super) constructor as the first
 experience.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="avalanche.evaluation.metric_definitions.PluginMetric.global_it_counter">
-<span class="sig-name descname"><span class="pre">global_it_counter</span></span><em class="property"> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#avalanche.evaluation.metric_definitions.PluginMetric.global_it_counter" title="Permalink to this definition"></a></dt>
-<dd><p>Counter that can be used by each metric to get increasing x values.</p>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="avalanche.evaluation.metric_definitions.PluginMetric.result">
 <em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">TResult</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/avalanche/evaluation/metric_definitions/#PluginMetric.result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.evaluation.metric_definitions.PluginMetric.result" title="Permalink to this definition"></a></dt>
@@ -195,16 +189,6 @@ experience.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="avalanche.evaluation.metric_definitions.PluginMetric.get_global_counter">
-<span class="sig-name descname"><span class="pre">get_global_counter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/evaluation/metric_definitions/#PluginMetric.get_global_counter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.evaluation.metric_definitions.PluginMetric.get_global_counter" title="Permalink to this definition"></a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the global counter incremented after each minibatch.</p>
 </dd>
 </dl>
 </dd></dl>

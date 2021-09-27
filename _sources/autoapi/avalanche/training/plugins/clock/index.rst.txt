@@ -1,0 +1,83 @@
+:mod:`avalanche.training.plugins.clock`
+=======================================
+
+.. py:module:: avalanche.training.plugins.clock
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   avalanche.training.plugins.clock.Clock
+
+
+
+.. py:class:: Clock
+
+   Bases: :class:`avalanche.training.plugins.StrategyPlugin`
+
+   Base class for strategy plugins. Implements all the callbacks required
+   by the BaseStrategy with an empty function. Subclasses must override
+   the callbacks.
+
+   Counter for strategy events. 
+
+   .. attribute:: train_iterations
+      :annotation: = 0
+
+      Total number of training iterations. 
+
+
+   .. attribute:: train_exp_counter
+      :annotation: = 0
+
+      Number of past training experiences. 
+
+
+   .. attribute:: train_exp_epochs
+      :annotation: = 0
+
+      Number of training epochs for the current experience. 
+
+
+   .. attribute:: train_exp_iterations
+      :annotation: = 0
+
+      Number of training iterations for the current experience. 
+
+
+   .. attribute:: train_epoch_iterations
+      :annotation: = 0
+
+      Number of iterations for the current epoch. 
+
+
+   .. attribute:: total_iterations
+      :annotation: = 0
+
+      Total number of iterations in training and eval mode. 
+
+
+   .. method:: before_training_exp(self, strategy, **kwargs)
+
+
+   .. method:: before_training_epoch(self, strategy, **kwargs)
+
+
+   .. method:: after_training_iteration(self, strategy, **kwargs)
+
+
+   .. method:: after_training_epoch(self, strategy, **kwargs)
+
+
+   .. method:: after_training_exp(self, strategy, **kwargs)
+
+
+   .. method:: after_eval_iteration(self, strategy, **kwargs)
+
+
+
