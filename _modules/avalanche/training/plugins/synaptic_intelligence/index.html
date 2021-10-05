@@ -128,13 +128,14 @@
 <span class="sd">    achieve the S.I. regularization effect.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">si_lambda</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">si_lambda</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">eps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0000001</span><span class="p">,</span>
                  <span class="n">excluded_parameters</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="s1">&#39;str&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">device</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="s1">&#39;as_strategy&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates an instance of the Synaptic Intelligence plugin.</span>
 
 <span class="sd">        :param si_lambda: Synaptic Intelligence lambda term.</span>
+<span class="sd">        :param eps: Synaptic Intelligence damping parameter.</span>
 <span class="sd">        :param device: The device to use to run the S.I. experiences.</span>
 <span class="sd">            Defaults to &quot;as_strategy&quot;, which means that the `device` field of</span>
 <span class="sd">            the strategy will be used. Using a different device may lead to a</span>
@@ -150,6 +151,7 @@
         <span class="k">if</span> <span class="n">excluded_parameters</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">excluded_parameters</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">si_lambda</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">si_lambda</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">eps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">excluded_parameters</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">excluded_parameters</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ewc_data</span><span class="p">:</span> <span class="n">EwcDataType</span> <span class="o">=</span> <span class="p">(</span><span class="nb">dict</span><span class="p">(),</span> <span class="nb">dict</span><span class="p">())</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -199,7 +201,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">after_training_exp</span><span class="p">(</span><span class="n">strategy</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">SynapticIntelligencePlugin</span><span class="o">.</span><span class="n">update_ewc_data</span><span class="p">(</span>
             <span class="n">strategy</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ewc_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">syn_data</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">excluded_parameters</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">excluded_parameters</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SynapticIntelligencePlugin.device"><a class="viewcode-back" href="../../../../../autoapi/avalanche/training/plugins/synaptic_intelligence/#avalanche.training.plugins.SynapticIntelligencePlugin.device">[docs]</a>    <span class="k">def</span> <span class="nf">device</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">:</span> <span class="s1">&#39;BaseStrategy&#39;</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span> <span class="o">==</span> <span class="s1">&#39;as_strategy&#39;</span><span class="p">:</span>
@@ -317,10 +319,9 @@
     <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">update_ewc_data</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">ewc_data</span><span class="p">:</span> <span class="n">EwcDataType</span><span class="p">,</span> <span class="n">syn_data</span><span class="p">:</span> <span class="n">SynDataType</span><span class="p">,</span>
                         <span class="n">clip_to</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">excluded_parameters</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-                        <span class="n">c</span><span class="o">=</span><span class="mf">0.0015</span><span class="p">):</span>
+                        <span class="n">c</span><span class="o">=</span><span class="mf">0.0015</span><span class="p">,</span> <span class="n">eps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0000001</span><span class="p">):</span>
         <span class="n">SynapticIntelligencePlugin</span><span class="o">.</span><span class="n">extract_weights</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">syn_data</span><span class="p">[</span><span class="s1">&#39;new_theta&#39;</span><span class="p">],</span>
                                                    <span class="n">excluded_parameters</span><span class="p">)</span>
-        <span class="n">eps</span> <span class="o">=</span> <span class="mf">0.0000001</span>  <span class="c1"># 0.001 in few task - 0.1 used in a more complex setup</span>
 
         <span class="k">for</span> <span class="n">param_name</span> <span class="ow">in</span> <span class="n">syn_data</span><span class="p">[</span><span class="s1">&#39;cum_trajectory&#39;</span><span class="p">]:</span>
             <span class="n">syn_data</span><span class="p">[</span><span class="s1">&#39;cum_trajectory&#39;</span><span class="p">][</span><span class="n">param_name</span><span class="p">]</span> <span class="o">+=</span> \

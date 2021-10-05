@@ -886,7 +886,7 @@ Classes
                of all the epochs for a single experience.
 
 
-.. py:class:: SynapticIntelligence(model: Module, optimizer: Optimizer, criterion, si_lambda: float, train_mb_size: int = 1, train_epochs: int = 1, eval_mb_size: int = 1, device='cpu', plugins: Optional[Sequence['StrategyPlugin']] = None, evaluator=default_logger, eval_every=-1)
+.. py:class:: SynapticIntelligence(model: Module, optimizer: Optimizer, criterion, si_lambda: float, eps: float = 1e-07, train_mb_size: int = 1, train_epochs: int = 1, eval_mb_size: int = 1, device='cpu', plugins: Optional[Sequence['StrategyPlugin']] = None, evaluator=default_logger, eval_every=-1)
 
    Bases: :class:`avalanche.training.strategies.base_strategy.BaseStrategy`
 
@@ -910,6 +910,7 @@ Classes
    :param optimizer: PyTorch optimizer.
    :param criterion: loss function.
    :param si_lambda: Synaptic Intelligence lambda term.
+   :param eps: Synaptic Intelligence damping parameter.
    :param train_mb_size: mini-batch size for training.
    :param train_epochs: number of training epochs.
    :param eval_mb_size: mini-batch size for eval.
