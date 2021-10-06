@@ -89,7 +89,7 @@
   <h1>Source code for avalanche.training.plugins.synaptic_intelligence</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">fnmatch</span> <span class="kn">import</span> <span class="n">fnmatch</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">torch</span>
@@ -128,13 +128,17 @@
 <span class="sd">    achieve the S.I. regularization effect.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">si_lambda</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">eps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0000001</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">si_lambda</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
+                 <span class="n">eps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0000001</span><span class="p">,</span>
                  <span class="n">excluded_parameters</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="s1">&#39;str&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">device</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="s1">&#39;as_strategy&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates an instance of the Synaptic Intelligence plugin.</span>
 
 <span class="sd">        :param si_lambda: Synaptic Intelligence lambda term.</span>
+<span class="sd">            If list, one lambda for each experience. If the list has less</span>
+<span class="sd">            elements than the number of experiences, last lambda will be</span>
+<span class="sd">            used for the remaining experiences.</span>
 <span class="sd">        :param eps: Synaptic Intelligence damping parameter.</span>
 <span class="sd">        :param device: The device to use to run the S.I. experiences.</span>
 <span class="sd">            Defaults to &quot;as_strategy&quot;, which means that the `device` field of</span>
@@ -150,7 +154,8 @@
 
         <span class="k">if</span> <span class="n">excluded_parameters</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">excluded_parameters</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">si_lambda</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">si_lambda</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">si_lambda</span> <span class="o">=</span> <span class="n">si_lambda</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">si_lambda</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> \
+            <span class="k">else</span> <span class="p">[</span><span class="n">si_lambda</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">eps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">eps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">excluded_parameters</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">excluded_parameters</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ewc_data</span><span class="p">:</span> <span class="n">EwcDataType</span> <span class="o">=</span> <span class="p">(</span><span class="nb">dict</span><span class="p">(),</span> <span class="nb">dict</span><span class="p">())</span>
@@ -180,9 +185,16 @@
 
 <div class="viewcode-block" id="SynapticIntelligencePlugin.before_backward"><a class="viewcode-back" href="../../../../../autoapi/avalanche/training/plugins/synaptic_intelligence/#avalanche.training.plugins.SynapticIntelligencePlugin.before_backward">[docs]</a>    <span class="k">def</span> <span class="nf">before_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">:</span> <span class="s1">&#39;BaseStrategy&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">before_backward</span><span class="p">(</span><span class="n">strategy</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">exp_id</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">clock</span><span class="o">.</span><span class="n">train_exp_counter</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">si_lamb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">si_lambda</span><span class="p">[</span><span class="n">exp_id</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>  <span class="c1"># less than one lambda per experience, take last</span>
+            <span class="n">si_lamb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">si_lambda</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
         <span class="n">syn_loss</span> <span class="o">=</span> <span class="n">SynapticIntelligencePlugin</span><span class="o">.</span><span class="n">compute_ewc_loss</span><span class="p">(</span>
             <span class="n">strategy</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ewc_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">excluded_parameters</span><span class="p">,</span>
-            <span class="n">lambd</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">si_lambda</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">strategy</span><span class="p">))</span>
+            <span class="n">lambd</span><span class="o">=</span><span class="n">si_lamb</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">strategy</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">syn_loss</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">strategy</span><span class="o">.</span><span class="n">loss</span> <span class="o">+=</span> <span class="n">syn_loss</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">strategy</span><span class="o">.</span><span class="n">device</span><span class="p">)</span></div>

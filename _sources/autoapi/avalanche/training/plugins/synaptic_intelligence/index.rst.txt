@@ -21,7 +21,7 @@ Classes
 
    
 
-.. py:class:: SynapticIntelligencePlugin(si_lambda: float, eps: float = 1e-07, excluded_parameters: Sequence['str'] = None, device: Any = 'as_strategy')
+.. py:class:: SynapticIntelligencePlugin(si_lambda: Union[float, Sequence[float]], eps: float = 1e-07, excluded_parameters: Sequence['str'] = None, device: Any = 'as_strategy')
 
    Bases: :class:`avalanche.training.plugins.strategy_plugin.StrategyPlugin`
 
@@ -46,6 +46,9 @@ Classes
    Creates an instance of the Synaptic Intelligence plugin.
 
    :param si_lambda: Synaptic Intelligence lambda term.
+       If list, one lambda for each experience. If the list has less
+       elements than the number of experiences, last lambda will be
+       used for the remaining experiences.
    :param eps: Synaptic Intelligence damping parameter.
    :param device: The device to use to run the S.I. experiences.
        Defaults to "as_strategy", which means that the `device` field of

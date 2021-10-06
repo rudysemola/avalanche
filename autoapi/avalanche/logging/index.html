@@ -131,13 +131,10 @@ in order to properly monitor the training and evaluation flows.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.logging.WandBLogger" title="avalanche.logging.WandBLogger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WandBLogger</span></code></a></p></td>
 <td><p>The <cite>WandBLogger</cite> provides an easy integration with</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#avalanche.logging.TextLogger" title="avalanche.logging.TextLogger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TextLogger</span></code></a></p></td>
-<td><p>The <cite>TextLogger</cite> class provides logging facilities</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.logging.InteractiveLogger" title="avalanche.logging.InteractiveLogger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InteractiveLogger</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#avalanche.logging.InteractiveLogger" title="avalanche.logging.InteractiveLogger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InteractiveLogger</span></code></a></p></td>
 <td><p>The <cite>InteractiveLogger</cite> class provides logging facilities</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#avalanche.logging.CSVLogger" title="avalanche.logging.CSVLogger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CSVLogger</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.logging.CSVLogger" title="avalanche.logging.CSVLogger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CSVLogger</span></code></a></p></td>
 <td><p>The <cite>CSVLogger</cite> logs accuracy and loss metrics into a csv file.</p></td>
 </tr>
 </tbody>
@@ -471,117 +468,9 @@ associated to the metric value</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="avalanche.logging.TextLogger">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.logging.</span></span><span class="sig-name descname"><span class="pre">TextLogger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">sys.stdout</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/avalanche/logging/text_logging/#TextLogger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.logging.TextLogger" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#avalanche.logging.StrategyLogger" title="avalanche.logging.StrategyLogger"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.logging.StrategyLogger</span></code></a></p>
-<p>The <cite>TextLogger</cite> class provides logging facilities
-printed to a user specified file. The logger writes
-metric results after each training epoch, evaluation
-experience and at the end of the entire evaluation stream.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>To avoid an excessive amount of printed lines,
-this logger will <strong>not</strong> print results after
-each iteration. If the user is monitoring
-metrics which emit results after each minibatch
-(e.g., <cite>MinibatchAccuracy</cite>), only the last recorded
-value of such metrics will be reported at the end
-of the epoch.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Since this logger works on the standard output,
-metrics producing images or more complex visualizations
-will be converted to a textual format suitable for
-console printing. You may want to add more loggers
-to your <cite>EvaluationPlugin</cite> to better support
-different formats.</p>
-</div>
-<p>Creates an instance of <cite>TextLogger</cite> class.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file</strong> – destination file to which print metrics
-(default=sys.stdout).</p>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="avalanche.logging.TextLogger.log_single_metric">
-<span class="sig-name descname"><span class="pre">log_single_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_plot</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/avalanche/logging/text_logging/#TextLogger.log_single_metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.logging.TextLogger.log_single_metric" title="Permalink to this definition"></a></dt>
-<dd><p>This abstract method will have to be implemented by each subclass.
-This method takes a metric name, a metric value and a x value and
-decides how to show the metric value.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – str, metric name</p></li>
-<li><p><strong>value</strong> – the metric value, will be ignored if
-not supported by the logger</p></li>
-<li><p><strong>x_plot</strong> – an integer representing the x value
-associated to the metric value</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="avalanche.logging.TextLogger.print_current_metrics">
-<span class="sig-name descname"><span class="pre">print_current_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/avalanche/logging/text_logging/#TextLogger.print_current_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.logging.TextLogger.print_current_metrics" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="avalanche.logging.TextLogger.before_training_exp">
-<span class="sig-name descname"><span class="pre">before_training_exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BaseStrategy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">'MetricValue'</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/avalanche/logging/text_logging/#TextLogger.before_training_exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.logging.TextLogger.before_training_exp" title="Permalink to this definition"></a></dt>
-<dd><p>Called before <cite>train_exp</cite> by the <cite>BaseStrategy</cite>.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="avalanche.logging.TextLogger.before_eval_exp">
-<span class="sig-name descname"><span class="pre">before_eval_exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BaseStrategy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">'MetricValue'</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/avalanche/logging/text_logging/#TextLogger.before_eval_exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.logging.TextLogger.before_eval_exp" title="Permalink to this definition"></a></dt>
-<dd><p>Called before <cite>eval_exp</cite> by the <cite>BaseStrategy</cite>.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="avalanche.logging.TextLogger.after_training_epoch">
-<span class="sig-name descname"><span class="pre">after_training_epoch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BaseStrategy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">'MetricValue'</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/avalanche/logging/text_logging/#TextLogger.after_training_epoch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.logging.TextLogger.after_training_epoch" title="Permalink to this definition"></a></dt>
-<dd><p>Called after <cite>train_epoch</cite> by the <cite>BaseStrategy</cite>.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="avalanche.logging.TextLogger.after_eval_exp">
-<span class="sig-name descname"><span class="pre">after_eval_exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BaseStrategy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">'MetricValue'</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/avalanche/logging/text_logging/#TextLogger.after_eval_exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.logging.TextLogger.after_eval_exp" title="Permalink to this definition"></a></dt>
-<dd><p>Called after <cite>eval_exp</cite> by the <cite>BaseStrategy</cite>.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="avalanche.logging.TextLogger.before_training">
-<span class="sig-name descname"><span class="pre">before_training</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BaseStrategy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">'MetricValue'</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/avalanche/logging/text_logging/#TextLogger.before_training"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.logging.TextLogger.before_training" title="Permalink to this definition"></a></dt>
-<dd><p>Called before <cite>train</cite> by the <cite>BaseStrategy</cite>.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="avalanche.logging.TextLogger.before_eval">
-<span class="sig-name descname"><span class="pre">before_eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BaseStrategy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">'MetricValue'</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/avalanche/logging/text_logging/#TextLogger.before_eval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.logging.TextLogger.before_eval" title="Permalink to this definition"></a></dt>
-<dd><p>Called before <cite>eval</cite> by the <cite>BaseStrategy</cite>.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="avalanche.logging.TextLogger.after_training">
-<span class="sig-name descname"><span class="pre">after_training</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BaseStrategy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">'MetricValue'</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/avalanche/logging/text_logging/#TextLogger.after_training"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.logging.TextLogger.after_training" title="Permalink to this definition"></a></dt>
-<dd><p>Called after <cite>train</cite> by the <cite>BaseStrategy</cite>.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="avalanche.logging.TextLogger.after_eval">
-<span class="sig-name descname"><span class="pre">after_eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BaseStrategy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">'MetricValue'</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/avalanche/logging/text_logging/#TextLogger.after_eval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.logging.TextLogger.after_eval" title="Permalink to this definition"></a></dt>
-<dd><p>Called after <cite>eval</cite> by the <cite>BaseStrategy</cite>.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt class="sig sig-object py" id="avalanche.logging.InteractiveLogger">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.logging.</span></span><span class="sig-name descname"><span class="pre">InteractiveLogger</span></span><a class="reference internal" href="../../../_modules/avalanche/logging/interactive_logging/#InteractiveLogger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.logging.InteractiveLogger" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#avalanche.logging.TextLogger" title="avalanche.logging.TextLogger"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.logging.TextLogger</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.logging.TextLogger</span></code></p>
 <p>The <cite>InteractiveLogger</cite> class provides logging facilities
 for the console standard output. The logger shows
 a progress bar during training and evaluation flows and
