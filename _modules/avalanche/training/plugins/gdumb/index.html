@@ -107,7 +107,7 @@
 
 <span class="kn">from</span> <span class="nn">avalanche.benchmarks.utils</span> <span class="kn">import</span> <span class="n">AvalancheConcatDataset</span><span class="p">,</span> <span class="n">AvalancheDataset</span>
 <span class="kn">from</span> <span class="nn">avalanche.training.plugins.strategy_plugin</span> <span class="kn">import</span> <span class="n">StrategyPlugin</span>
-<span class="kn">from</span> <span class="nn">avalanche.training.storage_policy</span> <span class="kn">import</span> <span class="n">ClassBalancedStoragePolicy</span>
+<span class="kn">from</span> <span class="nn">avalanche.training.storage_policy</span> <span class="kn">import</span> <span class="n">ClassBalancedBuffer</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">avalanche.training.strategies</span> <span class="kn">import</span> <span class="n">BaseStrategy</span>
@@ -132,9 +132,8 @@
 
         <span class="c1"># model initialization</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">storage_policy</span> <span class="o">=</span> <span class="n">ClassBalancedStoragePolicy</span><span class="p">(</span>
-            <span class="n">ext_mem</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">,</span>
-            <span class="n">mem_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mem_size</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">storage_policy</span> <span class="o">=</span> <span class="n">ClassBalancedBuffer</span><span class="p">(</span>
+            <span class="n">max_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mem_size</span><span class="p">,</span>
             <span class="n">adaptive_size</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init_model</span> <span class="o">=</span> <span class="kc">None</span>
@@ -149,9 +148,8 @@
 
 <div class="viewcode-block" id="GDumbPlugin.after_train_dataset_adaptation"><a class="viewcode-back" href="../../../../../autoapi/avalanche/training/plugins/#avalanche.training.plugins.gdumb.GDumbPlugin.after_train_dataset_adaptation">[docs]</a>    <span class="k">def</span> <span class="nf">after_train_dataset_adaptation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">:</span> <span class="s2">&quot;BaseStrategy&quot;</span><span class="p">,</span>
                                        <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">storage_policy</span><span class="p">(</span><span class="n">strategy</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">cat_data</span> <span class="o">=</span> <span class="n">AvalancheConcatDataset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-        <span class="n">strategy</span><span class="o">.</span><span class="n">adapted_dataset</span> <span class="o">=</span> <span class="n">cat_data</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">storage_policy</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">strategy</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">strategy</span><span class="o">.</span><span class="n">adapted_dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage_policy</span><span class="o">.</span><span class="n">buffer</span></div></div>
 </pre></div>
 
            </div>

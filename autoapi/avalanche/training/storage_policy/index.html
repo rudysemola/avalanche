@@ -99,78 +99,234 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.training.storage_policy.StoragePolicy" title="avalanche.training.storage_policy.StoragePolicy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StoragePolicy</span></code></a></p></td>
-<td><p>A policy to store exemplars in a replay memory.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.training.storage_policy.ExemplarsBuffer" title="avalanche.training.storage_policy.ExemplarsBuffer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExemplarsBuffer</span></code></a></p></td>
+<td><p>A buffer that stores exemplars for rehearsal.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#avalanche.training.storage_policy.ExperienceBalancedStoragePolicy" title="avalanche.training.storage_policy.ExperienceBalancedStoragePolicy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExperienceBalancedStoragePolicy</span></code></a></p></td>
-<td><p>A policy to store exemplars in a replay memory.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#avalanche.training.storage_policy.ReservoirSamplingBuffer" title="avalanche.training.storage_policy.ReservoirSamplingBuffer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReservoirSamplingBuffer</span></code></a></p></td>
+<td><p>A buffer that stores exemplars for rehearsal.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.training.storage_policy.ClassBalancedStoragePolicy" title="avalanche.training.storage_policy.ClassBalancedStoragePolicy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ClassBalancedStoragePolicy</span></code></a></p></td>
-<td><p>A policy to store exemplars in a replay memory.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.training.storage_policy.BalancedExemplarsBuffer" title="avalanche.training.storage_policy.BalancedExemplarsBuffer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BalancedExemplarsBuffer</span></code></a></p></td>
+<td><p>A buffer that stores exemplars for rehearsal.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#avalanche.training.storage_policy.ClassExemplarsSelectionStrategy" title="avalanche.training.storage_policy.ClassExemplarsSelectionStrategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ClassExemplarsSelectionStrategy</span></code></a></p></td>
-<td><p>Base class to define how to select class exemplars from a dataset</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#avalanche.training.storage_policy.ExperienceBalancedBuffer" title="avalanche.training.storage_policy.ExperienceBalancedBuffer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExperienceBalancedBuffer</span></code></a></p></td>
+<td><p>A buffer that stores exemplars for rehearsal.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.training.storage_policy.RandomExemplarsSelectionStrategy" title="avalanche.training.storage_policy.RandomExemplarsSelectionStrategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RandomExemplarsSelectionStrategy</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.training.storage_policy.ClassBalancedBuffer" title="avalanche.training.storage_policy.ClassBalancedBuffer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ClassBalancedBuffer</span></code></a></p></td>
+<td><p>A buffer that stores exemplars for rehearsal.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#avalanche.training.storage_policy.ParametricBuffer" title="avalanche.training.storage_policy.ParametricBuffer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ParametricBuffer</span></code></a></p></td>
+<td><p>A buffer that stores exemplars for rehearsal.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.training.storage_policy.ExemplarsSelectionStrategy" title="avalanche.training.storage_policy.ExemplarsSelectionStrategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExemplarsSelectionStrategy</span></code></a></p></td>
+<td><p>Base class to define how to select a subset of exemplars from a dataset.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#avalanche.training.storage_policy.RandomExemplarsSelectionStrategy" title="avalanche.training.storage_policy.RandomExemplarsSelectionStrategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RandomExemplarsSelectionStrategy</span></code></a></p></td>
 <td><p>Select the exemplars at random in the dataset</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#avalanche.training.storage_policy.FeatureBasedExemplarsSelectionStrategy" title="avalanche.training.storage_policy.FeatureBasedExemplarsSelectionStrategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FeatureBasedExemplarsSelectionStrategy</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.training.storage_policy.FeatureBasedExemplarsSelectionStrategy" title="avalanche.training.storage_policy.FeatureBasedExemplarsSelectionStrategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FeatureBasedExemplarsSelectionStrategy</span></code></a></p></td>
 <td><p>Base class to select exemplars from their features</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.training.storage_policy.HerdingSelectionStrategy" title="avalanche.training.storage_policy.HerdingSelectionStrategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HerdingSelectionStrategy</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#avalanche.training.storage_policy.HerdingSelectionStrategy" title="avalanche.training.storage_policy.HerdingSelectionStrategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HerdingSelectionStrategy</span></code></a></p></td>
 <td><p>Base class to select exemplars from their features</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#avalanche.training.storage_policy.ClosestToCenterSelectionStrategy" title="avalanche.training.storage_policy.ClosestToCenterSelectionStrategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ClosestToCenterSelectionStrategy</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.training.storage_policy.ClosestToCenterSelectionStrategy" title="avalanche.training.storage_policy.ClosestToCenterSelectionStrategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ClosestToCenterSelectionStrategy</span></code></a></p></td>
 <td><p>Base class to select exemplars from their features</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py class">
-<dt class="sig sig-object py" id="avalanche.training.storage_policy.StoragePolicy">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.training.storage_policy.</span></span><span class="sig-name descname"><span class="pre">StoragePolicy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ext_mem</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">AvalancheDataset</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mem_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#StoragePolicy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.StoragePolicy" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.ExemplarsBuffer">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.training.storage_policy.</span></span><span class="sig-name descname"><span class="pre">ExemplarsBuffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ExemplarsBuffer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ExemplarsBuffer" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
-<p>A policy to store exemplars in a replay memory.</p>
+<p>A buffer that stores exemplars for rehearsal.</p>
+<p><cite>self.buffer</cite> is an AvalancheDataset of samples collected from the previous
+experiences. The buffer can be updated by calling <cite>self.update(strategy)</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ext_mem</strong> – The replay memory dictionary to store samples.</p></li>
-<li><p><strong>mem_size</strong> – max number of total input samples in the replay memory.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>max_size</strong> – max number of input samples in the replay memory.</p>
 </dd>
 </dl>
 <p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.ExemplarsBuffer.max_size">
+<span class="sig-name descname"><span class="pre">max_size</span></span><a class="headerlink" href="#avalanche.training.storage_policy.ExemplarsBuffer.max_size" title="Permalink to this definition"></a></dt>
+<dd><p>Maximum size of the buffer.</p>
+</dd></dl>
+
 <dl class="py method">
-<dt class="sig sig-object py" id="avalanche.training.storage_policy.StoragePolicy.__call__">
-<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_source</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">AvalancheDataset</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#StoragePolicy.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.StoragePolicy.__call__" title="Permalink to this definition"></a></dt>
-<dd><p>Store exemplars in the replay memory</p>
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.ExemplarsBuffer.buffer">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">AvalancheDataset</span></span></span><a class="headerlink" href="#avalanche.training.storage_policy.ExemplarsBuffer.buffer" title="Permalink to this definition"></a></dt>
+<dd><p>Buffer of samples.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.ExemplarsBuffer.update">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BaseStrategy</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ExemplarsBuffer.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ExemplarsBuffer.update" title="Permalink to this definition"></a></dt>
+<dd><p>Update <cite>self.buffer</cite> using the <cite>strategy</cite> state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>strategy</strong> – </p></li>
+<li><p><strong>kwargs</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.ExemplarsBuffer.resize">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BaseStrategy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ExemplarsBuffer.resize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ExemplarsBuffer.resize" title="Permalink to this definition"></a></dt>
+<dd><p>Update the maximum size of the buffer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>strategy</strong> – </p></li>
+<li><p><strong>new_size</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="avalanche.training.storage_policy.ExperienceBalancedStoragePolicy">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.training.storage_policy.</span></span><span class="sig-name descname"><span class="pre">ExperienceBalancedStoragePolicy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ext_mem</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mem_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adaptive_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_experiences</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ExperienceBalancedStoragePolicy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ExperienceBalancedStoragePolicy" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#avalanche.training.storage_policy.StoragePolicy" title="avalanche.training.storage_policy.StoragePolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.training.storage_policy.StoragePolicy</span></code></a></p>
-<p>A policy to store exemplars in a replay memory.</p>
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.ReservoirSamplingBuffer">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.training.storage_policy.</span></span><span class="sig-name descname"><span class="pre">ReservoirSamplingBuffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ReservoirSamplingBuffer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ReservoirSamplingBuffer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#avalanche.training.storage_policy.ExemplarsBuffer" title="avalanche.training.storage_policy.ExemplarsBuffer"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.training.storage_policy.ExemplarsBuffer</span></code></a></p>
+<p>A buffer that stores exemplars for rehearsal.</p>
+<p><cite>self.buffer</cite> is an AvalancheDataset of samples collected from the previous
+experiences. The buffer can be updated by calling <cite>self.update(strategy)</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>max_size</strong> – max number of input samples in the replay memory.</p>
+</dd>
+</dl>
+<p>Buffer updated with reservoir sampling.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.ReservoirSamplingBuffer.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BaseStrategy</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ReservoirSamplingBuffer.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ReservoirSamplingBuffer.update" title="Permalink to this definition"></a></dt>
+<dd><p>Update buffer.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.ReservoirSamplingBuffer.update_from_dataset">
+<span class="sig-name descname"><span class="pre">update_from_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">AvalancheDataset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ReservoirSamplingBuffer.update_from_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ReservoirSamplingBuffer.update_from_dataset" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.ReservoirSamplingBuffer.resize">
+<span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ReservoirSamplingBuffer.resize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ReservoirSamplingBuffer.resize" title="Permalink to this definition"></a></dt>
+<dd><p>Update the maximum size of the buffer.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.BalancedExemplarsBuffer">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.training.storage_policy.</span></span><span class="sig-name descname"><span class="pre">BalancedExemplarsBuffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adaptive_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_num_groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#BalancedExemplarsBuffer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.BalancedExemplarsBuffer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#avalanche.training.storage_policy.ExemplarsBuffer" title="avalanche.training.storage_policy.ExemplarsBuffer"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.training.storage_policy.ExemplarsBuffer</span></code></a></p>
+<p>A buffer that stores exemplars for rehearsal.</p>
+<p><cite>self.buffer</cite> is an AvalancheDataset of samples collected from the previous
+experiences. The buffer can be updated by calling <cite>self.update(strategy)</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>max_size</strong> – max number of input samples in the replay memory.</p>
+</dd>
+</dl>
+<p>A buffer that stores exemplars for rehearsal in separate groups.</p>
+<p>The grouping allows to balance the data (by task, experience,
+classes..). In combination with balanced data loaders, it can be used
+to sample balanced mini-batches during training.</p>
+<p><cite>self.buffer_groups</cite> is a dictionary that stores each group as a
+separate buffer. The buffers are updated by calling
+<cite>self.update(strategy)</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ext_mem</strong> – The replay memory dictionary to store samples.</p></li>
-<li><p><strong>mem_size</strong> – max number of total input samples in the replay memory.</p></li>
+<li><p><strong>max_size</strong> – max number of input samples in the replay memory.</p></li>
+<li><p><strong>adaptive_size</strong> – True if max_size is divided equally over all
+observed experiences (keys in replay_mem).</p></li>
+<li><p><strong>total_num_groups</strong> – If adaptive size is False, the fixed number
+of groups to divide capacity over.</p></li>
 </ul>
 </dd>
 </dl>
-<p>Stores samples for replay, equally divided over experiences.
-Because it is conditioned on the experience, it should be called in
-the ‘after_training_exp’ phase.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.BalancedExemplarsBuffer.buffer_groups">
+<span class="sig-name descname"><span class="pre">buffer_groups</span></span><em class="property"> <span class="pre">:Dict[int,</span> <span class="pre">ExemplarsBuffer]</span></em><a class="headerlink" href="#avalanche.training.storage_policy.BalancedExemplarsBuffer.buffer_groups" title="Permalink to this definition"></a></dt>
+<dd><p>Dictionary of buffers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.BalancedExemplarsBuffer.buffer_datasets">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">buffer_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#avalanche.training.storage_policy.BalancedExemplarsBuffer.buffer_datasets" title="Permalink to this definition"></a></dt>
+<dd><p>Return group buffers as a list of <a href="#id1"><span class="problematic" id="id2">`</span></a>AvalancheDataset`s.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.BalancedExemplarsBuffer.get_group_lengths">
+<span class="sig-name descname"><span class="pre">get_group_lengths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_groups</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#BalancedExemplarsBuffer.get_group_lengths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.BalancedExemplarsBuffer.get_group_lengths" title="Permalink to this definition"></a></dt>
+<dd><p>Compute groups lengths given the number of groups <cite>num_groups</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.BalancedExemplarsBuffer.buffer">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#avalanche.training.storage_policy.BalancedExemplarsBuffer.buffer" title="Permalink to this definition"></a></dt>
+<dd><p>Buffer of samples.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.BalancedExemplarsBuffer.update">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BaseStrategy</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#BalancedExemplarsBuffer.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.BalancedExemplarsBuffer.update" title="Permalink to this definition"></a></dt>
+<dd><p>Update <cite>self.buffer_groups</cite> using the <cite>strategy</cite> state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>strategy</strong> – </p></li>
+<li><p><strong>kwargs</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.BalancedExemplarsBuffer.resize">
+<span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#BalancedExemplarsBuffer.resize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.BalancedExemplarsBuffer.resize" title="Permalink to this definition"></a></dt>
+<dd><p>Update the maximum size of the buffers.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.ExperienceBalancedBuffer">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.training.storage_policy.</span></span><span class="sig-name descname"><span class="pre">ExperienceBalancedBuffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adaptive_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_experiences</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ExperienceBalancedBuffer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ExperienceBalancedBuffer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#avalanche.training.storage_policy.BalancedExemplarsBuffer" title="avalanche.training.storage_policy.BalancedExemplarsBuffer"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.training.storage_policy.BalancedExemplarsBuffer</span></code></a></p>
+<p>A buffer that stores exemplars for rehearsal.</p>
+<p><cite>self.buffer</cite> is an AvalancheDataset of samples collected from the previous
+experiences. The buffer can be updated by calling <cite>self.update(strategy)</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>max_size</strong> – max number of input samples in the replay memory.</p>
+</dd>
+</dl>
+<p>Rehearsal buffer with samples balanced over experiences.</p>
 <p>The number of experiences can be fixed up front or adaptive, based on
 the ‘adaptive_size’ attribute. When adaptive, the memory is equally
 divided over all the unique observed experiences so far.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ext_mem</strong> – The replay memory dictionary to store samples.</p></li>
-<li><p><strong>mem_size</strong> – max number of total input samples in the replay memory.</p></li>
+<li><p><strong>max_size</strong> – max number of total input samples in the replay
+memory.</p></li>
 <li><p><strong>adaptive_size</strong> – True if mem_size is divided equally over all
 observed experiences (keys in replay_mem).</p></li>
 <li><p><strong>num_experiences</strong> – If adaptive size is False, the fixed number
@@ -179,87 +335,135 @@ of experiences to divide capacity over.</p></li>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="avalanche.training.storage_policy.ExperienceBalancedStoragePolicy.subsample_single">
-<span class="sig-name descname"><span class="pre">subsample_single</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">AvalancheDataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ExperienceBalancedStoragePolicy.subsample_single"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ExperienceBalancedStoragePolicy.subsample_single" title="Permalink to this definition"></a></dt>
-<dd><p>Subsample <cite>data</cite> to match length <cite>new_size</cite>.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="avalanche.training.storage_policy.ExperienceBalancedStoragePolicy.subsample_all_groups">
-<span class="sig-name descname"><span class="pre">subsample_all_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ExperienceBalancedStoragePolicy.subsample_all_groups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ExperienceBalancedStoragePolicy.subsample_all_groups" title="Permalink to this definition"></a></dt>
-<dd><p>Subsample all groups equally to match total buffer size
-<cite>new_size</cite>.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="avalanche.training.storage_policy.ExperienceBalancedStoragePolicy.__call__">
-<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BaseStrategy</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ExperienceBalancedStoragePolicy.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ExperienceBalancedStoragePolicy.__call__" title="Permalink to this definition"></a></dt>
-<dd><p>Store exemplars in the replay memory</p>
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.ExperienceBalancedBuffer.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BaseStrategy</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ExperienceBalancedBuffer.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ExperienceBalancedBuffer.update" title="Permalink to this definition"></a></dt>
+<dd><p>Update <cite>self.buffer_groups</cite> using the <cite>strategy</cite> state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>strategy</strong> – </p></li>
+<li><p><strong>kwargs</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="avalanche.training.storage_policy.ClassBalancedStoragePolicy">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.training.storage_policy.</span></span><span class="sig-name descname"><span class="pre">ClassBalancedStoragePolicy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ext_mem</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mem_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adaptive_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_num_classes</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selection_strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">'ClassExemplarsSelectionStrategy'</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ClassBalancedStoragePolicy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ClassBalancedStoragePolicy" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#avalanche.training.storage_policy.StoragePolicy" title="avalanche.training.storage_policy.StoragePolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.training.storage_policy.StoragePolicy</span></code></a></p>
-<p>A policy to store exemplars in a replay memory.</p>
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.ClassBalancedBuffer">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.training.storage_policy.</span></span><span class="sig-name descname"><span class="pre">ClassBalancedBuffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adaptive_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_num_classes</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ClassBalancedBuffer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ClassBalancedBuffer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#avalanche.training.storage_policy.BalancedExemplarsBuffer" title="avalanche.training.storage_policy.BalancedExemplarsBuffer"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.training.storage_policy.BalancedExemplarsBuffer</span></code></a></p>
+<p>A buffer that stores exemplars for rehearsal.</p>
+<p><cite>self.buffer</cite> is an AvalancheDataset of samples collected from the previous
+experiences. The buffer can be updated by calling <cite>self.update(strategy)</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ext_mem</strong> – The replay memory dictionary to store samples.</p></li>
-<li><p><strong>mem_size</strong> – max number of total input samples in the replay memory.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>max_size</strong> – max number of input samples in the replay memory.</p>
 </dd>
 </dl>
-<p>Stores samples for replay, equally divided over classes.
-It should be called in the ‘after_training_exp’ phase (see
+<p>Stores samples for replay, equally divided over classes.</p>
+<dl class="simple">
+<dt>There is a separate buffer updated by reservoir sampling for each</dt><dd><p>class.</p>
+</dd>
+</dl>
+<p>It should be called in the ‘after_training_exp’ phase (see
 ExperienceBalancedStoragePolicy).
 The number of classes can be fixed up front or adaptive, based on
 the ‘adaptive_size’ attribute. When adaptive, the memory is equally
-divided over all the unique observed classes so far.
-:param ext_mem: The replay memory dictionary to store samples in.
-:param mem_size: The max capacity of the replay memory.
-:param adaptive_size: True if mem_size is divided equally over all</p>
-<blockquote>
-<div><p>observed experiences (keys in replay_mem).</p>
-</div></blockquote>
+divided over all the unique observed classes so far.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>max_size</strong> – The max capacity of the replay memory.</p></li>
+<li><p><strong>adaptive_size</strong> – True if mem_size is divided equally over all
+observed experiences (keys in replay_mem).</p></li>
 <li><p><strong>total_num_classes</strong> – If adaptive size is False, the fixed number
 of classes to divide capacity over.</p></li>
-<li><p><strong>selection_strategy</strong> – The strategy used to select exemplars to
-keep in memory when cutting it off</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="avalanche.training.storage_policy.ClassBalancedStoragePolicy.__call__">
-<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BaseStrategy</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ClassBalancedStoragePolicy.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ClassBalancedStoragePolicy.__call__" title="Permalink to this definition"></a></dt>
-<dd><p>Store exemplars in the replay memory</p>
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.ClassBalancedBuffer.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BaseStrategy</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ClassBalancedBuffer.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ClassBalancedBuffer.update" title="Permalink to this definition"></a></dt>
+<dd><p>Update <cite>self.buffer_groups</cite> using the <cite>strategy</cite> state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>strategy</strong> – </p></li>
+<li><p><strong>kwargs</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.ParametricBuffer">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.training.storage_policy.</span></span><span class="sig-name descname"><span class="pre">ParametricBuffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupby</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selection_strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">'ExemplarsSelectionStrategy'</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ParametricBuffer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ParametricBuffer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#avalanche.training.storage_policy.BalancedExemplarsBuffer" title="avalanche.training.storage_policy.BalancedExemplarsBuffer"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.training.storage_policy.BalancedExemplarsBuffer</span></code></a></p>
+<p>A buffer that stores exemplars for rehearsal.</p>
+<p><cite>self.buffer</cite> is an AvalancheDataset of samples collected from the previous
+experiences. The buffer can be updated by calling <cite>self.update(strategy)</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>max_size</strong> – max number of input samples in the replay memory.</p>
+</dd>
+</dl>
+<p>Stores samples for replay using a custom selection strategy and
+grouping.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_size</strong> – The max capacity of the replay memory.</p></li>
+<li><p><strong>groupby</strong> – Grouping mechanism. One of {None, ‘class’, ‘task’,</p></li>
+</ul>
+</dd>
+</dl>
+<p>‘experience’}.
+:param selection_strategy: The strategy used to select exemplars to</p>
+<blockquote>
+<div><p>keep in memory when cutting it off.</p>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.ParametricBuffer.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BaseStrategy</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ParametricBuffer.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ParametricBuffer.update" title="Permalink to this definition"></a></dt>
+<dd><p>Update <cite>self.buffer_groups</cite> using the <cite>strategy</cite> state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>strategy</strong> – </p></li>
+<li><p><strong>kwargs</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="avalanche.training.storage_policy.ClassBalancedStoragePolicy.divide_remaining_samples">
-<span class="sig-name descname"><span class="pre">divide_remaining_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exp_mem_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">div_cnt</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ClassBalancedStoragePolicy.divide_remaining_samples"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ClassBalancedStoragePolicy.divide_remaining_samples" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="avalanche.training.storage_policy.ClassBalancedStoragePolicy.cutoff_memory">
-<span class="sig-name descname"><span class="pre">cutoff_memory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff_per_exp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ClassBalancedStoragePolicy.cutoff_memory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ClassBalancedStoragePolicy.cutoff_memory" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.ParametricBuffer.make_groups">
+<span class="sig-name descname"><span class="pre">make_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ParametricBuffer.make_groups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ParametricBuffer.make_groups" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="avalanche.training.storage_policy.ClassExemplarsSelectionStrategy">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.training.storage_policy.</span></span><span class="sig-name descname"><span class="pre">ClassExemplarsSelectionStrategy</span></span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ClassExemplarsSelectionStrategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ClassExemplarsSelectionStrategy" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.ExemplarsSelectionStrategy">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.training.storage_policy.</span></span><span class="sig-name descname"><span class="pre">ExemplarsSelectionStrategy</span></span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ExemplarsSelectionStrategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ExemplarsSelectionStrategy" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
-<p>Base class to define how to select class exemplars from a dataset</p>
+<p>Base class to define how to select a subset of exemplars from a dataset.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="avalanche.training.storage_policy.ClassExemplarsSelectionStrategy.make_sorted_indices">
-<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">make_sorted_indices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BaseStrategy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">AvalancheDataset</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ClassExemplarsSelectionStrategy.make_sorted_indices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ClassExemplarsSelectionStrategy.make_sorted_indices" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="avalanche.training.storage_policy.ExemplarsSelectionStrategy.make_sorted_indices">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">make_sorted_indices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BaseStrategy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">AvalancheDataset</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#ExemplarsSelectionStrategy.make_sorted_indices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.ExemplarsSelectionStrategy.make_sorted_indices" title="Permalink to this definition"></a></dt>
 <dd><p>Should return the sorted list of indices to keep as exemplars.</p>
 <p>The last indices will be the first to be removed when cutoff memory.</p>
 </dd></dl>
@@ -269,7 +473,7 @@ keep in memory when cutting it off</p></li>
 <dl class="py class">
 <dt class="sig sig-object py" id="avalanche.training.storage_policy.RandomExemplarsSelectionStrategy">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.training.storage_policy.</span></span><span class="sig-name descname"><span class="pre">RandomExemplarsSelectionStrategy</span></span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#RandomExemplarsSelectionStrategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.RandomExemplarsSelectionStrategy" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#avalanche.training.storage_policy.ClassExemplarsSelectionStrategy" title="avalanche.training.storage_policy.ClassExemplarsSelectionStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.training.storage_policy.ClassExemplarsSelectionStrategy</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#avalanche.training.storage_policy.ExemplarsSelectionStrategy" title="avalanche.training.storage_policy.ExemplarsSelectionStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.training.storage_policy.ExemplarsSelectionStrategy</span></code></a></p>
 <p>Select the exemplars at random in the dataset</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="avalanche.training.storage_policy.RandomExemplarsSelectionStrategy.make_sorted_indices">
@@ -283,7 +487,7 @@ keep in memory when cutting it off</p></li>
 <dl class="py class">
 <dt class="sig sig-object py" id="avalanche.training.storage_policy.FeatureBasedExemplarsSelectionStrategy">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.training.storage_policy.</span></span><span class="sig-name descname"><span class="pre">FeatureBasedExemplarsSelectionStrategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/storage_policy/#FeatureBasedExemplarsSelectionStrategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.storage_policy.FeatureBasedExemplarsSelectionStrategy" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#avalanche.training.storage_policy.ClassExemplarsSelectionStrategy" title="avalanche.training.storage_policy.ClassExemplarsSelectionStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.training.storage_policy.ClassExemplarsSelectionStrategy</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#avalanche.training.storage_policy.ExemplarsSelectionStrategy" title="avalanche.training.storage_policy.ExemplarsSelectionStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.training.storage_policy.ExemplarsSelectionStrategy</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Base class to select exemplars from their features</p>
 <p>Initialize self.  See help(type(self)) for accurate signature.</p>
 <dl class="py method">

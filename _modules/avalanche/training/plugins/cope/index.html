@@ -97,7 +97,7 @@
 <span class="kn">from</span> <span class="nn">avalanche.training.utils</span> <span class="kn">import</span> <span class="n">get_last_fc_layer</span><span class="p">,</span> <span class="n">swap_last_fc_layer</span>
 <span class="kn">from</span> <span class="nn">avalanche.benchmarks.utils</span> <span class="kn">import</span> <span class="n">AvalancheConcatDataset</span>
 <span class="kn">from</span> <span class="nn">avalanche.training.plugins.strategy_plugin</span> <span class="kn">import</span> <span class="n">StrategyPlugin</span>
-<span class="kn">from</span> <span class="nn">avalanche.training.storage_policy</span> <span class="kn">import</span> <span class="n">ClassBalancedStoragePolicy</span>
+<span class="kn">from</span> <span class="nn">avalanche.training.storage_policy</span> <span class="kn">import</span> <span class="n">ClassBalancedBuffer</span>
 <span class="kn">from</span> <span class="nn">avalanche.benchmarks.utils.data_loader</span> <span class="kn">import</span> \
     <span class="n">ReplayDataLoader</span>
 
@@ -137,9 +137,8 @@
         <span class="c1"># Operational memory: replay memory</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">replay_mem</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mem_size</span> <span class="o">=</span> <span class="n">mem_size</span>  <span class="c1"># replay memory size</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">storage_policy</span> <span class="o">=</span> <span class="n">ClassBalancedStoragePolicy</span><span class="p">(</span>
-            <span class="n">ext_mem</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">replay_mem</span><span class="p">,</span>
-            <span class="n">mem_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mem_size</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">storage_policy</span> <span class="o">=</span> <span class="n">ClassBalancedBuffer</span><span class="p">(</span>
+            <span class="n">max_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mem_size</span><span class="p">,</span>
             <span class="n">adaptive_size</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="c1"># Operational memory: Prototypical memory</span>
@@ -256,7 +255,7 @@
 <span class="sd">        store observed samples for replay.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_prototypes</span><span class="p">()</span>  <span class="c1"># Update prototypes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">storage_policy</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>  <span class="c1"># Update memory</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">storage_policy</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>  <span class="c1"># Update memory</span></div>
 
     <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">_update_prototypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

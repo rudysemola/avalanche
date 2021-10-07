@@ -12,10 +12,13 @@ Classes
 
 .. autoapisummary::
 
-   avalanche.training.storage_policy.StoragePolicy
-   avalanche.training.storage_policy.ExperienceBalancedStoragePolicy
-   avalanche.training.storage_policy.ClassBalancedStoragePolicy
-   avalanche.training.storage_policy.ClassExemplarsSelectionStrategy
+   avalanche.training.storage_policy.ExemplarsBuffer
+   avalanche.training.storage_policy.ReservoirSamplingBuffer
+   avalanche.training.storage_policy.BalancedExemplarsBuffer
+   avalanche.training.storage_policy.ExperienceBalancedBuffer
+   avalanche.training.storage_policy.ClassBalancedBuffer
+   avalanche.training.storage_policy.ParametricBuffer
+   avalanche.training.storage_policy.ExemplarsSelectionStrategy
    avalanche.training.storage_policy.RandomExemplarsSelectionStrategy
    avalanche.training.storage_policy.FeatureBasedExemplarsSelectionStrategy
    avalanche.training.storage_policy.HerdingSelectionStrategy
@@ -23,106 +26,254 @@ Classes
 
 
 
-.. py:class:: StoragePolicy(ext_mem: Dict[int, AvalancheDataset], mem_size: int)
+.. py:class:: ExemplarsBuffer(max_size: int)
 
    Bases: :class:`abc.ABC`
 
-   A policy to store exemplars in a replay memory.
+   A buffer that stores exemplars for rehearsal.
 
-   :param ext_mem: The replay memory dictionary to store samples.
-   :param mem_size: max number of total input samples in the replay memory.
+   `self.buffer` is an AvalancheDataset of samples collected from the previous
+   experiences. The buffer can be updated by calling `self.update(strategy)`.
+
+   :param max_size: max number of input samples in the replay memory.
 
    Initialize self.  See help(type(self)) for accurate signature.
 
-   .. method:: __call__(self, data_source: AvalancheDataset, **kwargs)
+   .. attribute:: max_size
+      
+
+      Maximum size of the buffer. 
+
+
+   .. method:: buffer(self) -> AvalancheDataset
+      :property:
+
+      Buffer of samples. 
+
+
+   .. method:: update(self, strategy: BaseStrategy, **kwargs)
       :abstractmethod:
 
-      Store exemplars in the replay memory
+      Update `self.buffer` using the `strategy` state.
+
+      :param strategy:
+      :param kwargs:
+      :return:
+
+
+   .. method:: resize(self, strategy: BaseStrategy, new_size: int)
+      :abstractmethod:
+
+      Update the maximum size of the buffer.
+
+      :param strategy:
+      :param new_size:
+      :return:
 
 
 
-.. py:class:: ExperienceBalancedStoragePolicy(ext_mem: Dict, mem_size: int, adaptive_size: bool = True, num_experiences=-1)
+.. py:class:: ReservoirSamplingBuffer(max_size: int)
 
-   Bases: :class:`avalanche.training.storage_policy.StoragePolicy`
+   Bases: :class:`avalanche.training.storage_policy.ExemplarsBuffer`
 
-   A policy to store exemplars in a replay memory.
+   A buffer that stores exemplars for rehearsal.
 
-   :param ext_mem: The replay memory dictionary to store samples.
-   :param mem_size: max number of total input samples in the replay memory.
+   `self.buffer` is an AvalancheDataset of samples collected from the previous
+   experiences. The buffer can be updated by calling `self.update(strategy)`.
 
-   Stores samples for replay, equally divided over experiences.
-   Because it is conditioned on the experience, it should be called in
-   the 'after_training_exp' phase.
+   :param max_size: max number of input samples in the replay memory.
+
+   Buffer updated with reservoir sampling. 
+
+   .. method:: update(self, strategy: BaseStrategy, **kwargs)
+
+      Update buffer. 
+
+
+   .. method:: update_from_dataset(self, new_data: AvalancheDataset)
+
+
+   .. method:: resize(self, strategy, new_size)
+
+      Update the maximum size of the buffer. 
+
+
+
+.. py:class:: BalancedExemplarsBuffer(max_size: int, adaptive_size: bool = True, total_num_groups=None)
+
+   Bases: :class:`avalanche.training.storage_policy.ExemplarsBuffer`
+
+   A buffer that stores exemplars for rehearsal.
+
+   `self.buffer` is an AvalancheDataset of samples collected from the previous
+   experiences. The buffer can be updated by calling `self.update(strategy)`.
+
+   :param max_size: max number of input samples in the replay memory.
+
+   A buffer that stores exemplars for rehearsal in separate groups.
+
+   The grouping allows to balance the data (by task, experience,
+   classes..). In combination with balanced data loaders, it can be used
+   to sample balanced mini-batches during training.
+
+   `self.buffer_groups` is a dictionary that stores each group as a
+   separate buffer. The buffers are updated by calling
+   `self.update(strategy)`.
+
+   :param max_size: max number of input samples in the replay memory.
+   :param adaptive_size: True if max_size is divided equally over all
+                         observed experiences (keys in replay_mem).
+   :param total_num_groups: If adaptive size is False, the fixed number
+                           of groups to divide capacity over.
+
+   .. attribute:: buffer_groups
+      :annotation: :Dict[int, ExemplarsBuffer]
+
+      Dictionary of buffers. 
+
+
+   .. method:: buffer_datasets(self)
+      :property:
+
+      Return group buffers as a list of `AvalancheDataset`s. 
+
+
+   .. method:: get_group_lengths(self, num_groups)
+
+      Compute groups lengths given the number of groups `num_groups`. 
+
+
+   .. method:: buffer(self)
+      :property:
+
+      Buffer of samples. 
+
+
+   .. method:: update(self, strategy: BaseStrategy, **kwargs)
+      :abstractmethod:
+
+      Update `self.buffer_groups` using the `strategy` state.
+
+      :param strategy:
+      :param kwargs:
+      :return:
+
+
+   .. method:: resize(self, strategy, new_size)
+
+      Update the maximum size of the buffers. 
+
+
+
+.. py:class:: ExperienceBalancedBuffer(max_size: int, adaptive_size: bool = True, num_experiences=None)
+
+   Bases: :class:`avalanche.training.storage_policy.BalancedExemplarsBuffer`
+
+   A buffer that stores exemplars for rehearsal.
+
+   `self.buffer` is an AvalancheDataset of samples collected from the previous
+   experiences. The buffer can be updated by calling `self.update(strategy)`.
+
+   :param max_size: max number of input samples in the replay memory.
+
+   Rehearsal buffer with samples balanced over experiences.
 
    The number of experiences can be fixed up front or adaptive, based on
    the 'adaptive_size' attribute. When adaptive, the memory is equally
    divided over all the unique observed experiences so far.
 
-   :param ext_mem: The replay memory dictionary to store samples.
-   :param mem_size: max number of total input samples in the replay memory.
+   :param max_size: max number of total input samples in the replay
+       memory.
    :param adaptive_size: True if mem_size is divided equally over all
                          observed experiences (keys in replay_mem).
    :param num_experiences: If adaptive size is False, the fixed number
                            of experiences to divide capacity over.
 
-   .. method:: subsample_single(self, data: AvalancheDataset, new_size: int)
+   .. method:: update(self, strategy: BaseStrategy, **kwargs)
 
-      Subsample `data` to match length `new_size`. 
+      Update `self.buffer_groups` using the `strategy` state.
 
-
-   .. method:: subsample_all_groups(self, new_size: int)
-
-      Subsample all groups equally to match total buffer size
-      `new_size`. 
-
-
-   .. method:: __call__(self, strategy: BaseStrategy, **kwargs)
-
-      Store exemplars in the replay memory
+      :param strategy:
+      :param kwargs:
+      :return:
 
 
 
-.. py:class:: ClassBalancedStoragePolicy(ext_mem: Dict, mem_size: int, adaptive_size: bool = True, total_num_classes: int = -1, selection_strategy: Optional['ClassExemplarsSelectionStrategy'] = None)
+.. py:class:: ClassBalancedBuffer(max_size: int, adaptive_size: bool = True, total_num_classes: int = None)
 
-   Bases: :class:`avalanche.training.storage_policy.StoragePolicy`
+   Bases: :class:`avalanche.training.storage_policy.BalancedExemplarsBuffer`
 
-   A policy to store exemplars in a replay memory.
+   A buffer that stores exemplars for rehearsal.
 
-   :param ext_mem: The replay memory dictionary to store samples.
-   :param mem_size: max number of total input samples in the replay memory.
+   `self.buffer` is an AvalancheDataset of samples collected from the previous
+   experiences. The buffer can be updated by calling `self.update(strategy)`.
+
+   :param max_size: max number of input samples in the replay memory.
 
    Stores samples for replay, equally divided over classes.
+
+   There is a separate buffer updated by reservoir sampling for each
+       class.
    It should be called in the 'after_training_exp' phase (see
    ExperienceBalancedStoragePolicy).
    The number of classes can be fixed up front or adaptive, based on
    the 'adaptive_size' attribute. When adaptive, the memory is equally
    divided over all the unique observed classes so far.
-   :param ext_mem: The replay memory dictionary to store samples in.
-   :param mem_size: The max capacity of the replay memory.
+
+   :param max_size: The max capacity of the replay memory.
    :param adaptive_size: True if mem_size is divided equally over all
                        observed experiences (keys in replay_mem).
    :param total_num_classes: If adaptive size is False, the fixed number
                              of classes to divide capacity over.
-   :param selection_strategy: The strategy used to select exemplars to 
-                              keep in memory when cutting it off
 
-   .. method:: __call__(self, strategy: BaseStrategy, **kwargs)
+   .. method:: update(self, strategy: BaseStrategy, **kwargs)
 
-      Store exemplars in the replay memory
+      Update `self.buffer_groups` using the `strategy` state.
 
-
-   .. method:: divide_remaining_samples(self, exp_mem_size: int, div_cnt: int) -> Dict[int, int]
-
-
-   .. method:: cutoff_memory(self, cutoff_per_exp: Dict[int, int])
+      :param strategy:
+      :param kwargs:
+      :return:
 
 
 
-.. py:class:: ClassExemplarsSelectionStrategy
+.. py:class:: ParametricBuffer(max_size: int, groupby=None, selection_strategy: Optional['ExemplarsSelectionStrategy'] = None)
+
+   Bases: :class:`avalanche.training.storage_policy.BalancedExemplarsBuffer`
+
+   A buffer that stores exemplars for rehearsal.
+
+   `self.buffer` is an AvalancheDataset of samples collected from the previous
+   experiences. The buffer can be updated by calling `self.update(strategy)`.
+
+   :param max_size: max number of input samples in the replay memory.
+
+   Stores samples for replay using a custom selection strategy and
+   grouping.
+
+   :param max_size: The max capacity of the replay memory.
+   :param groupby: Grouping mechanism. One of {None, 'class', 'task',
+   'experience'}.
+   :param selection_strategy: The strategy used to select exemplars to
+                              keep in memory when cutting it off.
+
+   .. method:: update(self, strategy: BaseStrategy, **kwargs)
+
+      Update `self.buffer_groups` using the `strategy` state.
+
+      :param strategy:
+      :param kwargs:
+      :return:
+
+
+   .. method:: make_groups(self, strategy, data)
+
+
+
+.. py:class:: ExemplarsSelectionStrategy
 
    Bases: :class:`abc.ABC`
 
-   Base class to define how to select class exemplars from a dataset
+   Base class to define how to select a subset of exemplars from a dataset.
 
    .. method:: make_sorted_indices(self, strategy: BaseStrategy, data: AvalancheDataset) -> List[int]
       :abstractmethod:
@@ -135,7 +286,7 @@ Classes
 
 .. py:class:: RandomExemplarsSelectionStrategy
 
-   Bases: :class:`avalanche.training.storage_policy.ClassExemplarsSelectionStrategy`
+   Bases: :class:`avalanche.training.storage_policy.ExemplarsSelectionStrategy`
 
    Select the exemplars at random in the dataset
 
@@ -149,7 +300,7 @@ Classes
 
 .. py:class:: FeatureBasedExemplarsSelectionStrategy(model: Module, layer_name: str)
 
-   Bases: :class:`avalanche.training.storage_policy.ClassExemplarsSelectionStrategy`, :class:`abc.ABC`
+   Bases: :class:`avalanche.training.storage_policy.ExemplarsSelectionStrategy`, :class:`abc.ABC`
 
    Base class to select exemplars from their features
 

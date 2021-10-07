@@ -447,7 +447,7 @@ Classes
 
 
 
-.. py:class:: ReplayPlugin(mem_size: int = 200, storage_policy: Optional['StoragePolicy'] = None)
+.. py:class:: ReplayPlugin(mem_size: int = 200, storage_policy: Optional['ExemplarsBuffer'] = None)
 
    Bases: :class:`avalanche.training.plugins.strategy_plugin.StrategyPlugin`
 
@@ -468,6 +468,10 @@ Classes
    in the external memory.
    :param storage_policy: The policy that controls how to add new exemplars
                           in memory
+
+   .. method:: ext_mem(self)
+      :property:
+
 
    .. method:: before_training_exp(self, strategy: BaseStrategy, num_workers: int = 0, shuffle: bool = True, **kwargs)
 
