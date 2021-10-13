@@ -426,6 +426,11 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">is_training</span><span class="p">)</span>
         
+        <span class="c1"># save each layer&#39;s training mode, to restore it later</span>
+        <span class="n">_prev_model_training_modes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">named_modules</span><span class="p">():</span>
+            <span class="n">_prev_model_training_modes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">training</span>
+        
         <span class="n">curr_epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clock</span><span class="o">.</span><span class="n">train_exp_epochs</span>
         <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_every</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">(</span><span class="n">do_final</span> <span class="ow">or</span> <span class="n">do_initial</span><span class="p">))</span> <span class="ow">or</span> \
            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_every</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">do_initial</span><span class="p">)</span> <span class="ow">or</span> \
@@ -439,7 +444,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">experience</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">adapted_dataset</span> <span class="o">=</span> <span class="n">_prev_state</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">_prev_state</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_training</span> <span class="o">=</span> <span class="n">_prev_state</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+        
+        <span class="c1"># restore each layer&#39;s training mode to original </span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">named_modules</span><span class="p">():</span>
+            <span class="n">prev_mode</span> <span class="o">=</span> <span class="n">_prev_model_training_modes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="n">layer</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">prev_mode</span><span class="p">)</span>
 
 <div class="viewcode-block" id="BaseStrategy.stop_training"><a class="viewcode-back" href="../../../../../autoapi/avalanche/training/strategies/#avalanche.training.BaseStrategy.stop_training">[docs]</a>    <span class="k">def</span> <span class="nf">stop_training</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Signals to stop training at the next iteration. &quot;&quot;&quot;</span>
