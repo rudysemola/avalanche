@@ -22,6 +22,7 @@ Classes
 
    avalanche.benchmarks.utils.data_loader.TaskBalancedDataLoader
    avalanche.benchmarks.utils.data_loader.GroupBalancedDataLoader
+   avalanche.benchmarks.utils.data_loader.GroupBalancedInfiniteDataLoader
    avalanche.benchmarks.utils.data_loader.ReplayDataLoader
 
 
@@ -70,6 +71,29 @@ Classes
    :param datasets: an instance of `AvalancheDataset`.
    :param oversample_small_groups: whether smaller groups should be
        oversampled to match the largest one.
+   :param collate_mbatches: function that given a sequence of mini-batches
+       (one for each task) combines them into a single mini-batch. Used to
+       combine the mini-batches obtained separately from each task.
+   :param kwargs: data loader arguments used to instantiate the loader for
+       each group separately. See pytorch :class:`DataLoader`.
+
+   .. method:: __iter__(self)
+
+
+   .. method:: __len__(self)
+
+
+
+.. py:class:: GroupBalancedInfiniteDataLoader(datasets: Sequence[AvalancheDataset], collate_mbatches=_default_collate_mbatches_fn, **kwargs)
+
+   Data loader that balances data from multiple datasets emitting an
+   infinite stream.
+
+   Mini-batches emitted by this dataloader are created by collating
+   together mini-batches from each group. It may be used to balance data
+   among classes, experiences, tasks, and so on.
+
+   :param datasets: an instance of `AvalancheDataset`.
    :param collate_mbatches: function that given a sequence of mini-batches
        (one for each task) combines them into a single mini-batch. Used to
        combine the mini-batches obtained separately from each task.

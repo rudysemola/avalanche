@@ -109,7 +109,10 @@ between the current data and the replay memory.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#avalanche.benchmarks.utils.data_loader.GroupBalancedDataLoader" title="avalanche.benchmarks.utils.data_loader.GroupBalancedDataLoader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GroupBalancedDataLoader</span></code></a></p></td>
 <td><p>Data loader that balances data from multiple datasets.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.benchmarks.utils.data_loader.ReplayDataLoader" title="avalanche.benchmarks.utils.data_loader.ReplayDataLoader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReplayDataLoader</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.benchmarks.utils.data_loader.GroupBalancedInfiniteDataLoader" title="avalanche.benchmarks.utils.data_loader.GroupBalancedInfiniteDataLoader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GroupBalancedInfiniteDataLoader</span></code></a></p></td>
+<td><p>Data loader that balances data from multiple datasets emitting an</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#avalanche.benchmarks.utils.data_loader.ReplayDataLoader" title="avalanche.benchmarks.utils.data_loader.ReplayDataLoader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReplayDataLoader</span></code></a></p></td>
 <td><p>Custom data loader for rehearsal strategies.</p></td>
 </tr>
 </tbody>
@@ -183,6 +186,38 @@ each group separately. See pytorch <code class="xref py py-class docutils litera
 <dl class="py method">
 <dt class="sig sig-object py" id="avalanche.benchmarks.utils.data_loader.GroupBalancedDataLoader.__len__">
 <span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/benchmarks/utils/data_loader/#GroupBalancedDataLoader.__len__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.utils.data_loader.GroupBalancedDataLoader.__len__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="avalanche.benchmarks.utils.data_loader.GroupBalancedInfiniteDataLoader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.benchmarks.utils.data_loader.</span></span><span class="sig-name descname"><span class="pre">GroupBalancedInfiniteDataLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datasets</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">AvalancheDataset</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collate_mbatches</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_default_collate_mbatches_fn</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/benchmarks/utils/data_loader/#GroupBalancedInfiniteDataLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.utils.data_loader.GroupBalancedInfiniteDataLoader" title="Permalink to this definition"></a></dt>
+<dd><p>Data loader that balances data from multiple datasets emitting an
+infinite stream.</p>
+<p>Mini-batches emitted by this dataloader are created by collating
+together mini-batches from each group. It may be used to balance data
+among classes, experiences, tasks, and so on.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>datasets</strong> – an instance of <cite>AvalancheDataset</cite>.</p></li>
+<li><p><strong>collate_mbatches</strong> – function that given a sequence of mini-batches
+(one for each task) combines them into a single mini-batch. Used to
+combine the mini-batches obtained separately from each task.</p></li>
+<li><p><strong>kwargs</strong> – data loader arguments used to instantiate the loader for
+each group separately. See pytorch <code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.benchmarks.utils.data_loader.GroupBalancedInfiniteDataLoader.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/benchmarks/utils/data_loader/#GroupBalancedInfiniteDataLoader.__iter__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.utils.data_loader.GroupBalancedInfiniteDataLoader.__iter__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.benchmarks.utils.data_loader.GroupBalancedInfiniteDataLoader.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/avalanche/benchmarks/utils/data_loader/#GroupBalancedInfiniteDataLoader.__len__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.benchmarks.utils.data_loader.GroupBalancedInfiniteDataLoader.__len__" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>

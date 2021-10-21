@@ -164,6 +164,9 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#avalanche.training.plugins.LFLPlugin" title="avalanche.training.plugins.LFLPlugin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LFLPlugin</span></code></a></p></td>
 <td><p>Less-Forgetful Learning (LFL) Plugin</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#avalanche.training.plugins.EarlyStoppingPlugin" title="avalanche.training.plugins.EarlyStoppingPlugin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EarlyStoppingPlugin</span></code></a></p></td>
+<td><p>Base class for strategy plugins. Implements all the callbacks required</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py class">
@@ -1252,6 +1255,44 @@ and freeze the prev model and freeze the last layer of current model</p>
 <dd><p>Check if the model is an instance of base class to ensure get_features()
 is implemented</p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="avalanche.training.plugins.EarlyStoppingPlugin">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">avalanche.training.plugins.</span></span><span class="sig-name descname"><span class="pre">EarlyStoppingPlugin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">patience</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_stream_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'Top1_Acc_Stream'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'max'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/plugins/early_stopping/#EarlyStoppingPlugin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.plugins.EarlyStoppingPlugin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#avalanche.training.plugins.StrategyPlugin" title="avalanche.training.plugins.StrategyPlugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">avalanche.training.plugins.StrategyPlugin</span></code></a></p>
+<p>Base class for strategy plugins. Implements all the callbacks required
+by the BaseStrategy with an empty function. Subclasses must override
+the callbacks.</p>
+<p>Simple plugin stopping the training when the accuracy on the
+corresponding validation metric stopped progressing for a few epochs.
+The state of the best model is saved after each improvement on the
+given metric and is loaded back into the model before stopping the
+training procedure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>patience</strong> – Number of epochs to wait before stopping the training.</p></li>
+<li><p><strong>val_stream_name</strong> – Name of the validation stream to search in the</p></li>
+</ul>
+</dd>
+</dl>
+<p>metrics. The corresponding stream will be used to keep track of the
+evolution of the performance of a model.
+:param metric_name: The name of the metric to watch as it will be
+reported in the evaluator.
+:param mode: Must be “max” or “min”. max (resp. min) means that the
+given metric should me maximized (resp. minimized).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.training.plugins.EarlyStoppingPlugin.before_training">
+<span class="sig-name descname"><span class="pre">before_training</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/plugins/early_stopping/#EarlyStoppingPlugin.before_training"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.plugins.EarlyStoppingPlugin.before_training" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avalanche.training.plugins.EarlyStoppingPlugin.before_training_epoch">
+<span class="sig-name descname"><span class="pre">before_training_epoch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/avalanche/training/plugins/early_stopping/#EarlyStoppingPlugin.before_training_epoch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#avalanche.training.plugins.EarlyStoppingPlugin.before_training_epoch" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
