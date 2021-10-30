@@ -87,13 +87,10 @@
            <div itemprop="articleBody">
              
   <h1>Source code for avalanche.training.plugins.agem</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">random</span>
+<span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">random_split</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">random_split</span><span class="p">,</span> <span class="n">DataLoader</span>
-
-<span class="kn">from</span> <span class="nn">avalanche.benchmarks.utils</span> <span class="kn">import</span> <span class="n">AvalancheConcatDataset</span>
-<span class="kn">from</span> <span class="nn">avalanche.benchmarks.utils.data_loader</span> <span class="kn">import</span> <span class="n">GroupBalancedDataLoader</span><span class="p">,</span> \
+<span class="kn">from</span> <span class="nn">avalanche.benchmarks.utils.data_loader</span> <span class="kn">import</span> \
     <span class="n">GroupBalancedInfiniteDataLoader</span>
 <span class="kn">from</span> <span class="nn">avalanche.models</span> <span class="kn">import</span> <span class="n">avalanche_forward</span>
 <span class="kn">from</span> <span class="nn">avalanche.training.plugins.strategy_plugin</span> <span class="kn">import</span> <span class="n">StrategyPlugin</span>
