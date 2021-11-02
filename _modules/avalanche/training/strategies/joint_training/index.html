@@ -108,6 +108,7 @@
 <span class="kn">from</span> <span class="nn">avalanche.benchmarks.utils</span> <span class="kn">import</span> <span class="n">AvalancheConcatDataset</span>
 <span class="kn">from</span> <span class="nn">avalanche.training.plugins.evaluation</span> <span class="kn">import</span> <span class="n">default_logger</span>
 <span class="kn">from</span> <span class="nn">avalanche.training.strategies</span> <span class="kn">import</span> <span class="n">BaseStrategy</span>
+<span class="kn">from</span> <span class="nn">avalanche.models</span> <span class="kn">import</span> <span class="n">DynamicModule</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">avalanche.training.plugins</span> <span class="kn">import</span> <span class="n">StrategyPlugin</span>
@@ -208,7 +209,15 @@
             <span class="n">cat_data</span> <span class="o">=</span> <span class="n">AvalancheConcatDataset</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">adapted_dataset</span><span class="p">,</span>
                                                <span class="n">exp</span><span class="o">.</span><span class="n">dataset</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">adapted_dataset</span> <span class="o">=</span> <span class="n">cat_data</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">adapted_dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adapted_dataset</span><span class="o">.</span><span class="n">train</span><span class="p">()</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adapted_dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adapted_dataset</span><span class="o">.</span><span class="n">train</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="JointTraining.model_adaptation"><a class="viewcode-back" href="../../../../../autoapi/avalanche/training/strategies/joint_training/#avalanche.training.JointTraining.model_adaptation">[docs]</a>    <span class="k">def</span> <span class="nf">model_adaptation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Adapts strategy&#39;s model for all experiences. &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">experience</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_experiences</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">modules</span><span class="p">():</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">DynamicModule</span><span class="p">):</span>
+                    <span class="n">module</span><span class="o">.</span><span class="n">adaptation</span><span class="p">(</span><span class="n">experience</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span></div></div>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;JointTraining&#39;</span><span class="p">]</span>

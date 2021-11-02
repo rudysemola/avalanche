@@ -512,6 +512,11 @@ Classes
       Concatenates all the datastream. 
 
 
+   .. method:: model_adaptation(self)
+
+      Adapts strategy's model for all experiences. 
+
+
 
 .. py:class:: AR1(criterion=None, lr: float = 0.001, momentum=0.9, l2=0.0005, train_epochs: int = 4, init_update_rate: float = 0.01, inc_update_rate=5e-05, max_r_max=1.25, max_d_max=0.5, inc_step=4.1e-05, rm_sz: int = 1500, freeze_below_layer: str = 'lat_features.19.bn.beta', latent_layer_num: int = 19, ewc_lambda: float = 0, train_mb_size: int = 128, eval_mb_size: int = 128, device=None, plugins: Optional[Sequence[StrategyPlugin]] = None, evaluator: EvaluationPlugin = default_logger, eval_every=-1)
 

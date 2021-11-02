@@ -63,4 +63,9 @@ Classes
       Concatenates all the datastream. 
 
 
+   .. method:: model_adaptation(self)
+
+      Adapts strategy's model for all experiences. 
+
+
 
